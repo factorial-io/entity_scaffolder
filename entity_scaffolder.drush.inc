@@ -52,8 +52,15 @@ function drush_entity_scaffolder() {
     return drush_log(dt('You need to specify an "config-dir" to load configurations from.'), 'error');
   }
 
+  if (!drush_entity_scaffolder_check_requirements()) {
+    return drush_log(dt('ERROR: Scaffolder borks.'), 'error');
+  }
+
   $entity_types = drush_entity_scaffolder_get_folders($config_dir);
 
+  // Prepare module directories.
+  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
+  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
   foreach ($entity_types as $entity_type) {
     switch ($entity_type) {
       case 'fpp':
@@ -67,9 +74,9 @@ function drush_entity_scaffolder() {
   }
 
 
-  drush_log(var_dump($entity_types), 'success');
+  // drush_log(var_dump($entity_types), 'success');
   $config = Spyc::YAMLLoad($config_dir . '/config.yaml');
-  drush_log($config['type'], 'success');
+  // drush_log($config['type'], 'success');
 
 }
 
@@ -104,6 +111,35 @@ function drush_entity_scaffolder_scaffold_fpp($config_dir) {
   $config_files = drush_entity_scaffolder_get_config_files($config_dir . '/fpp');
   foreach ($config_files as $file) {
     $config = Spyc::YAMLLoad($file);
-    drush_log(var_dump($config), 'success');
+    // drush_log(var_dump($config), 'success');
   }
+}
+
+/**
+ * Helper functions to create FPPS.
+ */
+function drush_entity_scaffolder_copy_folder_contents($source, $destination) {
+  if (!file_exists($destination) && !is_dir($destination)) {
+    mkdir($destination);
+  }
+  $files = array();
+  foreach(glob($source . '/*.*') as $file) {
+    $file_name = basename($file);
+    copy($file, $destination . '/' . $file_name);
+  }
+}
+
+/**
+ * Helper function to exit scaffolding if something is suscpecious.
+ */
+function drush_entity_scaffolder_check_requirements() {
+
+  // @todo try to find a better way to figure out if the current directory is
+  // Drupal root.
+  $folders = drush_entity_scaffolder_get_folders('.');
+  if (!in_array('sites', $folders)) {
+    return FALSE;
+  }
+
+  return TRUE;
 }
