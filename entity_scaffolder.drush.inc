@@ -6,6 +6,7 @@
 
 require_once "spyc.php";
 require_once "d7/ESEntityFPP.php";
+require_once "d7/ESFieldBase.php";
 
 /**
  * Implements hook_drush_help().
@@ -157,4 +158,18 @@ function drush_entity_scaffolder_export_code($files) {
   foreach ($files as $extention => $file_contents) {
     file_put_contents($extention, $file_contents);
   }
+}
+
+/**
+ * Helper function to perform text replacement.
+ */
+function drush_entity_scaffolder_render_template($file, $replacements) {
+  $content = file_get_contents($file);
+  if ($content) {
+    foreach ($replacements as $key => $value) {
+      $key = "%{$key}%";
+      $content = str_replace($key, $value, $content);
+    }
+  }
+  return $content;
 }

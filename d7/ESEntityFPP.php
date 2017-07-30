@@ -3,33 +3,15 @@
 class ESEntityFPP {
 
   public static function featureCodeHeader($info) {
-    return "<?php
-/**
- * @file
- * fe_es.fieldable_panels_pane_type.inc
- */
-
-/**
- * Implements hook_default_fieldable_panels_pane_type().
- */
-function fe_es_default_fieldable_panels_pane_type() {
-  \$export = array();\n";
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/entity/fpp/feature.header.inc', $info);
   }
 
   public static function featureCodeFooter($info) {
-    return "  return \$export;
-}
-";
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/entity/fpp/feature.footer.inc', $info);
   }
 
   public static function entityDefinition($info) {
-    return "  \$fieldable_panels_pane_type = new stdClass();
-  \$fieldable_panels_pane_type->disabled = FALSE; /* Edit this to true to make a default fieldable_panels_pane_type disabled initially */
-  \$fieldable_panels_pane_type->api_version = 1;
-  \$fieldable_panels_pane_type->name = '{$info['machine_name']}';
-  \$fieldable_panels_pane_type->title = '{$info['name']}';
-  \$fieldable_panels_pane_type->description = '';
-  \$export['{$info['machine_name']}'] = \$fieldable_panels_pane_type;\n";
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/entity/fpp/feature.content.inc', $info);
   }
 
   public static function appendEntityDefinitions(&$code, $info) {
