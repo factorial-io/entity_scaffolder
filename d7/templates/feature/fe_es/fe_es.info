@@ -6,4 +6,3 @@ dependencies[] = ctools
 dependencies[] = fieldable_panels_panes
 features[ctools][] = fieldable_panels_panes:fieldable_panels_pane_type:1
 features[features_api][] = api:2
-project path = sites/all/modules/features

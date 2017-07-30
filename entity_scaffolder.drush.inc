@@ -83,6 +83,8 @@ function drush_entity_scaffolder() {
 
       case 'fe_es.info':
         array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
+        $content[] = 'project path = sites/all/modules/features';
+        $content[] = "";
         $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
       default:
         # code...
