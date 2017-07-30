@@ -50,7 +50,7 @@ function drush_entity_scaffolder() {
   ini_set('memory_limit', -1);
 
   if (!($config_dir = drush_get_option('config-dir'))) {
-    return drush_log(dt('You need to specify an "config-dir" to load configurations from.'), 'error');
+    $config_dir = '_tools/es';
   }
 
   if (!drush_entity_scaffolder_check_requirements()) {
