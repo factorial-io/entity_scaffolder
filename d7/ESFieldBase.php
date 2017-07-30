@@ -33,8 +33,7 @@ class ESFieldBase {
    */
   public static function scaffold($config, &$code) {
     foreach ($config['fields'] as $field_key => $field_info) {
-      $info = $field_info;
-      $info['field_name'] = self::getFieldName($config, $field_key);
+      $info = self::getConfig($config, $field_key, $field_info);
       self::appendEntityDefinitions($code, $info);
     }
   }
@@ -45,5 +44,16 @@ class ESFieldBase {
   public static function getFieldName($config, $field_key) {
     return $config['entity_name'] . '_' .$config['entity_bundle'] . '_' . $field_key;
   }
+
+
+  /**
+   * Helper function to load config and defaults.
+   */
+  public static function getConfig($config, $field_key, $field_info) {
+    $info = $field_info;
+    $info['field_name'] = self::getFieldName($config, $field_key);
+    return $info;
+  }
+
 
 }

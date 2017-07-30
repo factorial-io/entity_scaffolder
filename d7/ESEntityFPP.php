@@ -28,18 +28,26 @@ class ESEntityFPP {
   /**
    * Helper functions to create FPPS.
    */
-  function scaffold($config_dir, &$code) {
+  public static function scaffold($config_dir, &$code) {
     $config_files = drush_entity_scaffolder_get_config_files($config_dir . '/fpp');
     foreach ($config_files as $file) {
-      $config = Spyc::YAMLLoad($file);
-      $config['entity_name'] = 'fpp';
-      $config['entity_bundle'] = $config['machine_name'];
+      $config = self::getConfig($file);
       self::appendEntityDefinitions($code, $config);
       if ($config['fields']) {
         ESFieldBase::scaffold($config, $code);
       }
 
     }
+  }
+
+  /**
+   * Helper function to load config and defaults.
+   */
+  public static function getConfig($file) {
+    $config = Spyc::YAMLLoad($file);
+    $config['entity_name'] = 'fpp';
+    $config['entity_bundle'] = $config['machine_name'];
+    return $config;
   }
 
 }
