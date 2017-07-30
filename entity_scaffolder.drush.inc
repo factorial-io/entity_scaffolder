@@ -81,6 +81,9 @@ function drush_entity_scaffolder() {
         $files['sites/all/modules/features/fe_es/fe_es.fieldable_panels_pane_type.inc'] = implode("\n", $content);
         break;
 
+      case 'fe_es.info':
+        array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
+        $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
       default:
         # code...
         break;

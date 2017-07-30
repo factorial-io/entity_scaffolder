@@ -6,13 +6,13 @@ class ESEntityFPP {
     return "<?php
 /**
  * @file
- * rx_fe_fpp.fieldable_panels_pane_type.inc
+ * fe_es.fieldable_panels_pane_type.inc
  */
 
 /**
  * Implements hook_default_fieldable_panels_pane_type().
  */
-function rx_fe_fpp_default_fieldable_panels_pane_type() {
+function fe_es_default_fieldable_panels_pane_type() {
   \$export = array();\n";
   }
 
@@ -32,24 +32,25 @@ function rx_fe_fpp_default_fieldable_panels_pane_type() {
   \$export['{$info['machine_name']}'] = \$fieldable_panels_pane_type;\n";
   }
 
-  public static function appendEntityDefinitions(&$baseDefinitions, $info) {
-    $baseDefinitions[$info['machine_name']] = self::entityDefinition($info);
+  public static function appendEntityDefinitions(&$code, $info) {
+    $code['fpp'][$info['machine_name']] = self::entityDefinition($info);
+    $code['fe_es.info'][] = "features[fieldable_panels_pane_type][] = {$info['machine_name']}";
+
   }
 
-  public static function addFeatureHeaderFooter(&$baseDefinitions, $info) {
-    array_unshift($baseDefinitions, self::featureCodeHeader($info));
-    $baseDefinitions[] = self::featureCodeFooter($info);
+  public static function addFeatureHeaderFooter(&$code, $info) {
+    array_unshift($code, self::featureCodeHeader($info));
+    $code[] = self::featureCodeFooter($info);
   }
 
   /**
    * Helper functions to create FPPS.
    */
   function scaffold($config_dir, &$code) {
-    $definition = &$code['fpp'];
     $config_files = drush_entity_scaffolder_get_config_files($config_dir . '/fpp');
     foreach ($config_files as $file) {
       $config = Spyc::YAMLLoad($file);
-      self::appendEntityDefinitions($definition, $config);
+      self::appendEntityDefinitions($code, $config);
     }
   }
 
