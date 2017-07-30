@@ -1,26 +1,26 @@
 <?php
 
-class ESFieldBase {
+class ESFieldInstance {
 
   public static function getTemplateDirectory($field_name) {
-    return __DIR__ . '/templates/field_base/' . $field_name;
+    return __DIR__ . '/templates/field_instance/' . $field_name;
   }
 
   public static function featureCodeHeader($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_base/feature.header.inc', $info);
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_instance/feature.header.inc', $info);
   }
 
   public static function featureCodeFooter($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_base/feature.footer.inc', $info);
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_instance/feature.footer.inc', $info);
   }
 
   public static function entityDefinition($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_base/' . $info['type'] . '/feature.content.inc', $info);
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_instance/' . $info['type'] . '/feature.content.inc', $info);
   }
 
 
   public static function appendEntityDefinitions(&$code, $info) {
-    $code['field_base'][$info['field_name']] = self::entityDefinition($info);
+    $code['field_instance'][$info['field_name']] = self::entityDefinition($info);
   }
 
   public static function addFeatureHeaderFooter(&$code, $info) {
@@ -51,6 +51,8 @@ class ESFieldBase {
    */
   public static function getConfig($config, $field_key, $field_info) {
     $info = $field_info;
+    $info['entity_type'] = $config['entity_type'];
+    $info['bundle'] = $config['bundle'];
     $info['field_name'] = self::getFieldName($config, $field_key);
     return $info;
   }

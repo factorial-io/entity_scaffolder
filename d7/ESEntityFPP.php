@@ -35,6 +35,7 @@ class ESEntityFPP {
       self::appendEntityDefinitions($code, $config);
       if ($config['fields']) {
         ESFieldBase::scaffold($config, $code);
+        ESFieldInstance::scaffold($config, $code);
       }
 
     }
@@ -45,8 +46,9 @@ class ESEntityFPP {
    */
   public static function getConfig($file) {
     $config = Spyc::YAMLLoad($file);
-    $config['entity_name'] = 'fpp';
-    $config['entity_bundle'] = $config['machine_name'];
+    $config['entity_type'] = 'fieldable_panels_pane';
+    $config['bundle'] = $config['machine_name'];
+    $config['field_prefix'] = 'fpp_' . $config['machine_name'];
     return $config;
   }
 
