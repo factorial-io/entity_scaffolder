@@ -5,6 +5,7 @@
  */
 
 require_once "spyc.php";
+require_once "d7/templates/entity/ESEntityFPP.php";
 
 /**
  * Implements hook_drush_help().
@@ -58,13 +59,11 @@ function drush_entity_scaffolder() {
 
   $entity_types = drush_entity_scaffolder_get_folders($config_dir);
 
-  // Prepare module directories.
-  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
-  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+  $code = array();
   foreach ($entity_types as $entity_type) {
     switch ($entity_type) {
       case 'fpp':
-        drush_entity_scaffolder_scaffold_fpp($config_dir);
+        ESEntityFPP::scaffold($config_dir, $code);
         break;
 
       default:
@@ -73,11 +72,21 @@ function drush_entity_scaffolder() {
     }
   }
 
+  $files = array();
 
-  // drush_log(var_dump($entity_types), 'success');
-  $config = Spyc::YAMLLoad($config_dir . '/config.yaml');
-  // drush_log($config['type'], 'success');
+  foreach ($code as $key => $content) {
+    switch ($key) {
+      case 'fpp':
+        ESEntityFPP::addFeatureHeaderFooter($content, array());
+        $files['sites/all/modules/features/fe_es/fe_es.fieldable_panels_pane_type.inc'] = implode("\n", $content);
+        break;
 
+      default:
+        # code...
+        break;
+    }
+  }
+  drush_entity_scaffolder_export_code($files);
 }
 
 /**
@@ -101,18 +110,6 @@ function drush_entity_scaffolder_get_config_files($config_dir) {
     $files[] = $file;
   }
   return $files;
-}
-
-
-/**
- * Helper functions to create FPPS.
- */
-function drush_entity_scaffolder_scaffold_fpp($config_dir) {
-  $config_files = drush_entity_scaffolder_get_config_files($config_dir . '/fpp');
-  foreach ($config_files as $file) {
-    $config = Spyc::YAMLLoad($file);
-    // drush_log(var_dump($config), 'success');
-  }
 }
 
 /**
@@ -142,4 +139,17 @@ function drush_entity_scaffolder_check_requirements() {
   }
 
   return TRUE;
+}
+
+
+/**
+ * Helper function to export files.
+ */
+function drush_entity_scaffolder_export_code($files) {
+  // Prepare module directories.
+  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
+  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+  foreach ($files as $extention => $file_contents) {
+    file_put_contents($extention, $file_contents);
+  }
 }
