@@ -82,11 +82,19 @@ function drush_entity_scaffolder() {
         $files['sites/all/modules/features/fe_es/fe_es.fieldable_panels_pane_type.inc'] = implode("\n", $content);
         break;
 
+      case 'field_base':
+        ESFieldBase::addFeatureHeaderFooter($content, array());
+        $files['sites/all/modules/features/fe_es/fe_es.features.field_base.inc'] = implode("\n", $content);
+        break;
+
+
       case 'fe_es.info':
         array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
         $content[] = 'project path = sites/all/modules/features';
         $content[] = "";
         $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
+        break;
+
       default:
         # code...
         break;

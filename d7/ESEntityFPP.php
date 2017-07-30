@@ -32,9 +32,11 @@ class ESEntityFPP {
     $config_files = drush_entity_scaffolder_get_config_files($config_dir . '/fpp');
     foreach ($config_files as $file) {
       $config = Spyc::YAMLLoad($file);
+      $config['entity_name'] = 'fpp';
+      $config['entity_bundle'] = $config['machine_name'];
       self::appendEntityDefinitions($code, $config);
       if ($config['fields']) {
-        ESFieldBase::scaffold($config['fields'], $code);
+        ESFieldBase::scaffold($config, $code);
       }
 
     }
