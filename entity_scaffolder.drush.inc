@@ -5,7 +5,7 @@
  */
 
 require_once "spyc.php";
-require_once "d7/templates/entity/ESEntityFPP.php";
+require_once "d7/ESEntityFPP.php";
 
 /**
  * Implements hook_drush_help().

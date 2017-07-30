@@ -51,6 +51,10 @@ function fe_es_default_fieldable_panels_pane_type() {
     foreach ($config_files as $file) {
       $config = Spyc::YAMLLoad($file);
       self::appendEntityDefinitions($code, $config);
+      if ($config['fields']) {
+        ESFieldBase::scaffold($config['fields'], $code);
+      }
+
     }
   }
 
