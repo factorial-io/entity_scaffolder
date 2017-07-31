@@ -9,17 +9,16 @@ Checkout the code in `~/.drush/` so that it is recognized as plugin.
 ## Example Usage:
 1. Create gallery.yaml under `%drupal_root%/_tools/es/fpp/` so the structure looks like the following.
 
-```
-    _tools
-        \-es
-            \-fpp
-                \-gallery.yaml
-
-```
+    ```
+        _tools
+            \-es
+                \-fpp
+                    \-gallery.yaml
+    ```
 
 2. Populate `gallery.yaml` with following content
 
-```
+    ```
     name: "Awesome Gallery"
     machine_name: "gallery"
     fields:
@@ -28,7 +27,7 @@ Checkout the code in `~/.drush/` so that it is recognized as plugin.
         type: images
         label: Some Images
         image_style: thumbnail
-```
+    ```
 
 3. Run `drush es` in %drupal_root%
 4. A feature called `fe_es` and a module called `es_helper` should be created automatically with required files.
