@@ -36,6 +36,7 @@ class ESEntityFPP {
       if ($config['fields']) {
         ESFieldBase::scaffold($config, $code);
         ESFieldInstance::scaffold($config, $code);
+        ESFieldPreprocess::scaffold($config, $code);
       }
 
     }

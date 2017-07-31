@@ -8,6 +8,7 @@ require_once "spyc.php";
 require_once "d7/ESEntityFPP.php";
 require_once "d7/ESFieldBase.php";
 require_once "d7/ESFieldInstance.php";
+require_once "d7/ESFieldPreprocess.php";
 
 /**
  * Implements hook_drush_help().
@@ -91,6 +92,11 @@ function drush_entity_scaffolder() {
       case 'field_instance':
         ESFieldInstance::addFeatureHeaderFooter($content, array());
         $files['sites/all/modules/features/fe_es/fe_es.features.field_instance.inc'] = implode("\n", $content);
+        break;
+
+      case 'field_preprocess':
+        ESFieldPreprocess::addCodeHeaderFooter($content, array());
+        $files['sites/all/modules/custom/es_helper/es_helper.module'] = implode("\n", $content);
         break;
 
 
