@@ -2,21 +2,20 @@
   // Exported field_base: '%field_name%'.
   $field_bases['%field_name%'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => %cardinality%,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => '%field_name%',
     'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
+      'format' => array(
+        0 => 'format',
       ),
     ),
     'locked' => 0,
-    'module' => 'image',
+    'module' => 'text',
     'settings' => array(
-      'default_image' => 0,
-      'uri_scheme' => 'public',
+      'max_length' => 255,
     ),
     'translatable' => 0,
-    'type' => 'image',
+    'type' => 'text',
   );

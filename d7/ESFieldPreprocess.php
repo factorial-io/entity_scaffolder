@@ -23,7 +23,10 @@ class ESFieldPreprocess {
   }
 
   public static function entityDefinition($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_preprocess/' . $info['type'] . '/code.content.inc', $info);
+    if ($info['cardinality'] == 1) {
+      return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_preprocess/' . $info['type'] . '/code.content.inc', $info);
+    }
+    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/field_preprocess/' . $info['type'] . '/code.contents.inc', $info);
   }
 
 
@@ -74,6 +77,7 @@ class ESFieldPreprocess {
     $info['bundle'] = $config['bundle'];
     $info['field_name'] = self::getFieldName($config, $field_key);
     $info['preprocess_hook'] = self::getPreprocessHookName($config, $field_key);
+    $info['cardinality'] = !isset($info['cardinality']) ? 1 : $info['cardinality'];
     return $info;
   }
 

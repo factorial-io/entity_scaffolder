@@ -52,6 +52,7 @@ class ESFieldBase {
   public static function getConfig($config, $field_key, $field_info) {
     $info = $field_info;
     $info['field_name'] = self::getFieldName($config, $field_key);
+    $info['cardinality'] = !isset($info['cardinality']) ? 1 : $info['cardinality'];
     return $info;
   }
 
