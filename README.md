@@ -11,9 +11,9 @@ Checkout the code in `~/.drush/` so that it is recognized as plugin.
 
     ```
         _tools
-            \-es
-                \-fpp
-                    \-gallery.yaml
+         |__es
+            |__fpp
+               |__gallery.yaml
     ```
 
 2. Populate `gallery.yaml` with following content
@@ -24,9 +24,21 @@ Checkout the code in `~/.drush/` so that it is recognized as plugin.
     fields:
       slideshow_images:
         map: patternImages
-        type: images
+        type: image
+        cardinality: -1
         label: Some Images
         image_style: thumbnail
+      headline:
+        map: description
+        type: text_long
+        text_format_filtered_html: full_html
+        label: Headline
+      caption:
+        map: title
+        type: text
+        text_format_filtered_html: full_html
+        label: Caption
+
     ```
 
 3. Run `drush es` in %drupal_root%
