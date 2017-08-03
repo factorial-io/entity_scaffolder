@@ -4,7 +4,10 @@
  * Provide Drush integration for entity schaffolding.
  */
 
-require_once "spyc.php";
+require_once "libraries/Spyc/Spyc.php";
+require_once 'libraries/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
 require_once "d7/ESEntityFPP.php";
 require_once "d7/ESFieldBase.php";
 require_once "d7/ESFieldInstance.php";
@@ -33,9 +36,10 @@ function entity_scaffolder_drush_command() {
     'options' => array(
       'config-dir' => 'Directory to read the config file/s from.',
       'fire-bazooka' => 'Deletes all previous entries and force rebuild.',
+      'debug' => 'Runs entity_scaffolder in debug mode.',
     ),
     'examples' => array(
-      'drush es --config-dir="_tools/entity_schaffold"' => 'Looks for config file/s in _tools/es and runs scaffolding job.',
+      'drush es --config-dir="_tools/es"' => 'Looks for config file/s in _tools/es and runs scaffolding job.',
     ),
     'aliases' => array('es'),
   );
@@ -49,6 +53,7 @@ function entity_scaffolder_drush_command() {
  * Before calling this we need to be bootstrapped to DRUPAL_BOOTSTRAP_DATABASE.
  */
 function drush_entity_scaffolder() {
+  drush_log("Scaffolding started.", 'success');
   define('MAINTENANCE_MODE', 'update');
   ini_set('memory_limit', -1);
 
@@ -113,6 +118,7 @@ function drush_entity_scaffolder() {
     }
   }
   drush_entity_scaffolder_export_code($files);
+  drush_log("Scaffolding finished.", 'success');
 }
 
 /**
@@ -143,12 +149,22 @@ function drush_entity_scaffolder_get_config_files($config_dir) {
  */
 function drush_entity_scaffolder_copy_folder_contents($source, $destination) {
   if (!file_exists($destination) && !is_dir($destination)) {
-    mkdir($destination);
+    if (mkdir($destination)) {
+      drush_log(dt('Created directory : @dir', array('@dir' => $destination)), 'success');
+    }
+    else {
+      drush_log(dt('Error while creating directory : @dir', array('@dir' => $destination)), 'error');
+    }
   }
   $files = array();
   foreach(glob($source . '/*.*') as $file) {
     $file_name = basename($file);
-    copy($file, $destination . '/' . $file_name);
+    if (copy($file, $destination . '/' . $file_name)) {
+      drush_log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
+    }
+    else {
+      drush_log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
+    }
   }
 }
 
@@ -172,24 +188,38 @@ function drush_entity_scaffolder_check_requirements() {
  * Helper function to export files.
  */
 function drush_entity_scaffolder_export_code($files) {
+  $debug = !!drush_get_option('debug');
+
   // Prepare module directories.
-  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
-  drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+  if (!$debug) {
+    drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
+    drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+  }
+  // Write dynamic code to files.
   foreach ($files as $extention => $file_contents) {
-    file_put_contents($extention, $file_contents);
+    if ($debug) {
+      echo "----------------------------------------------------------------\n";
+      echo $extention . "\n";
+      echo "----------------------------------------------------------------\n";
+      echo $file_contents;
+      echo "================================================================\n";
+    }
+    if (file_put_contents($extention, $file_contents) === FALSE) {
+      drush_log(dt('Error while writing to file @file', array('@file' => $extention)), 'error');
+    }
+    else {
+      drush_log(dt('Updated @file', array('@file' => $extention)), 'success');
+    }
   }
 }
 
 /**
  * Helper function to perform text replacement.
  */
-function drush_entity_scaffolder_render_template($file, $replacements) {
-  $content = file_get_contents($file);
-  if ($content) {
-    foreach ($replacements as $key => $value) {
-      $key = "%{$key}%";
-      $content = str_replace($key, $value, $content);
-    }
-  }
-  return $content;
+function drush_entity_scaffolder_render_template($template, $replacements) {
+  $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
+  $twig = new Twig_Environment($loader, array(
+      // 'cache' => 'cache',
+  ));
+  return $twig->render($template . '.twig', $replacements);
 }
