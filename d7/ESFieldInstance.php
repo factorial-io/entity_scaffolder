@@ -7,15 +7,15 @@ class ESFieldInstance {
   }
 
   public static function featureCodeHeader($info) {
-    return drush_entity_scaffolder_render_template('/field_instance/feature.header.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_instance/feature.header', $info);
   }
 
   public static function featureCodeFooter($info) {
-    return drush_entity_scaffolder_render_template('/field_instance/feature.footer.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_instance/feature.footer', $info);
   }
 
   public static function entityDefinition($info) {
-    return drush_entity_scaffolder_render_template('/field_instance/' . $info['type'] . '/feature.content.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_instance/' . $info['type'] . '/feature.content', $info);
   }
 
 

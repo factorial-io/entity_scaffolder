@@ -7,26 +7,26 @@ class ESFieldPreprocess {
   }
 
   public static function fileHeader($info) {
-    return drush_entity_scaffolder_render_template('/field_preprocess/file.header.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_preprocess/file.header', $info);
   }
 
   public static function fileFooter($info) {
-    return drush_entity_scaffolder_render_template('/field_preprocess/file.footer.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_preprocess/file.footer', $info);
   }
 
   public static function functionCodeHeader($info) {
-    return drush_entity_scaffolder_render_template('/field_preprocess/code.header.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_preprocess/code.header', $info);
   }
 
   public static function functionCodeFooter($info) {
-    return drush_entity_scaffolder_render_template('/field_preprocess/code.footer.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_preprocess/code.footer', $info);
   }
 
   public static function entityDefinition($info) {
     if ($info['cardinality'] == 1) {
-      return drush_entity_scaffolder_render_template('/field_preprocess/' . $info['type'] . '/code.content.inc', $info);
+      return drush_entity_scaffolder_render_template('/field_preprocess/' . $info['type'] . '/code.content', $info);
     }
-    return drush_entity_scaffolder_render_template('/field_preprocess/' . $info['type'] . '/code.contents.inc', $info);
+    return drush_entity_scaffolder_render_template('/field_preprocess/' . $info['type'] . '/code.contents', $info);
   }
 
 

@@ -186,10 +186,10 @@ function drush_entity_scaffolder_export_code($files) {
 /**
  * Helper function to perform text replacement.
  */
-function drush_entity_scaffolder_render_template($file, $replacements) {
+function drush_entity_scaffolder_render_template($template, $replacements) {
   $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
   $twig = new Twig_Environment($loader, array(
       // 'cache' => 'cache',
   ));
-  return $twig->render($file, $replacements);
+  return $twig->render($template . '.twig', $replacements);
 }
