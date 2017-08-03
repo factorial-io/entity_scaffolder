@@ -4,7 +4,7 @@
  * Provide Drush integration for entity schaffolding.
  */
 
-require_once "spyc.php";
+require_once "libraries/Spyc/Spyc.php";
 require_once "d7/ESEntityFPP.php";
 require_once "d7/ESFieldBase.php";
 require_once "d7/ESFieldInstance.php";
