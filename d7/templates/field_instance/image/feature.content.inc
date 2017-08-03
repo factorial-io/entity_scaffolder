@@ -1,8 +1,8 @@
 
   // Exported field_instance:
-  // '%entity_type%-%bundle%-%field_name%'.
-  $field_instances['%entity_type%-%bundle%-%field_name%'] = array(
-    'bundle' => '%bundle%',
+  // '{{ entity_type }}-{{ bundle }}-{{ field_name }}'.
+  $field_instances['{{ entity_type }}-{{ bundle }}-{{ field_name }}'] = array(
+    'bundle' => '{{ bundle }}',
     'deleted' => 0,
     'description' => '',
     'display' => array(
@@ -17,14 +17,14 @@
         'weight' => 0,
       ),
     ),
-    'entity_type' => '%entity_type%',
-    'field_name' => '%field_name%',
-    'label' => 'Images',
+    'entity_type' => '{{ entity_type }}',
+    'field_name' => '{{ field_name }}',
+    'label' => '{{ label }}',
     'required' => 0,
     'settings' => array(
       'alt_field' => 0,
       'default_image' => 0,
-      'file_directory' => '%entity_type%/%bundle%',
+      'file_directory' => '{{ entity_type }}/{{ bundle }}',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '',
       'max_resolution' => '',
