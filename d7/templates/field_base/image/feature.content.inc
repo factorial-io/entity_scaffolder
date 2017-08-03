@@ -1,11 +1,11 @@
 
-  // Exported field_base: '%field_name%'.
-  $field_bases['%field_name%'] = array(
+  // Exported field_base: '{{ field_name }}'.
+  $field_bases['{{ field_name }}'] = array(
     'active' => 1,
-    'cardinality' => %cardinality%,
+    'cardinality' => {{ cardinality }},
     'deleted' => 0,
     'entity_types' => array(),
-    'field_name' => '%field_name%',
+    'field_name' => '{{ field_name }}',
     'indexes' => array(
       'fid' => array(
         0 => 'fid',

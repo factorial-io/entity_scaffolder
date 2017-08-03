@@ -3,15 +3,15 @@
 class ESEntityFPP {
 
   public static function featureCodeHeader($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/entity/fpp/feature.header.inc', $info);
+    return drush_entity_scaffolder_render_template('/entity/fpp/feature.header.inc', $info);
   }
 
   public static function featureCodeFooter($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/entity/fpp/feature.footer.inc', $info);
+    return drush_entity_scaffolder_render_template('/entity/fpp/feature.footer.inc', $info);
   }
 
   public static function entityDefinition($info) {
-    return drush_entity_scaffolder_render_template(__DIR__ . '/templates/entity/fpp/feature.content.inc', $info);
+    return drush_entity_scaffolder_render_template('/entity/fpp/feature.content.inc', $info);
   }
 
   public static function appendEntityDefinitions(&$code, $info) {
