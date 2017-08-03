@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Provide Drush integration for entity schaffolding.
@@ -32,7 +33,7 @@ function entity_scaffolder_drush_command() {
   $items['entity-scaffold'] = array(
     'description' => 'Helps create entity and fields from config files.',
     'callback' => 'drush_entity_scaffolder',
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH, // No bootstrap.
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'options' => array(
       'config-dir' => 'Directory to read the config file/s from.',
       'fire-bazooka' => 'Deletes all previous entries and force rebuild.',
@@ -101,9 +102,8 @@ function drush_entity_scaffolder() {
 
       case 'field_preprocess':
         ESFieldPreprocess::addCodeHeaderFooter($content, array());
-        $files['sites/all/modules/custom/es_helper/es_helper.module'] = implode("\n", $content);
+        $files['sites/all/modules/custom/es_helper/es_helper.module'] = implode("\n", $content);\
         break;
-
 
       case 'fe_es.info':
         array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
@@ -113,7 +113,7 @@ function drush_entity_scaffolder() {
         break;
 
       default:
-        # code...
+        drush_log(dt('Error unidentified key'), 'error')
         break;
     }
   }
@@ -126,8 +126,8 @@ function drush_entity_scaffolder() {
  */
 function drush_entity_scaffolder_get_folders($config_dir) {
   $entity_types = array();
-  foreach(glob($config_dir . '/*', GLOB_ONLYDIR) as $dir) {
-    $dirname =  basename($dir) ;
+  foreach (glob($config_dir . '/*', GLOB_ONLYDIR) as $dir) {
+    $dirname = basename($dir);
     $entity_types[] = $dirname;
   }
   return $entity_types;
@@ -138,7 +138,7 @@ function drush_entity_scaffolder_get_folders($config_dir) {
  */
 function drush_entity_scaffolder_get_config_files($config_dir) {
   $files = array();
-  foreach(glob($config_dir . '/*.yaml') as $file) {
+  foreach (glob($config_dir . '/*.yaml') as $file) {
     $files[] = $file;
   }
   return $files;
@@ -157,7 +157,7 @@ function drush_entity_scaffolder_copy_folder_contents($source, $destination) {
     }
   }
   $files = array();
-  foreach(glob($source . '/*.*') as $file) {
+  foreach (glob($source . '/*.*') as $file) {
     $file_name = basename($file);
     if (copy($file, $destination . '/' . $file_name)) {
       drush_log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
@@ -182,7 +182,6 @@ function drush_entity_scaffolder_check_requirements() {
 
   return TRUE;
 }
-
 
 /**
  * Helper function to export files.
