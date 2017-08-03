@@ -5,6 +5,9 @@
  */
 
 require_once "libraries/Spyc/Spyc.php";
+require_once 'libraries/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
 require_once "d7/ESEntityFPP.php";
 require_once "d7/ESFieldBase.php";
 require_once "d7/ESFieldInstance.php";
@@ -184,12 +187,9 @@ function drush_entity_scaffolder_export_code($files) {
  * Helper function to perform text replacement.
  */
 function drush_entity_scaffolder_render_template($file, $replacements) {
-  $content = file_get_contents($file);
-  if ($content) {
-    foreach ($replacements as $key => $value) {
-      $key = "%{$key}%";
-      $content = str_replace($key, $value, $content);
-    }
-  }
-  return $content;
+  $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
+  $twig = new Twig_Environment($loader, array(
+      // 'cache' => 'cache',
+  ));
+  return $twig->render($file, $replacements);
 }
