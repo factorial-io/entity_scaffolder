@@ -58,9 +58,7 @@ function drush_entity_scaffolder() {
   define('MAINTENANCE_MODE', 'update');
   ini_set('memory_limit', -1);
 
-  if (!($config_dir = drush_get_option('config-dir'))) {
-    $config_dir = '_tools/es';
-  }
+  $config_dir = drush_entity_scaffolder_get_config_directory();
 
   if (!drush_entity_scaffolder_check_requirements()) {
     return drush_log(dt('ERROR: Scaffolder borks.'), 'error');
@@ -102,7 +100,7 @@ function drush_entity_scaffolder() {
 
       case 'field_preprocess':
         ESFieldPreprocess::addCodeHeaderFooter($content, array());
-        $files['sites/all/modules/custom/es_helper/es_helper.module'] = implode("\n", $content);\
+        $files['sites/all/modules/custom/es_helper/es_helper.preprocess.inc'] = implode("\n", $content);
         break;
 
       case 'fe_es.info':
@@ -113,7 +111,7 @@ function drush_entity_scaffolder() {
         break;
 
       default:
-        drush_log(dt('Error unidentified key'), 'error')
+        drush_log(dt('Error unidentified key'), 'error');
         break;
     }
   }
@@ -218,7 +216,24 @@ function drush_entity_scaffolder_export_code($files) {
 function drush_entity_scaffolder_render_template($template, $replacements) {
   $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
   $twig = new Twig_Environment($loader, array(
-      // 'cache' => 'cache',
+      // 'cache' => drush_entity_scaffolder_get_twig_cache_directory(),
   ));
   return $twig->render($template . '.twig', $replacements);
+}
+
+/**
+ * Get configuration directory.
+ */
+function drush_entity_scaffolder_get_config_directory() {
+  if (!($config_dir = drush_get_option('config-dir'))) {
+    $config_dir = '_tools/es';
+  }
+  return $config_dir;
+}
+
+/**
+ * Get Twig cache directory.
+ */
+function drush_entity_scaffolder_get_twig_cache_directory() {
+  return drush_entity_scaffolder_get_config_directory() . '/cache';
 }
