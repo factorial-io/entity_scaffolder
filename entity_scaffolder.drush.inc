@@ -216,8 +216,10 @@ function drush_entity_scaffolder_export_code($files) {
 function drush_entity_scaffolder_render_template($template, $replacements) {
   $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
   $twig = new Twig_Environment($loader, array(
+    'debug' => TRUE,
       // 'cache' => drush_entity_scaffolder_get_twig_cache_directory(),
   ));
+  $twig->addExtension(new Twig_Extension_Debug());
   return $twig->render($template . '.twig', $replacements);
 }
 

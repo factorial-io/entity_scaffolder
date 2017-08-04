@@ -21,6 +21,7 @@ class ESFieldBase {
 
   public static function appendEntityDefinitions(&$code, $info) {
     $code['field_base'][$info['field_name']] = self::entityDefinition($info);
+    $code['fe_es.info'][] = "features[field_base][] = {$info['field_name']}";
   }
 
   public static function addFeatureHeaderFooter(&$code, $info) {
