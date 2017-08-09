@@ -51,3 +51,30 @@ function es_helper_get_image_data($file, $image_styles = array()) {
   }
   return $out;
 }
+
+/**
+ * Helper function to extract file data from a field for frontend.
+ */
+function es_helper_get_file_data($file) {
+  $out = [];
+  $out['url'] = file_create_url($file['uri']);
+  $out['label'] = $file['filename'];
+  $out['file'] = $file;
+  return $out;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function es_helper_form_alter(&$form, &$form_state, $form_id) {
+  // Hide extra unused configurations from FPP forms.
+  if (isset($form['#entity_type']) && $form['#entity_type'] == 'fieldable_panels_pane') {
+    $form['title']['#access'] = FALSE;
+    $form['link']['#access'] = FALSE;
+    $form['admin']['#access'] = FALSE;
+    $form['additional_settings']['#access'] = FALSE;
+    $form['reusable']['#access'] = FALSE;
+    $form['revision']['#access'] = FALSE;
+    $form['view_mode']['#access'] = FALSE;
+  }
+}
