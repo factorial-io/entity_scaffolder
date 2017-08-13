@@ -78,3 +78,47 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['view_mode']['#access'] = FALSE;
   }
 }
+
+/**
+ * Helper function to reset panels region contents while feature import.
+ *
+ * @see hook_default_page_manager_pages_alter()
+ */
+function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $regions = array()) {
+  module_load_include('inc', 'features', 'features.export');
+  features_include();
+  $component = 'page_manager_pages';
+  $db = features_get_normal($component, $module_name, FALSE);
+
+  foreach ($exports as $page_export_key => &$page_export) {
+    if (isset($db[$page_export_key])) {
+      $db_page_export = &$db[$page_export_key];
+    }
+    foreach ($page_export->default_handlers as $page_default_handler_key => &$page_default_handler) {
+      if (isset($db_page_export->default_handlers[$page_default_handler_key])) {
+        $db_page_default_handler = &$db_page_export->default_handlers[$page_default_handler_key];
+      }
+      foreach ($page_default_handler->conf['display']->panels as $region => &$panels) {
+        if (isset($db_page_default_handler->conf['display']->panels[$region])) {
+          $db_panels = &$db_page_default_handler->conf['display']->panels[$region];
+        }
+        // Check region to ignore.
+        if (in_array($region, $regions)) {
+          $panels = array();
+          if (isset($db[$page_export_key]->default_handlers[$page_default_handler_key]->conf['display']->panels[$region])) {
+            // If no panels attached to the region, then remove all from code.
+            $panels = isset($db_panels) ? $db_panels : array();
+            foreach ($panels as $panel_id) {
+              if (isset($db_page_default_handler->conf['display']->content[$panel_id])) {
+                $page_default_handler->conf['display']->content[$panel_id] = $db_page_default_handler->conf['display']->content[$panel_id];
+              }
+              else {
+                unset($page_default_handler->conf['display']->content[$panel_id]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
