@@ -62,7 +62,7 @@ class ESFieldInstance extends ESEntityBase {
     $info = $field_info;
     $info['entity_type'] = $config['entity_type'];
     $info['bundle'] = $config['bundle'];
-    $info['field_name'] = self::getFieldName($config, $field_key);
+    $info['field_name'] = $this->getFieldName($config, $field_key);
     return $info;
   }
 

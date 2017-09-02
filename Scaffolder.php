@@ -39,25 +39,13 @@ class Scaffolder extends ScaffolderBase {
    * Prepare files
    */
   public function processFiles() {
-    $code = array();
-    foreach ($code as $key => $content) {
-      switch ($key) {
-        case 'field_preprocess':
-          ESFieldPreprocess::addCodeHeaderFooter($content, array());
-          $files['sites/all/modules/custom/es_helper/es_helper.preprocess.inc'] = implode("\n", $content);
-          break;
-        default:
-          drush_log(dt('Error unidentified key'), 'error');
-          break;
-      }
-    }
     $code = $this->getCode();
     // Populate header section of info file.
     if(!empty($code['fe_es'])) {
       $code = file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info');
       $this->setCode('fe_es', 'fe_es.info', Self::HEADER, 0, $code);
-      $code = "project path = sites/all/modules/features\n";
-      $this->setCode('fe_es', 'fe_es.info', Self::HEADER, 1, $code);
+      $code = "\nproject path = sites/all/modules/features\n";
+      $this->setCode('fe_es', 'fe_es.info', Self::CONTENT, $code, $code);
     }
     return $this->flattenFiles();
   }

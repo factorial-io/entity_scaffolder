@@ -44,14 +44,15 @@ class ESEntityFPP extends ESEntityBase {
   public function scaffold() {
     $config_files = Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/fpp');
     foreach ($config_files as $file) {
-      $config = self::getConfig($file);
+      $config = $this->getConfig($file);
       $this->generateCode($config);
       if ($config['fields']) {
         $base = new ESFieldBase($this->scaffolder);
         $base->scaffold($config);
         $instance = new ESFieldInstance($this->scaffolder);
         $instance->scaffold($config);
-        // ESFieldPreprocess::scaffold($config, $code);
+        $preprocess = new ESFieldPreprocess($this->scaffolder);
+        $preprocess->scaffold($config);
       }
     }
   }
