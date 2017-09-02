@@ -44,6 +44,15 @@ class ESEntityFPP extends ESEntityBase {
         $this->scaffolder->setCode($module, $filename, $block, $code, $code);
       }
     }
+
+    $module = 'fe_es';
+    $filename = 'fe_es.features.inc';
+    $block = ScaffolderBase::CONTENT;
+    $key = 'ctools_plugin_api : ' . ScaffolderBase::CONTENT . ' : fpp';
+    $template = '/entity/fpp/features.inc.ctools_plugin_api';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
   }
 
   /**
