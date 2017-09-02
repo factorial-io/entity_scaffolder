@@ -1,48 +1,56 @@
 <?php
 
-class ESFieldInstance {
+require_once "ESEntityBase.php";
 
-  public static function getTemplateDirectory($field_name) {
-    return __DIR__ . '/templates/field_instance/' . $field_name;
-  }
+class ESFieldInstance extends ESEntityBase {
 
-  public static function featureCodeHeader($info) {
-    return drush_entity_scaffolder_render_template('/field_instance/feature.header', $info);
-  }
+  public function generateCode($info) {
+    $module = 'fe_es';
+    $filename = 'fe_es.features.field_instance.inc';
+    // Add File header.
+    $block = ScaffolderBase::HEADER;
+    $key = 0;
+    $template = '/field_instance/feature.header';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-  public static function featureCodeFooter($info) {
-    return drush_entity_scaffolder_render_template('/field_instance/feature.footer', $info);
-  }
+    // Add Code block.
+    $block = ScaffolderBase::CONTENT;
+    $key = $info['machine_name'];
+    $template = '/field_instance/' . $info['type'] . '/feature.content';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-  public static function entityDefinition($info) {
-    return drush_entity_scaffolder_render_template('/field_instance/' . $info['type'] . '/feature.content', $info);
-  }
+    // Add file footer.
+    $block = ScaffolderBase::FOOTER;
+    $key = 0;
+    $template = '/field_instance/feature.footer';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-
-  public static function appendEntityDefinitions(&$code, $info) {
-    $code['field_instance'][$info['field_name']] = self::entityDefinition($info);
-    $code['fe_es.info'][] = "features[field_instance][] = {$info['entity_type']}-{$info['bundle']}-{$info['field_name']}";
-  }
-
-  public static function addFeatureHeaderFooter(&$code, $info) {
-    array_unshift($code, self::featureCodeHeader($info));
-    $code[] = self::featureCodeFooter($info);
+    // Add entry to info file.
+    $code = "\nfeatures[field_instance][] = {$info['entity_type']}-{$info['bundle']}-{$info['field_name']}";
+    $module = 'fe_es';
+    $filename = 'fe_es.info';
+    $block = ScaffolderBase::CONTENT;
+    $key = $code;
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
   }
 
   /**
    * Helper functions to create FPPS.
    */
-  public static function scaffold($config, &$code) {
+  public function scaffold($config) {
     foreach ($config['fields'] as $field_key => $field_info) {
-      $info = self::getConfig($config, $field_key, $field_info);
-      self::appendEntityDefinitions($code, $info);
+      $info = $this->getConfig($config, $field_key, $field_info);
+      $this->generateCode($info);
     }
   }
 
   /**
    * Helper function to generate machine name for fields.
    */
-  public static function getFieldName($config, $field_key) {
+  public function getFieldName($config, $field_key) {
     return $config['field_prefix'] . '_' . $field_key;
   }
 
@@ -50,7 +58,7 @@ class ESFieldInstance {
   /**
    * Helper function to load config and defaults.
    */
-  public static function getConfig($config, $field_key, $field_info) {
+  public function getConfig($config, $field_key, $field_info) {
     $info = $field_info;
     $info['entity_type'] = $config['entity_type'];
     $info['bundle'] = $config['bundle'];

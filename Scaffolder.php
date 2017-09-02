@@ -42,25 +42,10 @@ class Scaffolder extends ScaffolderBase {
     $code = array();
     foreach ($code as $key => $content) {
       switch ($key) {
-        case 'field_base':
-          ESFieldBase::addFeatureHeaderFooter($content, array());
-          $files['sites/all/modules/features/fe_es/fe_es.features.field_base.inc'] = implode("\n", $content);
-          break;
-
-        case 'field_instance':
-          ESFieldInstance::addFeatureHeaderFooter($content, array());
-          $files['sites/all/modules/features/fe_es/fe_es.features.field_instance.inc'] = implode("\n", $content);
-          break;
-
         case 'field_preprocess':
           ESFieldPreprocess::addCodeHeaderFooter($content, array());
           $files['sites/all/modules/custom/es_helper/es_helper.preprocess.inc'] = implode("\n", $content);
           break;
-
-        case 'fe_es.info':
-          $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
-          break;
-
         default:
           drush_log(dt('Error unidentified key'), 'error');
           break;

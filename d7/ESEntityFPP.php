@@ -47,10 +47,11 @@ class ESEntityFPP extends ESEntityBase {
       $config = self::getConfig($file);
       $this->generateCode($config);
       if ($config['fields']) {
-        continue;
-        ESFieldBase::scaffold($config, $code);
-        ESFieldInstance::scaffold($config, $code);
-        ESFieldPreprocess::scaffold($config, $code);
+        $base = new ESFieldBase($this->scaffolder);
+        $base->scaffold($config);
+        $instance = new ESFieldInstance($this->scaffolder);
+        $instance->scaffold($config);
+        // ESFieldPreprocess::scaffold($config, $code);
       }
     }
   }
