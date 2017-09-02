@@ -81,10 +81,10 @@ class Scaffolder extends ScaffolderBase {
   public function getModulePath($module_name) {
     switch($module_name) {
       case 'es_helper':
-        return 'sites/all/modules/custom/';
+        return 'sites/all/modules/custom';
 
       case 'fe_es':
-        return 'sites/all/modules/features/';
+        return 'sites/all/modules/features';
 
     }
     return NULL;
@@ -101,8 +101,12 @@ class Scaffolder extends ScaffolderBase {
     // Prepare module directories.
     if (!$debug) {
       Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
-      Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es_filters', 'sites/all/modules/features/fe_es_filters');
       Utils::copyFolderContents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+
+      // Copy fe_es_filters, only once.
+      if (!file_exists('sites/all/modules/features/fe_es_filters/fe_es_filters.info')) {
+        Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es_filters', 'sites/all/modules/features/fe_es_filters');
+      }
     }
     // Write dynamic code to files.
     foreach ($files as $extention => $file_contents) {
