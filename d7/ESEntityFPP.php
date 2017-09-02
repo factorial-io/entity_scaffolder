@@ -28,8 +28,8 @@ class ESEntityFPP {
   /**
    * Helper functions to create FPPS.
    */
-  public static function scaffold($config_dir, &$code) {
-    $config_files = drush_entity_scaffolder_get_config_files($config_dir . '/fpp');
+  public static function scaffold($scaffolder) {
+    $config_files = Utils::getConfigFiles($scaffolder->getConfigDir() . '/fpp');
     foreach ($config_files as $file) {
       $config = self::getConfig($file);
       self::appendEntityDefinitions($code, $config);
@@ -38,7 +38,9 @@ class ESEntityFPP {
         ESFieldInstance::scaffold($config, $code);
         ESFieldPreprocess::scaffold($config, $code);
       }
-
+    }
+    foreach ($code as $key => $value) {
+      $scaffolder->setCode($key, $value);
     }
   }
 

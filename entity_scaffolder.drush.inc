@@ -9,10 +9,8 @@ require_once "libraries/Spyc/Spyc.php";
 require_once 'libraries/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-require_once "d7/ESEntityFPP.php";
-require_once "d7/ESFieldBase.php";
-require_once "d7/ESFieldInstance.php";
-require_once "d7/ESFieldPreprocess.php";
+require_once "Utils.php";
+require_once "Scaffolder.php";
 
 /**
  * Implements hook_drush_help().
@@ -58,77 +56,14 @@ function drush_entity_scaffolder() {
   define('MAINTENANCE_MODE', 'update');
   ini_set('memory_limit', -1);
 
-  $config_dir = drush_entity_scaffolder_get_config_directory();
+  $scaffolder = new Scaffolder();
 
   if (!drush_entity_scaffolder_check_requirements()) {
     return drush_log(dt('ERROR: Scaffolder borks.'), 'error');
   }
-
-  $entity_types = drush_entity_scaffolder_get_folders($config_dir);
-
-  $code = array();
-  foreach ($entity_types as $entity_type) {
-    switch ($entity_type) {
-      case 'fpp':
-        ESEntityFPP::scaffold($config_dir, $code);
-        break;
-
-      default:
-        drush_log(dt('Entity Scaffolder does not support %type', array('%type' => $entity_type)), 'error');
-        break;
-    }
-  }
-
-  $files = array();
-
-  foreach ($code as $key => $content) {
-    switch ($key) {
-      case 'fpp':
-        ESEntityFPP::addFeatureHeaderFooter($content, array());
-        $files['sites/all/modules/features/fe_es/fe_es.fieldable_panels_pane_type.inc'] = implode("\n", $content);
-        break;
-
-      case 'field_base':
-        ESFieldBase::addFeatureHeaderFooter($content, array());
-        $files['sites/all/modules/features/fe_es/fe_es.features.field_base.inc'] = implode("\n", $content);
-        break;
-
-      case 'field_instance':
-        ESFieldInstance::addFeatureHeaderFooter($content, array());
-        $files['sites/all/modules/features/fe_es/fe_es.features.field_instance.inc'] = implode("\n", $content);
-        break;
-
-      case 'field_preprocess':
-        ESFieldPreprocess::addCodeHeaderFooter($content, array());
-        $files['sites/all/modules/custom/es_helper/es_helper.preprocess.inc'] = implode("\n", $content);
-        break;
-
-      case 'fe_es.info':
-        array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
-        $content[] = 'project path = sites/all/modules/features';
-        $content[] = "";
-        $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
-        break;
-
-      default:
-        drush_log(dt('Error unidentified key'), 'error');
-        break;
-    }
-  }
-  drush_entity_scaffolder_export_code($files);
+  $scaffolder->scaffold();
+  $scaffolder->exportCode();
   drush_log("Scaffolding finished.", 'success');
-}
-
-/**
- * Helper function to get list of entities to create.
- */
-function drush_entity_scaffolder_get_folders($config_dir) {
-  $entity_types = array();
-  foreach (glob($config_dir . '/*', GLOB_ONLYDIR) as $dir) {
-    $dirname = basename($dir);
-    $entity_types[] = $dirname;
-  }
-  return $entity_types;
 }
 
 /**
@@ -143,71 +78,18 @@ function drush_entity_scaffolder_get_config_files($config_dir) {
 }
 
 /**
- * Helper functions to create FPPS.
- */
-function drush_entity_scaffolder_copy_folder_contents($source, $destination) {
-  if (!file_exists($destination) && !is_dir($destination)) {
-    if (mkdir($destination)) {
-      drush_log(dt('Created directory : @dir', array('@dir' => $destination)), 'success');
-    }
-    else {
-      drush_log(dt('Error while creating directory : @dir', array('@dir' => $destination)), 'error');
-    }
-  }
-  $files = array();
-  foreach (glob($source . '/*.*') as $file) {
-    $file_name = basename($file);
-    if (copy($file, $destination . '/' . $file_name)) {
-      drush_log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
-    }
-    else {
-      drush_log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
-    }
-  }
-}
-
-/**
  * Helper function to exit scaffolding if something is suscpecious.
  */
 function drush_entity_scaffolder_check_requirements() {
 
   // @todo try to find a better way to figure out if the current directory is
   // Drupal root.
-  $folders = drush_entity_scaffolder_get_folders('.');
+  $folders = Utils::getFolders('.');
   if (!in_array('sites', $folders)) {
     return FALSE;
   }
 
   return TRUE;
-}
-
-/**
- * Helper function to export files.
- */
-function drush_entity_scaffolder_export_code($files) {
-  $debug = !!drush_get_option('debug');
-
-  // Prepare module directories.
-  if (!$debug) {
-    drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
-    drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
-  }
-  // Write dynamic code to files.
-  foreach ($files as $extention => $file_contents) {
-    if ($debug) {
-      echo "----------------------------------------------------------------\n";
-      echo $extention . "\n";
-      echo "----------------------------------------------------------------\n";
-      echo $file_contents;
-      echo "================================================================\n";
-    }
-    if (file_put_contents($extention, $file_contents) === FALSE) {
-      drush_log(dt('Error while writing to file @file', array('@file' => $extention)), 'error');
-    }
-    else {
-      drush_log(dt('Updated @file', array('@file' => $extention)), 'success');
-    }
-  }
 }
 
 /**
@@ -221,21 +103,4 @@ function drush_entity_scaffolder_render_template($template, $replacements) {
   ));
   $twig->addExtension(new Twig_Extension_Debug());
   return $twig->render($template . '.twig', $replacements);
-}
-
-/**
- * Get configuration directory.
- */
-function drush_entity_scaffolder_get_config_directory() {
-  if (!($config_dir = drush_get_option('config-dir'))) {
-    $config_dir = '_tools/es';
-  }
-  return $config_dir;
-}
-
-/**
- * Get Twig cache directory.
- */
-function drush_entity_scaffolder_get_twig_cache_directory() {
-  return drush_entity_scaffolder_get_config_directory() . '/cache';
 }
