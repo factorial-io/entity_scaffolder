@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * fe_es.features.filter.inc
+ * fe_es_filters.features.filter.inc
  */
 
 /**
  * Implements hook_filter_default_formats().
  */
-function fe_es_filter_default_formats() {
+function fe_es_filters_filter_default_formats() {
   $formats = array();
 
   // Exported format: HTML.

@@ -1,13 +1,13 @@
 <?php
 /**
  * @file
- * fe_es.features.ckeditor_profile.inc
+ * fe_es_filters.features.ckeditor_profile.inc
  */
 
 /**
  * Implements hook_ckeditor_profile_defaults().
  */
-function fe_es_ckeditor_profile_defaults() {
+function fe_es_filters_ckeditor_profile_defaults() {
   $data = array(
     'HTML' => array(
       'name' => 'HTML',

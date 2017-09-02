@@ -101,6 +101,7 @@ class Scaffolder extends ScaffolderBase {
     // Prepare module directories.
     if (!$debug) {
       Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
+      Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es_filters', 'sites/all/modules/features/fe_es_filters');
       Utils::copyFolderContents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
     }
     // Write dynamic code to files.
