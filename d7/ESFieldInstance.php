@@ -16,7 +16,7 @@ class ESFieldInstance extends ESEntityBase {
 
     // Add Code block.
     $block = ScaffolderBase::CONTENT;
-    $key = $info['machine_name'];
+    $key = $info['field_name'];
     $template = '/field_instance/' . $info['type'] . '/feature.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
