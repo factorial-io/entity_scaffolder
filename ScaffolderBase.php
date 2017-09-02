@@ -4,6 +4,10 @@ require_once "Utils.php";
 
 class ScaffolderBase {
 
+  const HEADER = '_00_';
+  const CONTENT = '_50_';
+  const FOOTER = '_99_';
+
   protected $config_dir;
   protected $entity_types;
   protected $template_dir;
@@ -57,34 +61,29 @@ class ScaffolderBase {
    * Sets the directory from which the templates has to be picked up.
    */
   public function setTemplateDir($dir) {
-    $template_dir = $dir;
+    $this->template_dir = $dir;
   }
 
   /**
    * Gets the directory from which the templates will be picked up.
    */
-  public function getTemplateDir($dir) {
-    return $template_dir;
+  public function getTemplateDir() {
+    return $this->template_dir;
   }
 
 
   /**
    * Add to $code.
    */
-  public function setCode($key, $code) {
-    $this->code[$key] = $code;
+  public function setCode($module, $filename, $block, $key, $code) {
+    $this->code[$module][$filename][$block][$key] = $code;
   }
 
   /**
    * Gets the $code.
    */
-  public function getCode($key) {
-
-    if (isset($this->code[$key])) {
-      return $this->code[$key];
-    }
-
-    return NULL;
+  public function getCode() {
+    return $this->code;
   }
 
   /**
@@ -98,12 +97,7 @@ class ScaffolderBase {
    * Helper function to perform text replacement.
    */
   function render($template, $replacements) {
-    $loader = new Twig_Loader_Filesystem($this->getTemplateDir());
-    $twig = new Twig_Environment($loader, array(
-      'debug' => TRUE,
-    ));
-    $twig->addExtension(new Twig_Extension_Debug());
-    return $twig->render($template . '.twig', $replacements);
+    return drush_entity_scaffolder_twig_render($this->getTemplateDir(), $template, $replacements);
   }
 
 }

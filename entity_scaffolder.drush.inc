@@ -104,3 +104,15 @@ function drush_entity_scaffolder_render_template($template, $replacements) {
   $twig->addExtension(new Twig_Extension_Debug());
   return $twig->render($template . '.twig', $replacements);
 }
+
+/**
+ * Helper function to render using Twig.
+ */
+function drush_entity_scaffolder_twig_render($dir, $template, $replacements) {
+  $loader = new Twig_Loader_Filesystem($dir);
+  $twig = new Twig_Environment($loader, array(
+    'debug' => TRUE,
+  ));
+  $twig->addExtension(new Twig_Extension_Debug());
+  return $twig->render($template . '.twig', $replacements);
+}

@@ -24,7 +24,8 @@ class Scaffolder extends ScaffolderBase {
     foreach ($this->getEntityTypes() as $entity_type) {
       switch ($entity_type) {
         case 'fpp':
-          ESEntityFPP::scaffold($this);
+          $fpp = new ESEntityFPP($this);
+          $fpp->scaffold();
           break;
 
         default:
@@ -38,14 +39,9 @@ class Scaffolder extends ScaffolderBase {
    * Prepare files
    */
   public function processFiles() {
-    $code = $this->code;
+    $code = array();
     foreach ($code as $key => $content) {
       switch ($key) {
-        case 'fpp':
-          ESEntityFPP::addFeatureHeaderFooter($content, array());
-          $files['sites/all/modules/features/fe_es/fe_es.fieldable_panels_pane_type.inc'] = implode("\n", $content);
-          break;
-
         case 'field_base':
           ESFieldBase::addFeatureHeaderFooter($content, array());
           $files['sites/all/modules/features/fe_es/fe_es.features.field_base.inc'] = implode("\n", $content);
@@ -62,9 +58,6 @@ class Scaffolder extends ScaffolderBase {
           break;
 
         case 'fe_es.info':
-          array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
-          $content[] = 'project path = sites/all/modules/features';
-          $content[] = "";
           $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
           break;
 
@@ -73,7 +66,55 @@ class Scaffolder extends ScaffolderBase {
           break;
       }
     }
+    $code = $this->getCode();
+    // Populate header section of info file.
+    if(!empty($code['fe_es'])) {
+      $code = file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info');
+      $this->setCode('fe_es', 'fe_es.info', Self::HEADER, 0, $code);
+      $code = "project path = sites/all/modules/features\n";
+      $this->setCode('fe_es', 'fe_es.info', Self::HEADER, 1, $code);
+    }
+    return $this->flattenFiles();
+  }
+
+  /**
+   * Prepare files
+   */
+  public function flattenFiles() {
+    $code = $this->getCode();
+    $files = array();
+    foreach ($code as $module_name => $module_data) {
+      foreach ($module_data as $filename => $file_data) {
+        $file_path = $this->getModulePath($module_name) . "/{$module_name}/{$filename}";
+        $blocks = array();
+        ksort($file_data);
+        $code = '';
+        foreach($file_data as $code_blocks) {
+          if(is_array($code_blocks)) {
+            ksort($code_blocks);
+            $code_blocks = implode('', $code_blocks);
+          }
+          $code .= $code_blocks;
+        }
+        $files[$file_path] = $code;
+      }
+    }
     return $files;
+  }
+
+  /**
+   * Helper function to retrieve module path.
+   */
+  public function getModulePath($module_name) {
+    switch($module_name) {
+      case 'es_helper':
+        return 'sites/all/modules/custom/';
+
+      case 'fe_es':
+        return 'sites/all/modules/features/';
+
+    }
+    return NULL;
   }
 
   /**
@@ -106,5 +147,4 @@ class Scaffolder extends ScaffolderBase {
       }
     }
   }
-
 }

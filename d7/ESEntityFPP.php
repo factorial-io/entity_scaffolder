@@ -1,54 +1,65 @@
 <?php
 
-class ESEntityFPP {
+require_once "ESEntityBase.php";
 
-  public static function featureCodeHeader($info) {
-    return drush_entity_scaffolder_render_template('/entity/fpp/feature.header', $info);
-  }
+class ESEntityFPP extends ESEntityBase {
 
-  public static function featureCodeFooter($info) {
-    return drush_entity_scaffolder_render_template('/entity/fpp/feature.footer', $info);
-  }
+  public function generateCode($info) {
+    $module = 'fe_es';
+    $filename = 'fe_es.fieldable_panels_pane_type.inc';
+    // Add File header.
+    $block = ScaffolderBase::HEADER;
+    $key = 0;
+    $template = '/entity/fpp/feature.header';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-  public static function entityDefinition($info) {
-    return drush_entity_scaffolder_render_template('/entity/fpp/feature.content', $info);
-  }
+    // Add Code block.
+    $block = ScaffolderBase::CONTENT;
+    $key = $info['machine_name'];
+    $template = '/entity/fpp/feature.content';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-  public static function appendEntityDefinitions(&$code, $info) {
-    $code['fpp'][$info['machine_name']] = self::entityDefinition($info);
-    $code['fe_es.info'][] = "features[fieldable_panels_pane_type][] = {$info['machine_name']}";
+    // Add file footer.
+    $block = ScaffolderBase::FOOTER;
+    $key = 0;
+    $template = '/entity/fpp/feature.footer';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-  }
+    // Add entry to info file.
+    $code = "\nfeatures[fieldable_panels_pane_type][] = {$info['machine_name']}";
+    $module = 'fe_es';
+    $filename = 'fe_es.info';
+    $block = ScaffolderBase::CONTENT;
+    $key = $code;
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-  public static function addFeatureHeaderFooter(&$code, $info) {
-    array_unshift($code, self::featureCodeHeader($info));
-    $code[] = self::featureCodeFooter($info);
   }
 
   /**
    * Helper functions to create FPPS.
    */
-  public static function scaffold($scaffolder) {
-    $config_files = Utils::getConfigFiles($scaffolder->getConfigDir() . '/fpp');
+  public function scaffold() {
+    $config_files = Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/fpp');
     foreach ($config_files as $file) {
       $config = self::getConfig($file);
-      self::appendEntityDefinitions($code, $config);
+      $this->generateCode($config);
       if ($config['fields']) {
+        continue;
         ESFieldBase::scaffold($config, $code);
         ESFieldInstance::scaffold($config, $code);
         ESFieldPreprocess::scaffold($config, $code);
       }
-    }
-    foreach ($code as $key => $value) {
-      $scaffolder->setCode($key, $value);
     }
   }
 
   /**
    * Helper function to load config and defaults.
    */
-  public static function getConfig($file) {
-    $config = Spyc::YAMLLoad($file);
+  public function getConfig($file) {
+    $config = parent::getConfig($file);
     $config['entity_type'] = 'fieldable_panels_pane';
     $config['bundle'] = $config['machine_name'];
     $config['field_prefix'] = 'fpp_' . $config['machine_name'];
