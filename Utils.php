@@ -26,6 +26,13 @@ class Utils {
     return $files;
   }
 
+  /**
+   * Helper function to load config and defaults.
+   */
+  public function getConfig($file) {
+    $config = file_exists($file) ? Spyc::YAMLLoad($file) : array();
+    return $config;
+  }
 
   /**
    * Helper functions to copy folder contents to another location.

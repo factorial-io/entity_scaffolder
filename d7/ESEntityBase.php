@@ -19,8 +19,7 @@ class ESEntityBase {
    * Helper function to load config and defaults.
    */
   public function getConfig($file) {
-    $config = Spyc::YAMLLoad($file);
-    return $config;
+    return Utils::getConfig($file);
   }
 
 }

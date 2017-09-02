@@ -33,9 +33,17 @@ class ESEntityFPP extends ESEntityBase {
     $module = 'fe_es';
     $filename = 'fe_es.info';
     $block = ScaffolderBase::CONTENT;
-    $key = $code;
-    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
-
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    $code = "\nfeatures[ctools][] = fieldable_panels_panes:fieldable_panels_pane_type:1";
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    $code = "\nfeatures[features_api][] = api:2";
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    if (!empty($info['local_config']['dependencies'])) {
+      foreach ($info['local_config']['dependencies'] as $dependency) {
+        $code = "\ndependencies[] = {$dependency}";
+        $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+      }
+    }
   }
 
   /**
@@ -65,6 +73,8 @@ class ESEntityFPP extends ESEntityBase {
     $config['entity_type'] = 'fieldable_panels_pane';
     $config['bundle'] = $config['machine_name'];
     $config['field_prefix'] = 'fpp_' . $config['machine_name'];
+    $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/fpp/config.yaml';
+    $config['local_config'] = Utils::getConfig($local_config_file);
     return $config;
   }
 

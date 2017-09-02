@@ -33,8 +33,13 @@ class ESFieldBase extends ESEntityBase {
     $module = 'fe_es';
     $filename = 'fe_es.info';
     $block = ScaffolderBase::CONTENT;
-    $key = $code;
-    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    if (!empty($info['local_config']['dependencies'])) {
+      foreach ($info['local_config']['dependencies'] as $dependency) {
+        $code = "\ndependencies[] = {$dependency}";
+        $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+      }
+    }
   }
 
   /**
@@ -62,6 +67,8 @@ class ESFieldBase extends ESEntityBase {
     $info = $field_info;
     $info['field_name'] = $this->getFieldName($config, $field_key);
     $info['cardinality'] = !isset($info['cardinality']) ? 1 : $info['cardinality'];
+    $local_config_file = $this->scaffolder->getTemplatedir() . '/field_base/' . $info['type'] . '/config.yaml';
+    $info['local_config'] = Utils::getConfig($local_config_file);
     return $info;
   }
 
