@@ -1,6 +1,10 @@
 <?php
 
-require_once "ESEntityBase.php";
+namespace Drush\EntityScaffolder\d7;
+
+use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\d7\ESEntityBase;
 
 class ESEntityParagraphs extends ESEntityBase {
 
@@ -8,8 +12,8 @@ class ESEntityParagraphs extends ESEntityBase {
     $module = 'fe_es';
     $filename = 'fe_es.features.inc';
     // Add File header.
-    $block = ScaffolderBase::CONTENT;
-    $key = 'paragraphs_info : ' . ScaffolderBase::CONTENT . ' : ' . $info['machine_name'];
+    $block = Scaffolder::CONTENT;
+    $key = 'paragraphs_info : ' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
     $template = '/entity/paragraphs/features.inc.paragraphs_info';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
@@ -19,7 +23,7 @@ class ESEntityParagraphs extends ESEntityBase {
     $code = "\nfeatures[paragraphs][] = {$info['machine_name']}";
     $module = 'fe_es';
     $filename = 'fe_es.info';
-    $block = ScaffolderBase::CONTENT;
+    $block = Scaffolder::CONTENT;
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     $code = "\nfeatures[features_api][] = api:2";
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
@@ -55,7 +59,7 @@ class ESEntityParagraphs extends ESEntityBase {
    */
   public function getConfig($file) {
     $config = parent::getConfig($file);
-    $config['entity_type'] = 'paragraphs';
+    $config['entity_type'] = 'paragraphs_item';
     $config['bundle'] = $config['machine_name'];
     $config['field_prefix'] = 'pgf_' . $config['machine_name'];
     $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/paragraphs/config.yaml';

@@ -1,6 +1,10 @@
 <?php
 
-require_once "ESEntityBase.php";
+namespace Drush\EntityScaffolder\d7;
+
+use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\d7\ESEntityBase;
 
 class ESEntityFPP extends ESEntityBase {
 
@@ -8,21 +12,21 @@ class ESEntityFPP extends ESEntityBase {
     $module = 'fe_es';
     $filename = 'fe_es.fieldable_panels_pane_type.inc';
     // Add File header.
-    $block = ScaffolderBase::HEADER;
+    $block = Scaffolder::HEADER;
     $key = 0;
     $template = '/entity/fpp/feature.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add Code block.
-    $block = ScaffolderBase::CONTENT;
+    $block = Scaffolder::CONTENT;
     $key = $info['machine_name'];
     $template = '/entity/fpp/feature.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add file footer.
-    $block = ScaffolderBase::FOOTER;
+    $block = Scaffolder::FOOTER;
     $key = 0;
     $template = '/entity/fpp/feature.footer';
     $code = $this->scaffolder->render($template, $info);
@@ -32,7 +36,7 @@ class ESEntityFPP extends ESEntityBase {
     $code = "\nfeatures[fieldable_panels_pane_type][] = {$info['machine_name']}";
     $module = 'fe_es';
     $filename = 'fe_es.info';
-    $block = ScaffolderBase::CONTENT;
+    $block = Scaffolder::CONTENT;
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     $code = "\nfeatures[ctools][] = fieldable_panels_panes:fieldable_panels_pane_type:1";
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
@@ -47,8 +51,8 @@ class ESEntityFPP extends ESEntityBase {
 
     $module = 'fe_es';
     $filename = 'fe_es.features.inc';
-    $block = ScaffolderBase::CONTENT;
-    $key = 'ctools_plugin_api : ' . ScaffolderBase::CONTENT . ' : fpp';
+    $block = Scaffolder::CONTENT;
+    $key = 'ctools_plugin_api : ' . Scaffolder::CONTENT . ' : fpp';
     $template = '/entity/fpp/features.inc.ctools_plugin_api';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);

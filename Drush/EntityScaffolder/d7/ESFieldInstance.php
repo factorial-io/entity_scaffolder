@@ -1,52 +1,55 @@
 <?php
 
+namespace Drush\EntityScaffolder\d7;
 
-require_once "ESEntityBase.php";
+use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\d7\ESEntityBase;
 
-class ESFieldPreprocess extends ESEntityBase {
+class ESFieldInstance extends ESEntityBase {
 
   public function generateCode($info) {
-    $module = 'es_helper';
-    $filename = 'es_helper.preprocess.inc';
+    $module = 'fe_es';
+    $filename = 'fe_es.features.field_instance.inc';
     // Add File header.
-    $block = ScaffolderBase::HEADER;
+    $block = Scaffolder::HEADER;
     $key = 0;
-    $template = '/field_preprocess/file.header';
+    $template = '/field_instance/feature.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add Code block.
-    $block = ScaffolderBase::CONTENT;
-    $key = $info['preprocess_hook'] . ' : ' . ScaffolderBase::HEADER;
-    $template = '/field_preprocess/code.header';
+    $block = Scaffolder::CONTENT;
+    $key = Scaffolder::CONTENT . ' : ' .$info['field_name'];
+    $template = '/field_instance/' . $info['type'] . '/feature.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-    $block = ScaffolderBase::CONTENT;
-    $key = $info['preprocess_hook'] . ' : ' . ScaffolderBase::CONTENT . ' : ' . $info['field_name'];
-    if ($info['cardinality'] == 1) {
-      $template = '/field_preprocess/' . $info['type'] . '/code.content';
-    }
-    else {
-      $template = '/field_preprocess/' . $info['type'] . '/code.contents';
-    }
-    $code = $this->scaffolder->render($template, $info);
+    // Add translation info.
+    $block = Scaffolder::CONTENT;
+    $key = Scaffolder::FOOTER . ' : ' . Scaffolder::HEADER;
+    $code = "\n\n  // Translatables
+  // Included for use with string extractors like potx.";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-    $block = ScaffolderBase::CONTENT;
-    $key = $info['preprocess_hook'] . ' : ' . ScaffolderBase::FOOTER;
-    $template = '/field_preprocess/code.footer';
-    $code = $this->scaffolder->render($template, $info);
+    $key = Scaffolder::FOOTER . ' : ' . Scaffolder::CONTENT . ' : ' . $info['label'];
+    $code = "\n  t('{$info['label']}');";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
-
 
     // Add file footer.
-    $block = ScaffolderBase::FOOTER;
+    $block = Scaffolder::FOOTER;
     $key = 0;
-    $template = '/field_preprocess/file.footer';
+    $template = '/field_instance/feature.footer';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
+    // Add entry to info file.
+    $code = "\nfeatures[field_instance][] = {$info['entity_type']}-{$info['bundle']}-{$info['field_name']}";
+    $module = 'fe_es';
+    $filename = 'fe_es.info';
+    $block = Scaffolder::CONTENT;
+    $key = $code;
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
   }
 
   /**
@@ -66,13 +69,6 @@ class ESFieldPreprocess extends ESEntityBase {
     return $config['field_prefix'] . '_' . $field_key;
   }
 
-  /**
-   * Helper function to generate machine name for fields.
-   */
-  public function getPreprocessHookName($config, $field_key) {
-    return $config['entity_type'] . '_' . $config['bundle'];
-  }
-
 
   /**
    * Helper function to load config and defaults.
@@ -82,8 +78,6 @@ class ESFieldPreprocess extends ESEntityBase {
     $info['entity_type'] = $config['entity_type'];
     $info['bundle'] = $config['bundle'];
     $info['field_name'] = $this->getFieldName($config, $field_key);
-    $info['preprocess_hook'] = $this->getPreprocessHookName($config, $field_key);
-    $info['cardinality'] = !isset($info['cardinality']) ? 1 : $info['cardinality'];
     return $info;
   }
 

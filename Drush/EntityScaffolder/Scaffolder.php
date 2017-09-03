@@ -2,14 +2,11 @@
 
 namespace Drush\EntityScaffolder;
 
+use Drush\EntityScaffolder\ScaffolderInterface;
+use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\ScaffolderBase;
-
-require_once "ScaffolderBase.php";
-require_once "d7/ESEntityFPP.php";
-require_once "d7/ESEntityParagraphs.php";
-require_once "d7/ESFieldBase.php";
-require_once "d7/ESFieldInstance.php";
-require_once "d7/ESFieldPreprocess.php";
+use Drush\EntityScaffolder\d7\ESEntityFPP;
+use Drush\EntityScaffolder\d7\ESEntityParagraphs;
 
 class Scaffolder extends ScaffolderBase {
 

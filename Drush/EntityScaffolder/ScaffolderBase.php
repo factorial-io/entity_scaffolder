@@ -1,8 +1,10 @@
 <?php
 
+namespace Drush\EntityScaffolder;
+
 require_once "Utils.php";
 
-class ScaffolderBase {
+class ScaffolderBase implements ScaffolderInterface {
 
   const HEADER = '_00_';
   const CONTENT = '_50_';

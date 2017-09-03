@@ -1,10 +1,15 @@
 <?php
 
+namespace Drush\EntityScaffolder\d7;
+
+use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\Utils;
+
 class ESEntityBase {
 
   protected $scaffolder;
 
-  public function __construct(ScaffolderBase $scaffolder) {
+  public function __construct(Scaffolder $scaffolder) {
     $this->scaffolder = $scaffolder;
     $this->initCode();
   }
@@ -17,38 +22,38 @@ class ESEntityBase {
     $module = 'fe_es';
     $filename = 'fe_es.features.inc';
     // Add File header.
-    $block = ScaffolderBase::HEADER;
+    $block = Scaffolder::HEADER;
     $key = 0;
     $template = '/entity/features.inc.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add hook_ctools_plugin_api().
-    $block = ScaffolderBase::CONTENT;
-    $key = 'ctools_plugin_api : ' . ScaffolderBase::HEADER;
+    $block = Scaffolder::CONTENT;
+    $key = 'ctools_plugin_api : ' . Scaffolder::HEADER;
     $template = '/entity/features.inc.ctools_plugin_api';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-    $key = 'ctools_plugin_api : ' . ScaffolderBase::FOOTER;
+    $key = 'ctools_plugin_api : ' . Scaffolder::FOOTER;
     $code = "\n}";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add hook_paragraphs_info().
-    $block = ScaffolderBase::CONTENT;
-    $key = 'paragraphs_info : ' . ScaffolderBase::HEADER;
+    $block = Scaffolder::CONTENT;
+    $key = 'paragraphs_info : ' . Scaffolder::HEADER;
     $template = '/entity/features.inc.paragraphs_info';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-    $key = 'paragraphs_info : ' . ScaffolderBase::FOOTER;
-    $code = "\n}";
+    $key = 'paragraphs_info : ' . Scaffolder::FOOTER;
+    $code = "\n  return \$items;\n}";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $module = 'fe_es';
     $filename = 'fe_es.features.inc';
     // Add File header.
-    $block = ScaffolderBase::FOOTER;
+    $block = Scaffolder::FOOTER;
     $key = 0;
     $template = '/entity/features.inc.footer';
     $code = $this->scaffolder->render($template, $info);

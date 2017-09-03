@@ -1,6 +1,10 @@
 <?php
 
-require_once "ESEntityBase.php";
+namespace Drush\EntityScaffolder\d7;
+
+use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\d7\ESEntityBase;
 
 class ESFieldBase extends ESEntityBase {
 
@@ -8,21 +12,21 @@ class ESFieldBase extends ESEntityBase {
     $module = 'fe_es';
     $filename = 'fe_es.features.field_base.inc';
     // Add File header.
-    $block = ScaffolderBase::HEADER;
+    $block = Scaffolder::HEADER;
     $key = 0;
     $template = '/field_base/feature.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add Code block.
-    $block = ScaffolderBase::CONTENT;
+    $block = Scaffolder::CONTENT;
     $key = $info['field_name'];
     $template = '/field_base/' . $info['type'] . '/feature.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add file footer.
-    $block = ScaffolderBase::FOOTER;
+    $block = Scaffolder::FOOTER;
     $key = 0;
     $template = '/field_base/feature.footer';
     $code = $this->scaffolder->render($template, $info);
@@ -32,7 +36,7 @@ class ESFieldBase extends ESEntityBase {
     $code = "\nfeatures[field_base][] = {$info['field_name']}";
     $module = 'fe_es';
     $filename = 'fe_es.info';
-    $block = ScaffolderBase::CONTENT;
+    $block = Scaffolder::CONTENT;
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     if (!empty($info['local_config']['dependencies'])) {
       foreach ($info['local_config']['dependencies'] as $dependency) {

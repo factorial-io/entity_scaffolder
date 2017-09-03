@@ -9,8 +9,8 @@ require_once "libraries/Spyc/Spyc.php";
 require_once 'libraries/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-require_once "Utils.php";
-require_once "Scaffolder.php";
+use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\Utils;
 
 /**
  * Implements hook_drush_help().
@@ -52,6 +52,9 @@ function entity_scaffolder_drush_command() {
  * Before calling this we need to be bootstrapped to DRUPAL_BOOTSTRAP_DATABASE.
  */
 function drush_entity_scaffolder() {
+
+  spl_autoload_register('drush_entity_scaffolder_autoload');
+
   drush_log("Scaffolding started.", 'success');
   define('MAINTENANCE_MODE', 'update');
   ini_set('memory_limit', -1);
@@ -64,6 +67,21 @@ function drush_entity_scaffolder() {
   $scaffolder->scaffold();
   $scaffolder->exportCode();
   drush_log("Scaffolding finished.", 'success');
+}
+
+/**
+ * Implements the autoloader.
+ */
+function drush_entity_scaffolder_autoload($class) {
+  if (0 !== strpos($class, 'Drush\EntityScaffolder')) {
+    return;
+  }
+  if (is_file($file = dirname(__FILE__) . '/' .str_replace( '\\', '/', $class).'.php')) {
+    require $file;
+  }
+  else {
+    drush_log("FILE NOT FOUND: $file", 'error');
+  }
 }
 
 /**
