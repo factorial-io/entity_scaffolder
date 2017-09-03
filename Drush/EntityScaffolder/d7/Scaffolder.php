@@ -80,6 +80,17 @@ class Scaffolder extends ScaffolderBase {
   }
 
   /**
+   * Helper function to retrieve file write scheme based on path.
+   */
+  public function getWriteScheme($path) {
+    // Twig template files.
+    if (Utils::endsWith($path, '.twig')) {
+      return Utils::TWIG_COMMENT;
+    }
+    return Utils::FILE_EXISTS_OVERWRITE;
+  }
+
+  /**
    * write code to file system.
    */
   public function exportCode() {
@@ -98,20 +109,15 @@ class Scaffolder extends ScaffolderBase {
       }
     }
     // Write dynamic code to files.
-    foreach ($files as $extention => $file_contents) {
+    foreach ($files as $filepath => $file_contents) {
       if ($debug) {
         echo "----------------------------------------------------------------\n";
-        echo $extention . "\n";
+        echo $filepath . "\n";
         echo "----------------------------------------------------------------\n";
         echo $file_contents;
         echo "================================================================\n";
       }
-      if (file_put_contents($extention, $file_contents) === FALSE) {
-        drush_log(dt('Error while writing to file @file', array('@file' => $extention)), 'error');
-      }
-      else {
-        drush_log(dt('Updated @file', array('@file' => $extention)), 'success');
-      }
+      Utils::write($filepath, $file_contents, $this->getWriteScheme($filepath));
     }
   }
 }
