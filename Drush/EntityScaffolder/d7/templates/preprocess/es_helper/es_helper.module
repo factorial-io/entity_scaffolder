@@ -7,6 +7,26 @@
 
 include_once 'es_helper.preprocess.inc';
 
+
+/**
+ * Implements hook_preprocess_entity().
+ */
+function es_helper_preprocess_entity(&$variables) {
+  global $theme;
+  if ($variables['entity_type'] == 'paragraphs_item') {
+    $fn = 'es_helper_preprocess_paragraphs_item_' . str_replace('-', '_', $variables['elements']['#bundle']);
+    if (function_exists($fn)) {
+      $fn($variables);
+    }
+
+    $fn = $theme . '_preprocess_paragraphs_item_' . str_replace('-', '_', $variables['elements']['#bundle']);
+    if (function_exists($fn)) {
+      $fn($variables);
+    }
+  }
+}
+
+
 /**
  * Implements hook_preprocess_fieldable_panels_pane().
  */
