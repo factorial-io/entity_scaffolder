@@ -98,16 +98,3 @@ function drush_entity_scaffolder_check_requirements() {
 
   return TRUE;
 }
-
-/**
- * Helper function to render using Twig.
- * @todo : move this to Utils.
- */
-function drush_entity_scaffolder_twig_render($dir, $template, $replacements) {
-  $loader = new Twig_Loader_Filesystem($dir);
-  $twig = new Twig_Environment($loader, array(
-    'debug' => TRUE,
-  ));
-  $twig->addExtension(new Twig_Extension_Debug());
-  return $twig->render($template . '.twig', $replacements);
-}

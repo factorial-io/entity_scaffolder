@@ -59,4 +59,17 @@ class Utils {
       }
     }
   }
+
+
+  /**
+   * Helper function to render using Twig.
+   */
+  function render($dir, $template, $replacements) {
+    $loader = new \Twig_Loader_Filesystem($dir);
+    $twig = new \Twig_Environment($loader, array(
+      'debug' => TRUE,
+    ));
+    $twig->addExtension(new \Twig_Extension_Debug());
+    return $twig->render($template . '.twig', $replacements);
+  }
 }

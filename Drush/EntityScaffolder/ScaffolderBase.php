@@ -99,7 +99,7 @@ class ScaffolderBase implements ScaffolderInterface {
    * Helper function to perform text replacement.
    */
   function render($template, $replacements) {
-    return drush_entity_scaffolder_twig_render($this->getTemplateDir(), $template, $replacements);
+    return Utils::render($this->getTemplateDir(), $template, $replacements);
   }
 
 }
