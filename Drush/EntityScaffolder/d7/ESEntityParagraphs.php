@@ -65,10 +65,16 @@ class ESEntityParagraphs extends ESEntityBase {
     $config['field_prefix'] = 'pgf_' . $config['machine_name'];
     $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/paragraphs/config.yaml';
     $config['local_config'] = Utils::getConfig($local_config_file);
-    $config['pattern'] = array(
+    $config['pattern'] = [];
+    $config['pattern'][] = array(
       'block' => Scaffolder::HEADER,
       'key' => 0,
       'template' => '/entity/paragraphs/pattern',
+    );
+    $config['pattern'][] = array(
+      'block' => Scaffolder::FOOTER,
+      'key' => 0,
+      'code' => "#}\n",
     );
     return $config;
   }
