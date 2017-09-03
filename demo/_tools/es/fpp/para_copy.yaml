@@ -1,0 +1,10 @@
+name: Para Copy
+machine_name: para_copy
+fields:
+  content:
+    map: content
+    cardinality: 1
+    type: paragraphs
+    label: Content
+    allowed_bundles:
+      - copy

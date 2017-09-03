@@ -1,0 +1,11 @@
+name: Introduction Copy
+machine_name: intro
+fields:
+  content:
+    map: content
+    cardinality: 1
+    type: text_long
+    label: Content
+    allowed_formats:
+      - html
+    default_format: html

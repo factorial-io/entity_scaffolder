@@ -1,0 +1,142 @@
+<?php
+
+/**
+ * @file
+ * Code for the ES Helper.
+ */
+
+include_once 'es_helper.preprocess.inc';
+
+/**
+ * Implements hook_preprocess_entity().
+ */
+function es_helper_preprocess_entity(&$variables) {
+  global $theme;
+  if ($variables['entity_type'] == 'paragraphs_item') {
+    $fn = 'es_helper_preprocess_paragraphs_item_' . str_replace('-', '_', $variables['elements']['#bundle']);
+    if (function_exists($fn)) {
+      $fn($variables);
+    }
+
+    $fn = $theme . '_preprocess_paragraphs_item_' . str_replace('-', '_', $variables['elements']['#bundle']);
+    if (function_exists($fn)) {
+      $fn($variables);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_fieldable_panels_pane().
+ */
+function es_helper_preprocess_fieldable_panels_pane(&$vars) {
+
+  $fn = 'es_helper_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
+  if (function_exists($fn)) {
+    $fn($vars);
+  }
+
+  // Allow theme to preprocess variables after this module.
+  global $theme;
+  $fn = $theme . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
+  if (function_exists($fn)) {
+    $fn($vars);
+  }
+
+  $view_mode = $vars['elements']['#view_mode'];
+  if ($view_mode != 'full') {
+    $vars['theme_hook_suggestions'][] = 'fieldable_panels_pane____' . $view_mode;
+    $vars['theme_hook_suggestions'][] = 'fieldable_panels_pane__' . str_replace('-', '_', $vars['elements']['#bundle']) . '__' . str_replace('-', '_', $view_mode);
+  }
+
+  // Expose FPP title as title.
+  $vars['title'] = '';
+  if (!empty($vars['elements']['#fieldable_panels_pane']->title)) {
+    $vars['title'] = $vars['elements']['#fieldable_panels_pane']->title;
+  }
+}
+
+/**
+ * Helper function to extract image data from a field for frontend.
+ */
+function es_helper_get_image_data($file, $image_styles = array()) {
+  $out = $file;
+  $out['alt'] = 'image';
+  if (!empty($file['field_file_image_alt_text'][LANGUAGE_NONE][0]['safe_value'])) {
+    $out['alt'] = $file['field_file_image_alt_text'][LANGUAGE_NONE][0]['safe_value'];
+  }
+  foreach ($image_styles as $key => $style_name) {
+    $out[$key] = image_style_url($style_name, $file['uri']);
+  }
+  return $out;
+}
+
+/**
+ * Helper function to extract file data from a field for frontend.
+ */
+function es_helper_get_file_data($file) {
+  $out = [];
+  $out['url'] = file_create_url($file['uri']);
+  $out['label'] = $file['filename'];
+  $out['file'] = $file;
+  return $out;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function es_helper_form_alter(&$form, &$form_state, $form_id) {
+  // Hide extra unused configurations from FPP forms.
+  if (isset($form['#entity_type']) && $form['#entity_type'] == 'fieldable_panels_pane') {
+    $form['title']['#access'] = FALSE;
+    $form['link']['#access'] = FALSE;
+    $form['admin']['#access'] = FALSE;
+    $form['additional_settings']['#access'] = FALSE;
+    $form['reusable']['#access'] = FALSE;
+    $form['revision']['#access'] = FALSE;
+    $form['view_mode']['#access'] = FALSE;
+  }
+}
+
+/**
+ * Helper function to reset panels region contents while feature import.
+ *
+ * @see hook_default_page_manager_pages_alter()
+ */
+function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $regions = array()) {
+  module_load_include('inc', 'features', 'features.export');
+  features_include();
+  $component = 'page_manager_pages';
+  $db = features_get_normal($component, $module_name, FALSE);
+
+  foreach ($exports as $page_export_key => &$page_export) {
+    if (isset($db[$page_export_key])) {
+      $db_page_export = &$db[$page_export_key];
+    }
+    foreach ($page_export->default_handlers as $page_default_handler_key => &$page_default_handler) {
+      if (isset($db_page_export->default_handlers[$page_default_handler_key])) {
+        $db_page_default_handler = &$db_page_export->default_handlers[$page_default_handler_key];
+      }
+      foreach ($page_default_handler->conf['display']->panels as $region => &$panels) {
+        if (isset($db_page_default_handler->conf['display']->panels[$region])) {
+          $db_panels = &$db_page_default_handler->conf['display']->panels[$region];
+        }
+        // Check region to ignore.
+        if (in_array($region, $regions)) {
+          $panels = array();
+          if (isset($db[$page_export_key]->default_handlers[$page_default_handler_key]->conf['display']->panels[$region])) {
+            // If no panels attached to the region, then remove all from code.
+            $panels = isset($db_panels) ? $db_panels : array();
+            foreach ($panels as $panel_id) {
+              if (isset($db_page_default_handler->conf['display']->content[$panel_id])) {
+                $page_default_handler->conf['display']->content[$panel_id] = $db_page_default_handler->conf['display']->content[$panel_id];
+              }
+              else {
+                unset($page_default_handler->conf['display']->content[$panel_id]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

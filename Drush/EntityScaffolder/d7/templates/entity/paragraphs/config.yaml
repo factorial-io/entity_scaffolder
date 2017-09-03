@@ -1,0 +1,4 @@
+dependencies :
+  - ctools
+  - features
+  - paragraphs

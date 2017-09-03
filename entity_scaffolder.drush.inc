@@ -1,17 +1,22 @@
 <?php
+
 /**
  * @file
  * Provide Drush integration for entity schaffolding.
  */
+ini_set('memory_limit', -1);
+define('DRUPAL_ROOT', drush_entity_scaffolder_define_drupal_root());
+chdir(DRUPAL_ROOT);
+drush_log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'success');
+define('MAINTENANCE_MODE', 'update');
+
 
 require_once "libraries/Spyc/Spyc.php";
 require_once 'libraries/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-require_once "d7/ESEntityFPP.php";
-require_once "d7/ESFieldBase.php";
-require_once "d7/ESFieldInstance.php";
-require_once "d7/ESFieldPreprocess.php";
+use Drush\EntityScaffolder\d7\Scaffolder;
+use Drush\EntityScaffolder\Utils;
 
 /**
  * Implements hook_drush_help().
@@ -32,7 +37,7 @@ function entity_scaffolder_drush_command() {
   $items['entity-scaffold'] = array(
     'description' => 'Helps create entity and fields from config files.',
     'callback' => 'drush_entity_scaffolder',
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH, // No bootstrap.
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'options' => array(
       'config-dir' => 'Directory to read the config file/s from.',
       'fire-bazooka' => 'Deletes all previous entries and force rebuild.',
@@ -53,173 +58,47 @@ function entity_scaffolder_drush_command() {
  * Before calling this we need to be bootstrapped to DRUPAL_BOOTSTRAP_DATABASE.
  */
 function drush_entity_scaffolder() {
+
+  spl_autoload_register('drush_entity_scaffolder_autoload');
+
   drush_log("Scaffolding started.", 'success');
-  define('MAINTENANCE_MODE', 'update');
-  ini_set('memory_limit', -1);
-
-  if (!($config_dir = drush_get_option('config-dir'))) {
-    $config_dir = '_tools/es';
-  }
-
-  if (!drush_entity_scaffolder_check_requirements()) {
-    return drush_log(dt('ERROR: Scaffolder borks.'), 'error');
-  }
-
-  $entity_types = drush_entity_scaffolder_get_folders($config_dir);
-
-  $code = array();
-  foreach ($entity_types as $entity_type) {
-    switch ($entity_type) {
-      case 'fpp':
-        ESEntityFPP::scaffold($config_dir, $code);
-        break;
-
-      default:
-        drush_log(dt('Entity Scaffolder does not support %type', array('%type' => $entity_type)), 'error');
-        break;
-    }
-  }
-
-  $files = array();
-
-  foreach ($code as $key => $content) {
-    switch ($key) {
-      case 'fpp':
-        ESEntityFPP::addFeatureHeaderFooter($content, array());
-        $files['sites/all/modules/features/fe_es/fe_es.fieldable_panels_pane_type.inc'] = implode("\n", $content);
-        break;
-
-      case 'field_base':
-        ESFieldBase::addFeatureHeaderFooter($content, array());
-        $files['sites/all/modules/features/fe_es/fe_es.features.field_base.inc'] = implode("\n", $content);
-        break;
-
-      case 'field_instance':
-        ESFieldInstance::addFeatureHeaderFooter($content, array());
-        $files['sites/all/modules/features/fe_es/fe_es.features.field_instance.inc'] = implode("\n", $content);
-        break;
-
-      case 'field_preprocess':
-        ESFieldPreprocess::addCodeHeaderFooter($content, array());
-        $files['sites/all/modules/custom/es_helper/es_helper.module'] = implode("\n", $content);
-        break;
-
-
-      case 'fe_es.info':
-        array_unshift($content, file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info'));
-        $content[] = 'project path = sites/all/modules/features';
-        $content[] = "";
-        $files['sites/all/modules/features/fe_es/fe_es.info'] = implode("\n", $content);
-        break;
-
-      default:
-        # code...
-        break;
-    }
-  }
-  drush_entity_scaffolder_export_code($files);
+  // Load the D7 scaffolder by default.
+  $scaffolder = new Scaffolder();
+  $scaffolder->scaffold();
+  $scaffolder->exportCode();
   drush_log("Scaffolding finished.", 'success');
 }
 
 /**
- * Helper function to get list of entities to create.
+ * Implements the autoloader.
  */
-function drush_entity_scaffolder_get_folders($config_dir) {
-  $entity_types = array();
-  foreach(glob($config_dir . '/*', GLOB_ONLYDIR) as $dir) {
-    $dirname =  basename($dir) ;
-    $entity_types[] = $dirname;
+function drush_entity_scaffolder_autoload($class) {
+  if (0 !== strpos($class, 'Drush\EntityScaffolder')) {
+    return;
   }
-  return $entity_types;
-}
-
-/**
- * Helper function to get list of entities to create.
- */
-function drush_entity_scaffolder_get_config_files($config_dir) {
-  $files = array();
-  foreach(glob($config_dir . '/*.yaml') as $file) {
-    $files[] = $file;
+  if (is_file($file = dirname(__FILE__) . '/' .str_replace( '\\', '/', $class).'.php')) {
+    require $file;
   }
-  return $files;
-}
-
-/**
- * Helper functions to create FPPS.
- */
-function drush_entity_scaffolder_copy_folder_contents($source, $destination) {
-  if (!file_exists($destination) && !is_dir($destination)) {
-    if (mkdir($destination)) {
-      drush_log(dt('Created directory : @dir', array('@dir' => $destination)), 'success');
-    }
-    else {
-      drush_log(dt('Error while creating directory : @dir', array('@dir' => $destination)), 'error');
-    }
-  }
-  $files = array();
-  foreach(glob($source . '/*.*') as $file) {
-    $file_name = basename($file);
-    if (copy($file, $destination . '/' . $file_name)) {
-      drush_log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
-    }
-    else {
-      drush_log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
-    }
+  else {
+    drush_log("FILE NOT FOUND: $file", 'error');
   }
 }
 
 /**
- * Helper function to exit scaffolding if something is suscpecious.
+ * Find the drupal root directory by looking in parent directories.
+ * If unable to discover it, fail and exit.
  */
-function drush_entity_scaffolder_check_requirements() {
-
-  // @todo try to find a better way to figure out if the current directory is
-  // Drupal root.
-  $folders = drush_entity_scaffolder_get_folders('.');
-  if (!in_array('sites', $folders)) {
-    return FALSE;
-  }
-
-  return TRUE;
-}
-
-
-/**
- * Helper function to export files.
- */
-function drush_entity_scaffolder_export_code($files) {
-  $debug = !!drush_get_option('debug');
-
-  // Prepare module directories.
-  if (!$debug) {
-    drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
-    drush_entity_scaffolder_copy_folder_contents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
-  }
-  // Write dynamic code to files.
-  foreach ($files as $extention => $file_contents) {
-    if ($debug) {
-      echo "----------------------------------------------------------------\n";
-      echo $extention . "\n";
-      echo "----------------------------------------------------------------\n";
-      echo $file_contents;
-      echo "================================================================\n";
+function drush_entity_scaffolder_define_drupal_root() {
+  // This is the smallest number of directories to go up: from /sites/all/modules/registry_rebuild.
+  $parent_count = 0;
+  // 8 seems reasonably far to go looking up.
+  while ($parent_count < 8) {
+    $dir = realpath(getcwd() . str_repeat('/..', $parent_count));
+    if (file_exists($dir . '/index.php')) {
+      return $dir;
     }
-    if (file_put_contents($extention, $file_contents) === FALSE) {
-      drush_log(dt('Error while writing to file @file', array('@file' => $extention)), 'error');
-    }
-    else {
-      drush_log(dt('Updated @file', array('@file' => $extention)), 'success');
-    }
+    $parent_count++;
   }
-}
-
-/**
- * Helper function to perform text replacement.
- */
-function drush_entity_scaffolder_render_template($template, $replacements) {
-  $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
-  $twig = new Twig_Environment($loader, array(
-      // 'cache' => 'cache',
-  ));
-  return $twig->render($template . '.twig', $replacements);
+  drush_log("Failure: Unable to discover DRUPAL_ROOT.", 'error');
+  exit(1);
 }

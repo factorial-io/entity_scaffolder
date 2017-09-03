@@ -1,8 +1,0 @@
-name = FE ES
-core = 7.x
-package = Features
-version = 7.x-1.0
-dependencies[] = ctools
-dependencies[] = fieldable_panels_panes
-features[ctools][] = fieldable_panels_panes:fieldable_panels_pane_type:1
-features[features_api][] = api:2

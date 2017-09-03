@@ -1,0 +1,16 @@
+name: Pipeline
+machine_name: pipeline
+fields:
+  files:
+    map: download_pipeline
+    cardinality: 1
+    type: file
+    label: PDF of our Compound
+    file_extensions: "pdf"
+  introduction:
+    map: introduction
+    type: text_long
+    label: Introduction
+    allowed_formats:
+      - html
+    default_format: html

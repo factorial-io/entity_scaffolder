@@ -1,0 +1,4 @@
+dependencies :
+  - ctools
+  - features
+  - fieldable_panels_panes
