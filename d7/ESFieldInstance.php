@@ -16,9 +16,20 @@ class ESFieldInstance extends ESEntityBase {
 
     // Add Code block.
     $block = ScaffolderBase::CONTENT;
-    $key = $info['field_name'];
+    $key = ScaffolderBase::CONTENT . ' : ' .$info['field_name'];
     $template = '/field_instance/' . $info['type'] . '/feature.content';
     $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    // Add translation info.
+    $block = ScaffolderBase::CONTENT;
+    $key = ScaffolderBase::FOOTER . ' : ' . ScaffolderBase::HEADER;
+    $code = "\n\n  // Translatables
+  // Included for use with string extractors like potx.";
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    $key = ScaffolderBase::FOOTER . ' : ' . ScaffolderBase::CONTENT . ' : ' . $info['label'];
+    $code = "\n  t('{$info['label']}');";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add file footer.

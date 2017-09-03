@@ -23,6 +23,7 @@ class ESEntityBase {
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
+    // Add hook_ctools_plugin_api().
     $block = ScaffolderBase::CONTENT;
     $key = 'ctools_plugin_api : ' . ScaffolderBase::HEADER;
     $template = '/entity/features.inc.ctools_plugin_api';
@@ -30,6 +31,17 @@ class ESEntityBase {
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $key = 'ctools_plugin_api : ' . ScaffolderBase::FOOTER;
+    $code = "\n}";
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    // Add hook_paragraphs_info().
+    $block = ScaffolderBase::CONTENT;
+    $key = 'paragraphs_info : ' . ScaffolderBase::HEADER;
+    $template = '/entity/features.inc.paragraphs_info';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    $key = 'paragraphs_info : ' . ScaffolderBase::FOOTER;
     $code = "\n}";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 

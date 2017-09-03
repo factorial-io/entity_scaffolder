@@ -2,6 +2,7 @@
 
 require_once "ScaffolderBase.php";
 require_once "d7/ESEntityFPP.php";
+require_once "d7/ESEntityParagraphs.php";
 require_once "d7/ESFieldBase.php";
 require_once "d7/ESFieldInstance.php";
 require_once "d7/ESFieldPreprocess.php";
@@ -26,6 +27,11 @@ class Scaffolder extends ScaffolderBase {
         case 'fpp':
           $fpp = new ESEntityFPP($this);
           $fpp->scaffold();
+          break;
+
+        case 'paragraphs':
+          $paragraphs = new ESEntityParagraphs($this);
+          $paragraphs->scaffold();
           break;
 
         default:
