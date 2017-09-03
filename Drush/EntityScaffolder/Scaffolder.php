@@ -10,9 +10,13 @@ use Drush\EntityScaffolder\d7\ESEntityParagraphs;
 
 class Scaffolder extends ScaffolderBase {
 
+  protected $plugins;
+
   public function __construct() {
     parent::__construct();
     $this->setTemplateDir(__DIR__ . '/d7/templates');
+    $this->plugins['fpp'] = new ESEntityFPP($this);
+    $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
   }
 
   /**
@@ -24,20 +28,8 @@ class Scaffolder extends ScaffolderBase {
       return;
     }
     foreach ($this->getEntityTypes() as $entity_type) {
-      switch ($entity_type) {
-        case 'fpp':
-          $fpp = new ESEntityFPP($this);
-          $fpp->scaffold();
-          break;
-
-        case 'paragraphs':
-          $paragraphs = new ESEntityParagraphs($this);
-          $paragraphs->scaffold();
-          break;
-
-        default:
-          drush_log(dt('Entity Scaffolder does not support %type', array('%type' => $entity_type)), 'error');
-          break;
+      if (isset($this->plugins[$entity_type])) {
+        $this->plugins[$entity_type]->scaffold();
       }
     }
   }
@@ -49,7 +41,7 @@ class Scaffolder extends ScaffolderBase {
     $code = $this->getCode();
     // Populate header section of info file.
     if(!empty($code['fe_es'])) {
-      $code = file_get_contents(__DIR__ . '/d7/templates/feature/fe_es/fe_es.info');
+      $code = file_get_contents($this->getTemplateDir() . '/feature/fe_es/fe_es.info');
       $this->setCode('fe_es', 'fe_es.info', Self::HEADER, 0, $code);
       $code = "\nproject path = sites/all/modules/features\n";
       $this->setCode('fe_es', 'fe_es.info', Self::CONTENT, $code, $code);
@@ -107,12 +99,12 @@ class Scaffolder extends ScaffolderBase {
 
     // Prepare module directories.
     if (!$debug) {
-      Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es', 'sites/all/modules/features/fe_es');
-      Utils::copyFolderContents(__DIR__ . '/d7/templates/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+      Utils::copyFolderContents($this->getTemplateDir() . '/feature/fe_es', 'sites/all/modules/features/fe_es');
+      Utils::copyFolderContents($this->getTemplateDir() . '/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
 
       // Copy fe_es_filters, only once.
       if (!file_exists('sites/all/modules/features/fe_es_filters/fe_es_filters.info')) {
-        Utils::copyFolderContents(__DIR__ . '/d7/templates/feature/fe_es_filters', 'sites/all/modules/features/fe_es_filters');
+        Utils::copyFolderContents($this->getTemplateDir() . '/feature/fe_es_filters', 'sites/all/modules/features/fe_es_filters');
       }
     }
     // Write dynamic code to files.
