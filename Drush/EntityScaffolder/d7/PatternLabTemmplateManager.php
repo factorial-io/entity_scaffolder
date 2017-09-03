@@ -37,14 +37,13 @@ class PatternLabTemmplateManager {
       $sub_folder = 'paragraphs';
     }
     $filename = NULL;
-    echo var_dump($config);
     switch ($config['entity_type']) {
       case 'fieldable_panels_pane':
-        $filename = 'fpp/fieldable-panels-pane--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig';
+        $filename = 'fpp/fieldable-panels-pane--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig.text';
         break;
 
       case 'paragraphs_item':
-        $filename = 'paragraphs-item/paragraphs-item--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig';
+        $filename = 'paragraphs-item/paragraphs-item--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig.text';
         break;
 
     }
