@@ -59,6 +59,7 @@ function drush_entity_scaffolder() {
   define('MAINTENANCE_MODE', 'update');
   ini_set('memory_limit', -1);
 
+  // Load the D7 scaffolder by default.
   $scaffolder = new Scaffolder();
 
   if (!drush_entity_scaffolder_check_requirements()) {
