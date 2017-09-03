@@ -1,6 +1,6 @@
 <?php
 
-namespace Drush\EntityScaffolder;
+namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\ScaffolderInterface;
 use Drush\EntityScaffolder\Utils;
@@ -14,7 +14,7 @@ class Scaffolder extends ScaffolderBase {
 
   public function __construct() {
     parent::__construct();
-    $this->setTemplateDir(__DIR__ . '/d7/templates');
+    $this->setTemplateDir(__DIR__ . '/templates');
     $this->plugins['fpp'] = new ESEntityFPP($this);
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
   }

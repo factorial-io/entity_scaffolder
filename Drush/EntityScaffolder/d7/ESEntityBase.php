@@ -2,7 +2,7 @@
 
 namespace Drush\EntityScaffolder\d7;
 
-use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\d7\Scaffolder;
 use Drush\EntityScaffolder\Utils;
 
 class ESEntityBase {

@@ -9,7 +9,7 @@ require_once "libraries/Spyc/Spyc.php";
 require_once 'libraries/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
-use Drush\EntityScaffolder\Scaffolder;
+use Drush\EntityScaffolder\d7\Scaffolder;
 use Drush\EntityScaffolder\Utils;
 
 /**
