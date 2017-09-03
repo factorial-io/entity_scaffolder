@@ -1,0 +1,11 @@
+name: Copy
+machine_name: copy
+fields:
+  content:
+    map: content
+    cardinality: 1
+    type: text_long
+    label: Content
+    allowed_formats:
+      - html
+    default_format: html

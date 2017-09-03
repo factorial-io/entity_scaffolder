@@ -1,0 +1,6 @@
+directories:
+  templates : sites/all/themes/custom/inoncology
+  theme : sites/all/themes/custom/inoncology
+  patternlab: sites/all/themes/custom/inoncology/source
+theme : inoncology
+

@@ -1,0 +1,9 @@
+name: Downloads
+machine_name: download
+fields:
+  files:
+    map: downloads
+    cardinality: -1
+    type: file
+    label: Files
+    file_extensions: "pdf ppt pptx"
