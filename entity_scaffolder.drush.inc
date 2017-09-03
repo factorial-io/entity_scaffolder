@@ -4,6 +4,12 @@
  * @file
  * Provide Drush integration for entity schaffolding.
  */
+ini_set('memory_limit', -1);
+define('DRUPAL_ROOT', drush_entity_scaffolder_define_drupal_root());
+chdir(DRUPAL_ROOT);
+drush_log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'success');
+define('MAINTENANCE_MODE', 'update');
+
 
 require_once "libraries/Spyc/Spyc.php";
 require_once 'libraries/Twig/Autoloader.php';
@@ -56,9 +62,6 @@ function drush_entity_scaffolder() {
   spl_autoload_register('drush_entity_scaffolder_autoload');
 
   drush_log("Scaffolding started.", 'success');
-  define('MAINTENANCE_MODE', 'update');
-  ini_set('memory_limit', -1);
-
   // Load the D7 scaffolder by default.
   $scaffolder = new Scaffolder();
 
@@ -98,4 +101,23 @@ function drush_entity_scaffolder_check_requirements() {
   }
 
   return TRUE;
+}
+
+/**
+ * Find the drupal root directory by looking in parent directories.
+ * If unable to discover it, fail and exit.
+ */
+function drush_entity_scaffolder_define_drupal_root() {
+  // This is the smallest number of directories to go up: from /sites/all/modules/registry_rebuild.
+  $parent_count = 0;
+  // 8 seems reasonably far to go looking up.
+  while ($parent_count < 8) {
+    $dir = realpath(getcwd() . str_repeat('/..', $parent_count));
+    if (file_exists($dir . '/index.php')) {
+      return $dir;
+    }
+    $parent_count++;
+  }
+  drush_log("Failure: Unable to discover DRUPAL_ROOT.", 'error');
+  exit(1);
 }
