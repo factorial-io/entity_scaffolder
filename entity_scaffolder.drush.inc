@@ -64,10 +64,6 @@ function drush_entity_scaffolder() {
   drush_log("Scaffolding started.", 'success');
   // Load the D7 scaffolder by default.
   $scaffolder = new Scaffolder();
-
-  if (!drush_entity_scaffolder_check_requirements()) {
-    return drush_log(dt('ERROR: Scaffolder borks.'), 'error');
-  }
   $scaffolder->scaffold();
   $scaffolder->exportCode();
   drush_log("Scaffolding finished.", 'success');
@@ -86,21 +82,6 @@ function drush_entity_scaffolder_autoload($class) {
   else {
     drush_log("FILE NOT FOUND: $file", 'error');
   }
-}
-
-/**
- * Helper function to exit scaffolding if something is suscpecious.
- */
-function drush_entity_scaffolder_check_requirements() {
-
-  // @todo try to find a better way to figure out if the current directory is
-  // Drupal root.
-  $folders = Utils::getFolders('.');
-  if (!in_array('sites', $folders)) {
-    return FALSE;
-  }
-
-  return TRUE;
 }
 
 /**
