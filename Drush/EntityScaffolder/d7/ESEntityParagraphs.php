@@ -2,11 +2,17 @@
 
 namespace Drush\EntityScaffolder\d7;
 
-use Drush\EntityScaffolder\d7\Scaffolder;
 use Drush\EntityScaffolder\Utils;
-use Drush\EntityScaffolder\d7\ESEntityBase;
 
 class ESEntityParagraphs extends ESEntityBase {
+
+  public function __construct(Scaffolder $scaffolder) {
+    parent::__construct($scaffolder);
+    $this->plugins['field_base'] = new ESFieldBase($this->scaffolder);
+    $this->plugins['field_instance'] = new ESFieldInstance($this->scaffolder);
+    $this->plugins['preprocess'] = new ESFieldPreprocess($this->scaffolder);
+    $this->plugins['patternlab_template_manager'] = new PatternLabTemmplateManager($this->scaffolder);
+  }
 
   public function generateCode($info) {
     $module = 'fe_es';
@@ -43,13 +49,8 @@ class ESEntityParagraphs extends ESEntityBase {
     foreach ($config_files as $file) {
       $config = $this->getConfig($file);
       $this->generateCode($config);
-      if ($config['fields']) {
-        $base = new ESFieldBase($this->scaffolder);
-        $base->scaffold($config);
-        $instance = new ESFieldInstance($this->scaffolder);
-        $instance->scaffold($config);
-        $preprocess = new ESFieldPreprocess($this->scaffolder);
-        $preprocess->scaffold($config);
+      foreach ($this->plugins as $key => $plugin) {
+        $plugin->scaffold($config);
       }
     }
   }

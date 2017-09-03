@@ -2,12 +2,13 @@
 
 namespace Drush\EntityScaffolder\d7;
 
-use Drush\EntityScaffolder\d7\Scaffolder;
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\ScaffolderBase;
 
 class ESEntityBase {
 
   protected $scaffolder;
+  protected $plugins;
 
   public function __construct(Scaffolder $scaffolder) {
     $this->scaffolder = $scaffolder;

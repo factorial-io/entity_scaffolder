@@ -5,8 +5,6 @@ namespace Drush\EntityScaffolder\d7;
 use Drush\EntityScaffolder\ScaffolderInterface;
 use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\ScaffolderBase;
-use Drush\EntityScaffolder\d7\ESEntityFPP;
-use Drush\EntityScaffolder\d7\ESEntityParagraphs;
 
 class Scaffolder extends ScaffolderBase {
 
@@ -78,15 +76,7 @@ class Scaffolder extends ScaffolderBase {
    * Helper function to retrieve module path.
    */
   public function getModulePath($module_name) {
-    switch($module_name) {
-      case 'es_helper':
-        return 'sites/all/modules/custom';
-
-      case 'fe_es':
-        return 'sites/all/modules/features';
-
-    }
-    return NULL;
+    return isset($this->getConfig()['directories'][$module_name]) ? $this->getConfig()['directories'][$module_name] : NULL;
   }
 
   /**

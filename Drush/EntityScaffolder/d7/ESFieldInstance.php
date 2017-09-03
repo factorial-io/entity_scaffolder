@@ -2,9 +2,7 @@
 
 namespace Drush\EntityScaffolder\d7;
 
-use Drush\EntityScaffolder\d7\Scaffolder;
 use Drush\EntityScaffolder\Utils;
-use Drush\EntityScaffolder\d7\ESEntityBase;
 
 class ESFieldInstance extends ESEntityBase {
 
