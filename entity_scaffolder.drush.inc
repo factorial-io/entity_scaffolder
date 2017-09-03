@@ -85,17 +85,6 @@ function drush_entity_scaffolder_autoload($class) {
 }
 
 /**
- * Helper function to get list of entities to create.
- */
-function drush_entity_scaffolder_get_config_files($config_dir) {
-  $files = array();
-  foreach (glob($config_dir . '/*.yaml') as $file) {
-    $files[] = $file;
-  }
-  return $files;
-}
-
-/**
  * Helper function to exit scaffolding if something is suscpecious.
  */
 function drush_entity_scaffolder_check_requirements() {
@@ -111,20 +100,8 @@ function drush_entity_scaffolder_check_requirements() {
 }
 
 /**
- * Helper function to perform text replacement.
- */
-function drush_entity_scaffolder_render_template($template, $replacements) {
-  $loader = new Twig_Loader_Filesystem(__DIR__ . '/d7/templates');
-  $twig = new Twig_Environment($loader, array(
-    'debug' => TRUE,
-      // 'cache' => drush_entity_scaffolder_get_twig_cache_directory(),
-  ));
-  $twig->addExtension(new Twig_Extension_Debug());
-  return $twig->render($template . '.twig', $replacements);
-}
-
-/**
  * Helper function to render using Twig.
+ * @todo : move this to Utils.
  */
 function drush_entity_scaffolder_twig_render($dir, $template, $replacements) {
   $loader = new Twig_Loader_Filesystem($dir);
