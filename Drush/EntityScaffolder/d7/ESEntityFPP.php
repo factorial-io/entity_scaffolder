@@ -89,6 +89,17 @@ class ESEntityFPP extends ESEntityBase {
     $config['field_prefix'] = 'fpp_' . $config['machine_name'];
     $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/fpp/config.yaml';
     $config['local_config'] = Utils::getConfig($local_config_file);
+    $config['pattern'] = [];
+    $config['pattern'][] = array(
+      'block' => Scaffolder::HEADER,
+      'key' => 0,
+      'template' => '/entity/fpp/pattern',
+    );
+    $config['pattern'][] = array(
+      'block' => Scaffolder::FOOTER,
+      'key' => 0,
+      'code' => "#}\n",
+    );
     return $config;
   }
 

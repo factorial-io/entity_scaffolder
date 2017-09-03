@@ -1,0 +1,8 @@
+
+  {{ map }} ({{ field_name }})
+    type            : image
+    cardinality     : {{ cardinality }}
+    variable type   : array
+    sub properties  :
+      alt   : text  - Image ALT text
+      {{ image_style }} : text  - Absolute url of the file

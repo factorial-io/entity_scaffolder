@@ -6,25 +6,35 @@ use Drush\EntityScaffolder\Utils;
 
 class PatternLabTemmplateManager {
 
-  protected $template_dir;
   protected $scaffolder;
 
   public function __construct(Scaffolder $scaffolder) {
     $this->scaffolder = $scaffolder;
-    $this->template_dir = $this->scaffolder->getDirectory('templates');
   }
 
   /**
    * Create template file.
    */
   public function scaffold($config) {
-    $module = 'templates';
-    $filename = $this->getDrupalTemplateName($config);
-    $block = Scaffolder::HEADER;
-    $key = 0;
-    $code = "[PLACEHOLDER FOR $filename]";
-    if ($filename) {
-      $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+    if (isset($config['pattern'])) {
+      foreach ($config['pattern'] as $pattern) {
+        $module = 'templates';
+        $filename = $this->getDrupalTemplateName($config);
+        $block = $pattern['block'];
+        $key = $pattern['key'];
+
+        $code = NULL;
+        if (isset($pattern['code'])) {
+          $code = $pattern['code'];
+        }
+        elseif(isset($pattern['template'])) {
+          $template = $pattern['template'];
+          $code = $this->scaffolder->render($template, $config);
+        }
+        if ($code) {
+          $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+        }
+      }
     }
   }
 

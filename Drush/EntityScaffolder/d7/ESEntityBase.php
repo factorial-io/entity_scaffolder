@@ -60,7 +60,6 @@ class ESEntityBase {
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-
   }
 
   /**

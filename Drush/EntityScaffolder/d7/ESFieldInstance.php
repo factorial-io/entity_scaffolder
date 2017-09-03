@@ -54,9 +54,11 @@ class ESFieldInstance extends ESEntityBase {
    * Helper functions to create FPPS.
    */
   public function scaffold($config) {
+    $patternLabTemplateManager = new PatternLabTemmplateManager($this->scaffolder);
     foreach ($config['fields'] as $field_key => $field_info) {
       $info = $this->getConfig($config, $field_key, $field_info);
       $this->generateCode($info);
+      $patternLabTemplateManager->scaffold($info);
     }
   }
 
@@ -76,6 +78,12 @@ class ESFieldInstance extends ESEntityBase {
     $info['entity_type'] = $config['entity_type'];
     $info['bundle'] = $config['bundle'];
     $info['field_name'] = $this->getFieldName($config, $field_key);
+    $info['pattern'] = [];
+    $info['pattern'][] = array(
+      'block' => Scaffolder::CONTENT,
+      'key' => $info['field_name'],
+      'template' => '/field_preprocess/' . $info['type'] . '/pattern',
+    );
     return $info;
   }
 

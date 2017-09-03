@@ -31,7 +31,8 @@ class ScaffolderBase implements ScaffolderInterface {
         'fe_es_filter' => 'sites/all/modules/features',
       ),
     );
-    return array_replace_recursive($defaults, $config);
+    $config = array_replace_recursive($defaults, $config);
+    return $config;
   }
 
   protected function findConfigDir() {
