@@ -4,6 +4,11 @@ namespace Drush\EntityScaffolder;
 
 class Utils {
 
+  const FILE_EXISTS_OVERWRITE = 'OVERWRITE';
+  const FILE_EXISTS_SKIP = 'SKIP';
+  const TWIG_COMMENT = 'TWIG';
+
+
   /**
    * Helper function to get list of entities to create.
    */
@@ -60,6 +65,58 @@ class Utils {
     }
   }
 
+  /**
+   * Helper function to write data into files.
+   */
+  function write($filepath, $file_contents, $param = self::FILE_EXISTS_OVERWRITE) {
+    switch ($param) {
+      case self::FILE_EXISTS_OVERWRITE:
+        self::writeFile($filepath, $file_contents);
+        break;
+
+      case self::FILE_EXISTS_SKIP:
+        if (!self::fileNotEmpty($filepath)) {
+          self::writeFile($filepath, $file_contents);
+        }
+        break;
+
+      case self::TWIG_COMMENT:
+        if (self::fileNotEmpty($filepath)) {
+          // read file.
+          $data = file_get_contents($filepath);
+          $matches = array();
+          if ( preg_match("/^{#([^}]*)#}/", $data, $matches) ) {
+            $first_comment = $matches[1];
+          }
+
+          if ($first_comment) {
+            $first_comment = "{#$first_comment#}\n";
+            $str = substr($data, strlen($first_comment));
+            $file_contents = $file_contents . $str;
+          }
+          else {
+            $file_contents = $file_contents . $data;
+          }
+          self::writeFile($filepath, $file_contents);
+        }
+        else {
+          self::writeFile($filepath, $file_contents);
+        }
+        break;
+    }
+  }
+
+  /**
+   * Helper function to write file.
+   */
+  function writeFile($filepath, $file_contents) {
+    if (file_put_contents($filepath, $file_contents) === FALSE) {
+      drush_log(dt('Error while writing to file @file', array('@file' => $filepath)), 'error');
+    }
+    else {
+      drush_log(dt('Updated @file', array('@file' => $filepath)), 'success');
+    }
+  }
 
   /**
    * Helper function to render using Twig.
@@ -72,4 +129,33 @@ class Utils {
     $twig->addExtension(new \Twig_Extension_Debug());
     return $twig->render($template . '.twig', $replacements);
   }
+
+  /**
+   * Helper function to check if a string starts with given string.
+   */
+  function startsWith($haystack, $needle){
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+  }
+
+  /**
+   * Helper function to check if a string ends with given string.
+   */
+  function endsWith($haystack, $needle){
+    $length = strlen($needle);
+    return $length === 0 ||
+    (substr($haystack, -$length) === $needle);
+  }
+
+  function fileNotEmpty($file_to_test) {
+    if (file_exists($file_to_test)) {
+      clearstatcache();
+      $stat = stat($file_to_test);
+      if ($stat['size'] > 0) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
 }

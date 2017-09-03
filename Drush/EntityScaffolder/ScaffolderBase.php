@@ -26,9 +26,9 @@ class ScaffolderBase implements ScaffolderInterface {
     $config = Utils::getConfig($this->getConfigDir() . '/config.yaml');
     $defaults = array(
       'directories' => array(
-        'es_helper' => 'sites/all/modules/custom',
-        'fe_es' => 'sites/all/modules/features',
-        'fe_es_filter' => 'sites/all/modules/features',
+        'es_helper' => 'sites/all/modules/custom/es_helper',
+        'fe_es' => 'sites/all/modules/features/fe_es',
+        'fe_es_filters' => 'sites/all/modules/features/fe_es_filters',
       ),
     );
     $config = array_replace_recursive($defaults, $config);

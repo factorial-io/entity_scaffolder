@@ -49,11 +49,11 @@ class PatternLabTemmplateManager {
     $filename = NULL;
     switch ($config['entity_type']) {
       case 'fieldable_panels_pane':
-        $filename = 'fpp/fieldable-panels-pane--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig.text';
+        $filename = 'fpp/fieldable-panels-pane--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig';
         break;
 
       case 'paragraphs_item':
-        $filename = 'paragraphs-item/paragraphs-item--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig.text';
+        $filename = 'paragraphs-item/paragraphs-item--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig';
         break;
 
     }
