@@ -55,7 +55,7 @@ class Scaffolder extends ScaffolderBase {
     $files = array();
     foreach ($code as $module_name => $module_data) {
       foreach ($module_data as $filename => $file_data) {
-        $file_path = $this->getDirectory($module_name) . "/{$module_name}/{$filename}";
+        $file_path = $this->getDirectory($module_name) . "/{$filename}";
         $blocks = array();
         ksort($file_data);
         $code = '';
@@ -89,12 +89,12 @@ class Scaffolder extends ScaffolderBase {
 
     // Prepare module directories.
     if (!$debug) {
-      Utils::copyFolderContents($this->getTemplateDir() . '/feature/fe_es', 'sites/all/modules/features/fe_es');
-      Utils::copyFolderContents($this->getTemplateDir() . '/preprocess/es_helper', 'sites/all/modules/custom/es_helper');
+      Utils::copyFolderContents($this->getTemplateDir() . '/feature/fe_es', $this->getDirectory('fe_es'));
+      Utils::copyFolderContents($this->getTemplateDir() . '/preprocess/es_helper', $this->getDirectory('es_helper'));
 
       // Copy fe_es_filters, only once.
-      if (!file_exists('sites/all/modules/features/fe_es_filters/fe_es_filters.info')) {
-        Utils::copyFolderContents($this->getTemplateDir() . '/feature/fe_es_filters', 'sites/all/modules/features/fe_es_filters');
+      if (!file_exists($this->getDirectory('fe_es_filters') . '/fe_es_filters.info')) {
+        Utils::copyFolderContents($this->getTemplateDir() . '/feature/fe_es_filters', $this->getDirectory('fe_es_filters'));
       }
     }
     // Write dynamic code to files.
