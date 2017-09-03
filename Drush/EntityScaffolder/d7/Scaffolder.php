@@ -55,7 +55,7 @@ class Scaffolder extends ScaffolderBase {
     $files = array();
     foreach ($code as $module_name => $module_data) {
       foreach ($module_data as $filename => $file_data) {
-        $file_path = $this->getModulePath($module_name) . "/{$module_name}/{$filename}";
+        $file_path = $this->getDirectory($module_name) . "/{$module_name}/{$filename}";
         $blocks = array();
         ksort($file_data);
         $code = '';
@@ -75,7 +75,7 @@ class Scaffolder extends ScaffolderBase {
   /**
    * Helper function to retrieve module path.
    */
-  public function getModulePath($module_name) {
+  public function getDirectory($module_name) {
     return isset($this->getConfig()['directories'][$module_name]) ? $this->getConfig()['directories'][$module_name] : NULL;
   }
 
