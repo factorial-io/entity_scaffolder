@@ -1,0 +1,104 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "What is EntityScaffolder\n\n\nEntityScaffolder is a Drush Plugin. It is a scaffolder used to create Entities and Fields quickly and conviniently for a Drupal project.\n\n\nSome common tasks are:\n\n\n\n\nCreate Entites\n\n\nFildable Panels Pane\n\n\nParagraphs\n\n\n\n\n\n\nAttach fields to created entities\n\n\nText\n\n\nLong Text\n\n\nFile\n\n\nImage\n\n\nParagraph\n\n\n\n\n\n\nCreate placeholder Drupal Templates\n\n\nAdd some preprocessing to the templates to provide sensible defaults to work with", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#what-is-entityscaffolder", 
+            "text": "EntityScaffolder is a Drush Plugin. It is a scaffolder used to create Entities and Fields quickly and conviniently for a Drupal project.  Some common tasks are:   Create Entites  Fildable Panels Pane  Paragraphs    Attach fields to created entities  Text  Long Text  File  Image  Paragraph    Create placeholder Drupal Templates  Add some preprocessing to the templates to provide sensible defaults to work with", 
+            "title": "What is EntityScaffolder"
+        }, 
+        {
+            "location": "/installation/", 
+            "text": "Installation of needed dependencies\n\n\nInstall PHP\nInstall Drush\n\n\nInstallation of fabalicious\n\n\nCopy the content of this project manually into \n.drush\n folder so that it will be recognized as a plugin.\n\n\nand then ...\n\n\n\n\nAdd your configuration files under \n_tools/es\n.\n\n\nRun \ndrush es\n preferably in Drupal Root folder.\n\n\n\n\nExample\n\n\nRefer the \ndemo\n folder to get an idea bout how the files needs to be strutured.", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/installation/#installation-of-needed-dependencies", 
+            "text": "Install PHP\nInstall Drush", 
+            "title": "Installation of needed dependencies"
+        }, 
+        {
+            "location": "/installation/#installation-of-fabalicious", 
+            "text": "Copy the content of this project manually into  .drush  folder so that it will be recognized as a plugin.", 
+            "title": "Installation of fabalicious"
+        }, 
+        {
+            "location": "/installation/#and-then", 
+            "text": "Add your configuration files under  _tools/es .  Run  drush es  preferably in Drupal Root folder.", 
+            "title": "and then ..."
+        }, 
+        {
+            "location": "/installation/#example", 
+            "text": "Refer the  demo  folder to get an idea bout how the files needs to be strutured.", 
+            "title": "Example"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "Running EntityScaffolder\n\n\nUse EntityScaffolder as drush plugin\n\n\ncd \nyour-drupal-root-folder\n\ndrush es\n\n\n\n\nThis will read cofniguration files from \n_tool/es\n directory under \nyour-drupal-root-folder\n.\n\n\nTasks", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#running-entityscaffolder", 
+            "text": "Use EntityScaffolder as drush plugin  cd  your-drupal-root-folder \ndrush es  This will read cofniguration files from  _tool/es  directory under  your-drupal-root-folder .", 
+            "title": "Running EntityScaffolder"
+        }, 
+        {
+            "location": "/usage/#tasks", 
+            "text": "", 
+            "title": "Tasks"
+        }, 
+        {
+            "location": "/available-tasks/", 
+            "text": "config-dir", 
+            "title": "Available tasks"
+        }, 
+        {
+            "location": "/available-tasks/#config-dir", 
+            "text": "", 
+            "title": "config-dir"
+        }, 
+        {
+            "location": "/configuration/", 
+            "text": "Structure of the configuration files\n\n\nOverview", 
+            "title": "Configuration"
+        }, 
+        {
+            "location": "/configuration/#structure-of-the-configuration-files", 
+            "text": "", 
+            "title": "Structure of the configuration files"
+        }, 
+        {
+            "location": "/configuration/#overview", 
+            "text": "", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/contribute/", 
+            "text": "Contributing to Fabalicious\n\n\nIf you get stuck at any point you can create a \nticket on GitLab\n.\n\n\nContributing to development\n\n\n@TODO\n\n\nImproving Documenation\n\n\n@TODO\n\n\n\n\nTip\n\n\nTo edit existing pages, use the \nEdit on GitLab\n link on the top right corner of the page.\n\n\nTo add a new page to documentation please follow \nthe guideline provided by MKdocs\n to add new page and link them within the documentation.\n\n\n\n\n\n\nNote\n\n\n\n\nInstall MkDocs\n.\n\n\nClone \nthe repo\n locally and switch to \ndevelop\n branch.\n\n\nUsing Terminal, navigate to \n/docs\n folder.\n\n\nRun \nmkdocs build\n\n\ncommit and push\n\n\n\n\n\n\nResources\n\n\n\n\nWriting your docs in MKdocs", 
+            "title": "Contribute"
+        }, 
+        {
+            "location": "/contribute/#contributing-to-fabalicious", 
+            "text": "If you get stuck at any point you can create a  ticket on GitLab .", 
+            "title": "Contributing to Fabalicious"
+        }, 
+        {
+            "location": "/contribute/#contributing-to-development", 
+            "text": "@TODO", 
+            "title": "Contributing to development"
+        }, 
+        {
+            "location": "/contribute/#improving-documenation", 
+            "text": "@TODO   Tip  To edit existing pages, use the  Edit on GitLab  link on the top right corner of the page.  To add a new page to documentation please follow  the guideline provided by MKdocs  to add new page and link them within the documentation.    Note   Install MkDocs .  Clone  the repo  locally and switch to  develop  branch.  Using Terminal, navigate to  /docs  folder.  Run  mkdocs build  commit and push", 
+            "title": "Improving Documenation"
+        }, 
+        {
+            "location": "/contribute/#resources", 
+            "text": "Writing your docs in MKdocs", 
+            "title": "Resources"
+        }
+    ]
+}
