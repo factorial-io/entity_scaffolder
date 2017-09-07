@@ -1,0 +1,13 @@
+# Deploy documentation for EntityScaffolder.
+pages:
+  stage: deploy
+  script:
+  - mkdir .public
+  - cp -r docs/site/* .public
+  - mv .public public
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+  - develop
