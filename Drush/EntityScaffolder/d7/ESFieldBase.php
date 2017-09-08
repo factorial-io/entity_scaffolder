@@ -68,7 +68,7 @@ class ESFieldBase extends ESEntityBase {
   public function getConfig($config, $field_key, $field_info) {
     $info = $field_info;
     $info['field_name'] = $this->getFieldName($config, $field_key);
-    $info['cardinality'] = !isset($info['cardinality']) ? 1 : $info['cardinality'];
+    $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
     $local_config_file = $this->scaffolder->getTemplatedir() . '/field_base/' . $info['type'] . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
     return $info;

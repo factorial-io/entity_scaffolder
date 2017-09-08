@@ -84,7 +84,7 @@ class ESFieldPreprocess extends ESEntityBase {
     $info['bundle'] = $config['bundle'];
     $info['field_name'] = $this->getFieldName($config, $field_key);
     $info['preprocess_hook'] = $this->getPreprocessHookName($config, $field_key);
-    $info['cardinality'] = !isset($info['cardinality']) ? 1 : $info['cardinality'];
+    $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
     return $info;
   }
 

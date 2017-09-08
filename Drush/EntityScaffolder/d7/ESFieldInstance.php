@@ -84,6 +84,7 @@ class ESFieldInstance extends ESEntityBase {
       'key' => $info['field_name'],
       'template' => '/field_preprocess/' . $info['type'] . '/pattern',
     );
+    $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
     return $info;
   }
 
