@@ -66,41 +66,17 @@ class ESEntityFPP extends ESEntityBase {
   }
 
   /**
-   * Helper functions to create FPPS.
+   * Loads scaffold source files.
    */
-  public function scaffold() {
-    $config_files = Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/fpp');
-    foreach ($config_files as $file) {
-      $config = $this->getConfig($file);
-      $this->generateCode($config);
-      foreach ($this->plugins as $key => $plugin) {
-        $plugin->scaffold($config);
-      }
-    }
+  public function loadScaffoldSourceConfigurations() {
+    return Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/fpp');
   }
 
   /**
-   * Helper function to load config and defaults.
+   * Gets the directory from which the templates will be picked up.
    */
-  public function getConfig($file) {
-    $config = parent::getConfig($file);
-    $config['entity_type'] = 'fieldable_panels_pane';
-    $config['bundle'] = $config['machine_name'];
-    $config['field_prefix'] = 'fpp_' . $config['machine_name'];
-    $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/fpp/config.yaml';
-    $config['local_config'] = Utils::getConfig($local_config_file);
-    $config['pattern'] = [];
-    $config['pattern'][] = array(
-      'block' => Scaffolder::HEADER,
-      'key' => 0,
-      'template' => '/entity/fpp/pattern',
-    );
-    $config['pattern'][] = array(
-      'block' => Scaffolder::FOOTER,
-      'key' => 0,
-      'code' => "#}\n",
-    );
-    return $config;
+  public function getTemplateDir() {
+    return '/entity/fpp';
   }
 
 }

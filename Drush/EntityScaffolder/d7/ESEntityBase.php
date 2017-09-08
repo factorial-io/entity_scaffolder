@@ -63,17 +63,56 @@ class ESEntityBase {
   }
 
   /**
+   * Gets the directory from which the templates will be picked up.
+   */
+  public function getTemplateDir() {
+    return '/entity';
+  }
+
+  /**
    * The main scaffolding action.
    */
   public function scaffold() {
-    return ;
+    $config_files = $this->loadScaffoldSourceConfigurations();
+    foreach ($config_files as $file) {
+      $config = $this->getConfig($file);
+      $this->generateCode($config);
+      foreach ($this->plugins as $key => $plugin) {
+        $plugin->scaffold($config);
+      }
+    }
+  }
+
+  /**
+   * Loads scaffold source files.
+   */
+  public function loadScaffoldSourceConfigurations() {
+    return NULL;
   }
 
   /**
    * Helper function to load config and defaults.
    */
   public function getConfig($file) {
-    return Utils::getConfig($file);
+    $config = Utils::getConfig($file);
+    $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplatedir() . '/config.yaml';
+    $config['local_config'] = Utils::getConfig($local_config_file);
+
+    $config['entity_type'] = $config['local_config']['entity_type'];
+    $config['bundle'] = $config['machine_name'];
+    $config['field_prefix'] = "{$config['local_config']['short_name']}_{$config['machine_name']}";
+    $config['pattern'] = [];
+    $config['pattern'][] = array(
+      'block' => Scaffolder::HEADER,
+      'key' => 0,
+      'template' => $this->getTemplatedir() . '/pattern',
+    );
+    $config['pattern'][] = array(
+      'block' => Scaffolder::FOOTER,
+      'key' => 0,
+      'code' => "#}\n",
+    );
+    return $config;
   }
 
 }

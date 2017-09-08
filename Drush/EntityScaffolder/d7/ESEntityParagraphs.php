@@ -20,7 +20,7 @@ class ESEntityParagraphs extends ESEntityBase {
     // Add File header.
     $block = Scaffolder::CONTENT;
     $key = 'paragraphs_info : ' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
-    $template = '/entity/paragraphs/features.inc.paragraphs_info';
+    $template = $this->getTemplateDir() . '/features.inc.paragraphs_info';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
@@ -42,41 +42,17 @@ class ESEntityParagraphs extends ESEntityBase {
   }
 
   /**
-   * Helper functions to create FPPS.
+   * Loads scaffold source files.
    */
-  public function scaffold() {
-    $config_files = Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/paragraphs');
-    foreach ($config_files as $file) {
-      $config = $this->getConfig($file);
-      $this->generateCode($config);
-      foreach ($this->plugins as $key => $plugin) {
-        $plugin->scaffold($config);
-      }
-    }
+  public function loadScaffoldSourceConfigurations() {
+    return Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/paragraphs');
   }
 
   /**
-   * Helper function to load config and defaults.
+   * Gets the directory from which the templates will be picked up.
    */
-  public function getConfig($file) {
-    $config = parent::getConfig($file);
-    $config['entity_type'] = 'paragraphs_item';
-    $config['bundle'] = $config['machine_name'];
-    $config['field_prefix'] = 'pgf_' . $config['machine_name'];
-    $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/paragraphs/config.yaml';
-    $config['local_config'] = Utils::getConfig($local_config_file);
-    $config['pattern'] = [];
-    $config['pattern'][] = array(
-      'block' => Scaffolder::HEADER,
-      'key' => 0,
-      'template' => '/entity/paragraphs/pattern',
-    );
-    $config['pattern'][] = array(
-      'block' => Scaffolder::FOOTER,
-      'key' => 0,
-      'code' => "#}\n",
-    );
-    return $config;
+  public function getTemplateDir() {
+    return '/entity/paragraphs';
   }
 
 }
