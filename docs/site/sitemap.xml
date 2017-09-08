@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2017-09-08</lastmod>
+     <lastmod>2017-09-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,23 +12,37 @@
     
     <url>
      <loc>/available-tasks/</loc>
-     <lastmod>2017-09-08</lastmod>
+     <lastmod>2017-09-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
+        
     <url>
-     <loc>/configuration/</loc>
-     <lastmod>2017-09-08</lastmod>
+     <loc>/configurations/config/</loc>
+     <lastmod>2017-09-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    <url>
+     <loc>/configurations/entities/</loc>
+     <lastmod>2017-09-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/configurations/fields/</loc>
+     <lastmod>2017-09-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
     
     <url>
      <loc>/contribute/</loc>
-     <lastmod>2017-09-08</lastmod>
+     <lastmod>2017-09-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

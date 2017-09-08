@@ -36,48 +36,53 @@
             "title": "entity_scaffolder"
         }, 
         {
-            "location": "/configuration/", 
-            "text": "config.yaml\n\n\n# Pass the project specific directory locations.\ndirectories:\n  templates : 'sites/all/themes/custom/MyProjectTheme/templates'\n  theme : 'sites/all/themes/custom/MyProjectTheme'\n  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'\n\n\n\n\nEntities\n\n\nUse the following table to determine the folder under which the configuration files for entities have to be placed.\n\n\n\n\n\n\n\n\nFolder Name\n\n\nEntity Type\n\n\n\n\n\n\n\n\n\n\nfpp\n\n\nFieldable Panels Panes\n\n\n\n\n\n\nparagraphs\n\n\nParagraph Items\n\n\n\n\n\n\n\n\nCreate a file for each entity bundle inside the respective folders. Usually the files are named according to the bundles.\n\n\nAn example bundle specific configuration file looks like below\n\n\n# Label of the Drupal entity bundle.\nname: Brochure\n\n# Machine name in Drupal.\nmachine_name: brochure\n\n# Fields acttached to the bundles.\nfields:\n  files:\n    map: download_brochure\n    cardinality: 1\n    type: file\n    label: PDF of our Brochure\n    file_extensions: \npdf\n\n  introduction:\n    map: introduction\n    type: text_long\n    label: Introduction\n    allowed_formats:\n      - html\n    default_format: html\n\n\n\n\nField Instance \n Field Base\n\n\nField Instances and Field Bases are defined in the bundle they are attached to.\n\n\nFollowing fields are supported,\n\n\nText\n\n\nLong Text\n\n\n\n\n\n\n\n\nOptions\n\n\nDescriptions\n\n\n\n\n\n\n\n\n\n\ntype\n\n\nType of the field. Must be \ntext_long\n.\n\n\n\n\n\n\nmap\n\n\nPatternlab mapping\n\n\n\n\n\n\ncadrinality\n\n\nNumber of values stored in this field. -1 means unlimitted.\n\n\n\n\n\n\nlabel\n\n\nDrupal Field Label\n\n\n\n\n\n\nallowed formats\n\n\nList of allowed text formats.\n\n\n\n\n\n\ndefault_format\n\n\nDefault text format for the field.\n\n\n\n\n\n\n\n\nExample\n\n\nname: Copy\nmachine_name: copy\nfields:\n  content:\n    type: text_long\n    map: content\n    cardinality: 1\n    label: Content\n    allowed_formats:\n      - html\n    default_format: html\n\n\n\n\nFile\n\n\nImage\n\n\nParagraph", 
-            "title": "Configuration"
-        }, 
-        {
-            "location": "/configuration/#configyaml", 
-            "text": "# Pass the project specific directory locations.\ndirectories:\n  templates : 'sites/all/themes/custom/MyProjectTheme/templates'\n  theme : 'sites/all/themes/custom/MyProjectTheme'\n  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'", 
+            "location": "/configurations/config/", 
+            "text": "config.yaml\n\n\nProject specific configuration file. All global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via \nconfig-dir\n option for \ndrush es\n.\n\n\n# Pass the project specific directory locations.\ndirectories:\n  templates : 'sites/all/themes/custom/MyProjectTheme/templates'\n  theme : 'sites/all/themes/custom/MyProjectTheme'\n  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'\n\n\n\n\n\n\n\n\n\n\nKey\n\n\nExplanation\n\n\n\n\n\n\n\n\n\n\ndirectories\n\n\nPass the project specific directory locations\n\n\n\n\n\n\ndirectories.templates\n\n\nPath to template folder\n\n\n\n\n\n\ndirectories.theme\n\n\nPath to the theme folder\n\n\n\n\n\n\ndirectories.patternlab\n\n\nPath to patterlab sourcefolder", 
             "title": "config.yaml"
         }, 
         {
-            "location": "/configuration/#entities", 
+            "location": "/configurations/config/#configyaml", 
+            "text": "Project specific configuration file. All global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via  config-dir  option for  drush es .  # Pass the project specific directory locations.\ndirectories:\n  templates : 'sites/all/themes/custom/MyProjectTheme/templates'\n  theme : 'sites/all/themes/custom/MyProjectTheme'\n  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'     Key  Explanation      directories  Pass the project specific directory locations    directories.templates  Path to template folder    directories.theme  Path to the theme folder    directories.patternlab  Path to patterlab sourcefolder", 
+            "title": "config.yaml"
+        }, 
+        {
+            "location": "/configurations/entities/", 
+            "text": "Entities\n\n\nUse the following table to determine the folder under which the configuration files for entities have to be placed.\n\n\n\n\n\n\n\n\nFolder Name\n\n\nEntity Type\n\n\n\n\n\n\n\n\n\n\nfpp\n\n\nFieldable Panels Panes\n\n\n\n\n\n\nparagraphs\n\n\nParagraph Items\n\n\n\n\n\n\n\n\nCreate a file for each entity bundle inside the respective folders. Usually the files are named according to the bundles.\n\n\nAn example bundle specific configuration file looks like below\n\n\n# Label of the Drupal entity bundle.\nname: Brochure\n\n# Machine name in Drupal.\nmachine_name: brochure\n\n# Fields acttached to the bundles.\nfields:\n  files:\n    map: download_brochure\n    cardinality: 1\n    type: file\n    label: PDF of our Brochure\n    file_extensions: \npdf\n\n  introduction:\n    map: introduction\n    type: text_long\n    label: Introduction\n    allowed_formats:\n      - html\n    default_format: html", 
+            "title": "Entities"
+        }, 
+        {
+            "location": "/configurations/entities/#entities", 
             "text": "Use the following table to determine the folder under which the configuration files for entities have to be placed.     Folder Name  Entity Type      fpp  Fieldable Panels Panes    paragraphs  Paragraph Items     Create a file for each entity bundle inside the respective folders. Usually the files are named according to the bundles.  An example bundle specific configuration file looks like below  # Label of the Drupal entity bundle.\nname: Brochure\n\n# Machine name in Drupal.\nmachine_name: brochure\n\n# Fields acttached to the bundles.\nfields:\n  files:\n    map: download_brochure\n    cardinality: 1\n    type: file\n    label: PDF of our Brochure\n    file_extensions:  pdf \n  introduction:\n    map: introduction\n    type: text_long\n    label: Introduction\n    allowed_formats:\n      - html\n    default_format: html", 
             "title": "Entities"
         }, 
         {
-            "location": "/configuration/#field-instance-field-base", 
-            "text": "Field Instances and Field Bases are defined in the bundle they are attached to.  Following fields are supported,", 
-            "title": "Field Instance &amp; Field Base"
+            "location": "/configurations/fields/", 
+            "text": "Field Instances and Field Bases are defined in the \nEntity bundle\n they are attached to.\n\n\nFollowing fields are supported,\n\n\nText\n\n\n@TODO\n\n\nLong Text\n\n\n\n\n\n\n\n\nOptions\n\n\nDescriptions\n\n\n\n\n\n\n\n\n\n\ntype\n\n\nType of the field. Must be \ntext_long\n.\n\n\n\n\n\n\nmap\n\n\nPatternlab mapping\n\n\n\n\n\n\ncadrinality\n\n\nNumber of values stored in this field. -1 means unlimitted.\n\n\n\n\n\n\nlabel\n\n\nDrupal Field Label\n\n\n\n\n\n\nallowed formats\n\n\nList of allowed text formats.\n\n\n\n\n\n\ndefault_format\n\n\nDefault text format for the field.\n\n\n\n\n\n\n\n\nExample\n\n\nname: Copy\nmachine_name: copy\nfields:\n  content:\n    type: text_long\n    map: content\n    cardinality: 1\n    label: Content\n    allowed_formats:\n      - html\n    default_format: html\n\n\n\n\nFile\n\n\n@TODO\n\n\nImage\n\n\n@TODO\n\n\nParagraph\n\n\n@TODO", 
+            "title": "Fields"
         }, 
         {
-            "location": "/configuration/#text", 
-            "text": "", 
+            "location": "/configurations/fields/#text", 
+            "text": "@TODO", 
             "title": "Text"
         }, 
         {
-            "location": "/configuration/#long-text", 
+            "location": "/configurations/fields/#long-text", 
             "text": "Options  Descriptions      type  Type of the field. Must be  text_long .    map  Patternlab mapping    cadrinality  Number of values stored in this field. -1 means unlimitted.    label  Drupal Field Label    allowed formats  List of allowed text formats.    default_format  Default text format for the field.     Example  name: Copy\nmachine_name: copy\nfields:\n  content:\n    type: text_long\n    map: content\n    cardinality: 1\n    label: Content\n    allowed_formats:\n      - html\n    default_format: html", 
             "title": "Long Text"
         }, 
         {
-            "location": "/configuration/#file", 
-            "text": "", 
+            "location": "/configurations/fields/#file", 
+            "text": "@TODO", 
             "title": "File"
         }, 
         {
-            "location": "/configuration/#image", 
-            "text": "", 
+            "location": "/configurations/fields/#image", 
+            "text": "@TODO", 
             "title": "Image"
         }, 
         {
-            "location": "/configuration/#paragraph", 
-            "text": "", 
+            "location": "/configurations/fields/#paragraph", 
+            "text": "@TODO", 
             "title": "Paragraph"
         }, 
         {
