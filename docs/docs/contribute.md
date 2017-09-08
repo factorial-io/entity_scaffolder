@@ -1,4 +1,4 @@
-# Contributing to Fabalicious
+# Contributing to EntityScaffolder
 
 If you get stuck at any point you can create a [ticket on GitLab](https://source.factorial.io/skakanat/entity_scaffolder/issues).
 
@@ -19,7 +19,7 @@ _@TODO_
 !!! note
     
     - [Install MkDocs](http://www.mkdocs.org/#installation).
-    - Clone [the repo](https://github.com/factorial-io/fabalicious) locally and switch to `develop` branch.
+    - Clone [the repo](https://source.factorial.io/skakanat/entity_scaffolder) locally and switch to `develop` branch.
     - Using Terminal, navigate to `/docs` folder.
     - Run `mkdocs build`
     - commit and push

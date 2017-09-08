@@ -87,13 +87,13 @@
         }, 
         {
             "location": "/contribute/", 
-            "text": "Contributing to Fabalicious\n\n\nIf you get stuck at any point you can create a \nticket on GitLab\n.\n\n\nContributing to development\n\n\n@TODO\n\n\nImproving Documenation\n\n\n@TODO\n\n\n\n\nTip\n\n\nTo edit existing pages, use the \nEdit on GitLab\n link on the top right corner of the page.\n\n\nTo add a new page to documentation please follow \nthe guideline provided by MKdocs\n to add new page and link them within the documentation.\n\n\n\n\n\n\nNote\n\n\n\n\nInstall MkDocs\n.\n\n\nClone \nthe repo\n locally and switch to \ndevelop\n branch.\n\n\nUsing Terminal, navigate to \n/docs\n folder.\n\n\nRun \nmkdocs build\n\n\ncommit and push\n\n\n\n\n\n\nResources\n\n\n\n\nWriting your docs in MKdocs", 
+            "text": "Contributing to EntityScaffolder\n\n\nIf you get stuck at any point you can create a \nticket on GitLab\n.\n\n\nContributing to development\n\n\n@TODO\n\n\nImproving Documenation\n\n\n@TODO\n\n\n\n\nTip\n\n\nTo edit existing pages, use the \nEdit on GitLab\n link on the top right corner of the page.\n\n\nTo add a new page to documentation please follow \nthe guideline provided by MKdocs\n to add new page and link them within the documentation.\n\n\n\n\n\n\nNote\n\n\n\n\nInstall MkDocs\n.\n\n\nClone \nthe repo\n locally and switch to \ndevelop\n branch.\n\n\nUsing Terminal, navigate to \n/docs\n folder.\n\n\nRun \nmkdocs build\n\n\ncommit and push\n\n\n\n\n\n\nResources\n\n\n\n\nWriting your docs in MKdocs", 
             "title": "Contribute"
         }, 
         {
-            "location": "/contribute/#contributing-to-fabalicious", 
+            "location": "/contribute/#contributing-to-entityscaffolder", 
             "text": "If you get stuck at any point you can create a  ticket on GitLab .", 
-            "title": "Contributing to Fabalicious"
+            "title": "Contributing to EntityScaffolder"
         }, 
         {
             "location": "/contribute/#contributing-to-development", 
