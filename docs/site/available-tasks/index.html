@@ -54,26 +54,12 @@
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../installation/">Installation</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../usage/">Usage</a>
-        
-    </li>
-<li>
-          
-            <li>
     <li class="toctree-l1 current">
         <a class="current" href="./">Available tasks</a>
         
             <ul>
             
-                <li class="toctree-l3"><a href="#config-dir">config-dir</a></li>
+                <li class="toctree-l3"><a href="#entity_scaffolder">entity_scaffolder</a></li>
                 
             
             </ul>
@@ -129,7 +115,34 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="config-dir">config-dir</h2>
+                <h2 id="entity_scaffolder">entity_scaffolder</h2>
+<p>Use the information provided in scaffold source files to create features and helper modules.</p>
+<p><strong>Usage:</strong></p>
+<pre><code class="shell">$ drush es
+</code></pre>
+
+<p><strong>Available Options</strong></p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Default</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>config-dir</td>
+<td>_tools/es</td>
+<td>Relative path to the  directory where the scaffold source files have to be picked up from</td>
+</tr>
+<tr>
+<td>debug</td>
+<td>false</td>
+<td>If set to true, prints the output of scaffolder on screen</td>
+</tr>
+</tbody>
+</table>
               
             </div>
           </div>
@@ -140,7 +153,7 @@
         <a href="../configuration/" class="btn btn-neutral float-right" title="Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../usage/" class="btn btn-neutral" title="Usage"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -168,7 +181,7 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../usage/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../configuration/" style="color: #fcfcfc">Next &raquo;</a></span>

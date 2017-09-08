@@ -54,22 +54,14 @@
             
                 <li class="toctree-l3"><a href="#what-is-entityscaffolder">What is EntityScaffolder</a></li>
                 
+                    <li><a class="toctree-l4" href="#installation">Installation</a></li>
+                
+                    <li><a class="toctree-l4" href="#scaffold-file-layout">Scaffold File Layout</a></li>
+                
+                    <li><a class="toctree-l4" href="#running-entityscaffolder">Running EntityScaffolder</a></li>
+                
             
             </ul>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="installation/">Installation</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="usage/">Usage</a>
         
     </li>
 <li>
@@ -130,7 +122,8 @@
             <div class="section">
               
                 <h1 id="what-is-entityscaffolder">What is EntityScaffolder</h1>
-<p>EntityScaffolder is a Drush Plugin. It is a scaffolder used to create Entities and Fields quickly and conviniently for a Drupal project.</p>
+<p>EntityScaffolder is a scaffolding tool. It is used to create Entities and Fields quickly and conviniently for a Drupal project.</p>
+<p>The EntityScaffolder makes use of the Drush and other third party components which allows you to automatically generate much of code required to create some entities and fields. In addition, EntityScaffolder also provides some helper functions to support theming integration with patternlab based frontend.</p>
 <p>Some common tasks are:</p>
 <ul>
 <li>Create Entites<ul>
@@ -149,6 +142,42 @@
 <li>Create placeholder Drupal Templates</li>
 <li>Add some preprocessing to the templates to provide sensible defaults to work with</li>
 </ul>
+<h2 id="installation">Installation</h2>
+<p>Entity Scaffolder depends on drush (the <strong>DRU</strong>pal <strong>SH</strong>ell). To use entity_scaffodler, you have to first download and install drush from <a href="http://drupal.org/project/drush">drush</a>. Install instructions can be found at Drush's <a href="http://drupalcode.org/project/drush.git/blob/HEAD:/README.txt">README.txt</a>. It contains
+a section about installing other commands like drush_make.</p>
+<p>Here is the relevant section.</p>
+<pre><code class="plain">You can put this folder in a number of places:
+
+- In a .drush folder in your HOME folder. Note, that you have to make the
+  .drush folder yourself (so you end up with ~/.drush/entity_scaffodler/README.md).
+- In a folder specified with the include option (see above).
+- In /path/to/drush/commands (not a Smart Thing, but it would work).
+</code></pre>
+
+<h2 id="scaffold-file-layout">Scaffold File Layout</h2>
+<p>Your scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under <code>_tools/es</code> and will exist at the top level of your project.</p>
+<p>The typical project you can create will look something like this:</p>
+<pre><code>_tools/es/
+    config.yaml
+    fpp/
+        gallery.yaml
+        copy.yaml
+        intro.yaml
+        video.yaml
+        multimedia.yaml
+    paragraphs/
+        video.yaml
+        text.yaml
+        headline.yaml
+</code></pre>
+
+<h2 id="running-entityscaffolder">Running EntityScaffolder</h2>
+<p>Use EntityScaffolder as drush plugin</p>
+<pre><code class="shell">$ cd &lt;your-drupal-root-folder&gt;
+$ drush es
+</code></pre>
+
+<p>This will read cofniguration files from <code>_tool/es</code> directory under <code>your-drupal-root-folder</code>.</p>
               
             </div>
           </div>
@@ -156,7 +185,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="installation/" class="btn btn-neutral float-right" title="Installation">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="available-tasks/" class="btn btn-neutral float-right" title="Available tasks">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
     </div>
@@ -186,7 +215,7 @@
       
       
       
-        <span style="margin-left: 15px"><a href="installation/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="available-tasks/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
@@ -197,5 +226,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-09-07 16:57:39
+Build Date UTC : 2017-09-08 18:20:42
 -->

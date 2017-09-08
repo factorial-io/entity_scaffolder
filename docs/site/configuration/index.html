@@ -55,20 +55,6 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../installation/">Installation</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../usage/">Usage</a>
-        
-    </li>
-<li>
-          
-            <li>
-    <li class="toctree-l1 ">
         <a class="" href="../available-tasks/">Available tasks</a>
         
     </li>
@@ -80,9 +66,23 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#structure-of-the-configuration-files">Structure of the configuration files</a></li>
+                <li class="toctree-l3"><a href="#configyaml">config.yaml</a></li>
                 
-                    <li><a class="toctree-l4" href="#overview">Overview</a></li>
+            
+                <li class="toctree-l3"><a href="#entities">Entities</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#field-instance-field-base">Field Instance &amp; Field Base</a></li>
+                
+                    <li><a class="toctree-l4" href="#text">Text</a></li>
+                
+                    <li><a class="toctree-l4" href="#long-text">Long Text</a></li>
+                
+                    <li><a class="toctree-l4" href="#file">File</a></li>
+                
+                    <li><a class="toctree-l4" href="#image">Image</a></li>
+                
+                    <li><a class="toctree-l4" href="#paragraph">Paragraph</a></li>
                 
             
             </ul>
@@ -131,8 +131,115 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="structure-of-the-configuration-files">Structure of the configuration files</h1>
-<h2 id="overview">Overview</h2>
+                <h1 id="configyaml">config.yaml</h1>
+<pre><code class="yaml"># Pass the project specific directory locations.
+directories:
+  templates : 'sites/all/themes/custom/MyProjectTheme/templates'
+  theme : 'sites/all/themes/custom/MyProjectTheme'
+  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'
+</code></pre>
+
+<h1 id="entities">Entities</h1>
+<p>Use the following table to determine the folder under which the configuration files for entities have to be placed.</p>
+<table>
+<thead>
+<tr>
+<th>Folder Name</th>
+<th>Entity Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fpp</td>
+<td>Fieldable Panels Panes</td>
+</tr>
+<tr>
+<td>paragraphs</td>
+<td>Paragraph Items</td>
+</tr>
+</tbody>
+</table>
+<p>Create a file for each entity bundle inside the respective folders. Usually the files are named according to the bundles.</p>
+<p>An example bundle specific configuration file looks like below</p>
+<pre><code class="yaml"># Label of the Drupal entity bundle.
+name: Brochure
+
+# Machine name in Drupal.
+machine_name: brochure
+
+# Fields acttached to the bundles.
+fields:
+  files:
+    map: download_brochure
+    cardinality: 1
+    type: file
+    label: PDF of our Brochure
+    file_extensions: &quot;pdf&quot;
+  introduction:
+    map: introduction
+    type: text_long
+    label: Introduction
+    allowed_formats:
+      - html
+    default_format: html
+</code></pre>
+
+<h1 id="field-instance-field-base">Field Instance &amp; Field Base</h1>
+<p>Field Instances and Field Bases are defined in the bundle they are attached to.</p>
+<p>Following fields are supported,</p>
+<h2 id="text">Text</h2>
+<h2 id="long-text">Long Text</h2>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type</td>
+<td>Type of the field. Must be <code>text_long</code>.</td>
+</tr>
+<tr>
+<td>map</td>
+<td>Patternlab mapping</td>
+</tr>
+<tr>
+<td>cadrinality</td>
+<td>Number of values stored in this field. -1 means unlimitted.</td>
+</tr>
+<tr>
+<td>label</td>
+<td>Drupal Field Label</td>
+</tr>
+<tr>
+<td>allowed formats</td>
+<td>List of allowed text formats.</td>
+</tr>
+<tr>
+<td>default_format</td>
+<td>Default text format for the field.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code>name: Copy
+machine_name: copy
+fields:
+  content:
+    type: text_long
+    map: content
+    cardinality: 1
+    label: Content
+    allowed_formats:
+      - html
+    default_format: html
+</code></pre>
+
+<h2 id="file">File</h2>
+<h2 id="image">Image</h2>
+<h2 id="paragraph">Paragraph</h2>
               
             </div>
           </div>
