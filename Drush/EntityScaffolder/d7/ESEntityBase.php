@@ -74,11 +74,15 @@ class ESEntityBase {
    */
   public function scaffold() {
     $config_files = $this->loadScaffoldSourceConfigurations();
-    foreach ($config_files as $file) {
-      $config = $this->getConfig($file);
-      $this->generateCode($config);
-      foreach ($this->plugins as $key => $plugin) {
-        $plugin->scaffold($config);
+    if ($config_files) {
+      foreach ($config_files as $file) {
+        $config = $this->getConfig($file);
+        if ($config) {
+          $this->generateCode($config);
+          foreach ($this->plugins as $key => $plugin) {
+            $plugin->scaffold($config);
+          }
+        }
       }
     }
   }
@@ -95,6 +99,7 @@ class ESEntityBase {
    */
   public function getConfig($file) {
     $config = Utils::getConfig($file);
+    $config['_file'] = $file;
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplatedir() . '/config.yaml';
     $config['local_config'] = Utils::getConfig($local_config_file);
 
@@ -112,7 +117,47 @@ class ESEntityBase {
       'key' => 0,
       'code' => "#}\n",
     );
-    return $config;
+
+    // Check if input file is valid.
+    if ($this->variablesValidate($config, $config['local_config']['variables'])) {
+      // Fill default values into variables.
+      $config = $this->variablesFillDefaults($config, $config['local_config']['variables']);
+      return $config;
+    }
+    else {
+      return NULL;
+    }
+
+  }
+
+  /**
+   * Validate the input files.
+   */
+  public function variablesValidate($input, $defaults) {
+    $has_all_required_variables = TRUE;
+    foreach ($defaults as $key => $value) {
+      if ($value['required'] == TRUE && empty($input[$key])) {
+        $has_all_required_variables = FALSE;
+        $vars = array(
+          '%key' => $key,
+          '%file' => $input['_file'],
+        );
+        drush_log(dt('Required variable %key is missing in %file', $vars), 'error');
+      }
+    }
+    return $has_all_required_variables;
+  }
+
+  /**
+   * Validate the input files.
+   */
+  public function variablesFillDefaults($input, $defaults) {
+    foreach ($defaults as $key => $value) {
+      if (!isset($input[$key])) {
+        $input[$key] = $value['default'];
+      }
+    }
+    return $input;
   }
 
 }
