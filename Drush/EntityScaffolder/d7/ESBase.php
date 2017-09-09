@@ -71,13 +71,24 @@ class ESBase {
     $config['_file'] = $file;
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplatedir() . '/config.yaml';
     $config['local_config'] = Utils::getConfig($local_config_file);
+    return $this->processConfigData($config);
+  }
 
-    // Return config loaded without validation if no variable definitions found
+  /**
+   * Process the config data before it is used.
+   */
+  public function processConfigData($config) {
+
+    if (empty($config)) {
+      drush_log(dt('Configuration is empty'), 'error');
+      return NULL;
+    }
+
+    // Return config loaded without validation if no variables definitions found
     // in local config files.
     if (empty($config['local_config']['variables'])) {
       return $config;
     }
-
     // Check if input file is valid.
     if ($this->variablesValidate($config, $config['local_config']['variables'])) {
       // Fill default values into variables.
@@ -87,7 +98,6 @@ class ESBase {
     else {
       return NULL;
     }
-
   }
 
   /**

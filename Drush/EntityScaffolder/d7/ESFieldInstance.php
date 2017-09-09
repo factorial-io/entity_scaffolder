@@ -55,17 +55,15 @@ class ESFieldInstance extends ESField {
    */
   public function getConfig($config, $field_key, $field_info) {
     $info = $field_info;
+    $info['_file'] = $config['_file'];
     $info['entity_type'] = $config['entity_type'];
     $info['bundle'] = $config['bundle'];
     $info['field_name'] = $this->getFieldName($config, $field_key);
-    $info['pattern'] = [];
-    $info['pattern'][] = array(
-      'block' => Scaffolder::CONTENT,
-      'key' => $info['field_name'],
-      'template' => '/field_preprocess/' . $info['type'] . '/pattern',
-    );
     $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
-    return $info;
+    $this->setTemplateDir('/field_instance/' . $info['type']);
+    $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
+    $info['local_config'] = Utils::getConfig($local_config_file);
+    return $this->processConfigData($info);
   }
 
 }

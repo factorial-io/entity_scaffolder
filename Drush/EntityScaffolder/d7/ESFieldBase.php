@@ -54,7 +54,7 @@ class ESFieldBase extends ESField {
     $this->setTemplateDir('/field_base/' . $info['type']);
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
-    return $info;
+    return $this->processConfigData($info);
   }
 
 }

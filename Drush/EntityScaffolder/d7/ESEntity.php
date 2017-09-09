@@ -33,16 +33,13 @@ class ESEntity extends ESBase {
    */
   public function getConfig($file) {
     $config = parent::getConfig($file);
-
     if ($config) {
       $config['entity_type'] = $config['local_config']['entity_type'];
       $config['bundle'] = $config['machine_name'];
       $config['field_prefix'] = "{$config['local_config']['short_name']}_{$config['machine_name']}";
       $config['type'] = $config['local_config']['type'];
     }
-
-    return $config;
-
+    return $this->processConfigData($config);
   }
 
 }
