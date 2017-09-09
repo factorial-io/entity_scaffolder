@@ -3,15 +3,18 @@
 namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\d7\ESBaseInterface;
+use Drush\EntityScaffolder\d7\ESEntity;
 
-class ESEntityFPP extends ESEntityBase {
+class ESEntityFPP extends ESEntity implements ESBaseInterface {
 
   public function __construct(Scaffolder $scaffolder) {
     parent::__construct($scaffolder);
     $this->plugins['field_base'] = new ESFieldBase($this->scaffolder);
     $this->plugins['field_instance'] = new ESFieldInstance($this->scaffolder);
     $this->plugins['preprocess'] = new ESFieldPreprocess($this->scaffolder);
-    $this->plugins['patternlab_template_manager'] = new PatternLabTemmplateManager($this->scaffolder);
+    $this->plugins['patternlab_template_manager'] = new ESPatternLabField($this->scaffolder);
+    $this->setTemplateDir('/entity/fpp');
   }
 
   public function generateCode($info) {
@@ -70,13 +73,6 @@ class ESEntityFPP extends ESEntityBase {
    */
   public function loadScaffoldSourceConfigurations() {
     return Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/fpp');
-  }
-
-  /**
-   * Gets the directory from which the templates will be picked up.
-   */
-  public function getTemplateDir() {
-    return '/entity/fpp';
   }
 
 }

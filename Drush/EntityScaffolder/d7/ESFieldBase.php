@@ -4,7 +4,7 @@ namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
 
-class ESFieldBase extends ESEntityBase {
+class ESFieldBase extends ESField {
 
   public function generateCode($info) {
     $module = 'fe_es';
@@ -45,31 +45,14 @@ class ESFieldBase extends ESEntityBase {
   }
 
   /**
-   * Helper functions to create FPPS.
-   */
-  public function scaffold($config) {
-    foreach ($config['fields'] as $field_key => $field_info) {
-      $info = $this->getConfig($config, $field_key, $field_info);
-      $this->generateCode($info);
-    }
-  }
-
-  /**
-   * Helper function to generate machine name for fields.
-   */
-  public function getFieldName($config, $field_key) {
-    return $config['field_prefix'] . '_' . $field_key;
-  }
-
-
-  /**
    * Helper function to load config and defaults.
    */
   public function getConfig($config, $field_key, $field_info) {
     $info = $field_info;
     $info['field_name'] = $this->getFieldName($config, $field_key);
     $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
-    $local_config_file = $this->scaffolder->getTemplatedir() . '/field_base/' . $info['type'] . '/config.yaml';
+    $this->setTemplateDir('/field_base/' . $info['type']);
+    $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
     return $info;
   }

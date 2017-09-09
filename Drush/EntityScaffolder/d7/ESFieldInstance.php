@@ -4,7 +4,7 @@ namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
 
-class ESFieldInstance extends ESEntityBase {
+class ESFieldInstance extends ESField {
 
   public function generateCode($info) {
     $module = 'fe_es';
@@ -49,26 +49,6 @@ class ESFieldInstance extends ESEntityBase {
     $key = $code;
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
   }
-
-  /**
-   * Helper functions to create FPPS.
-   */
-  public function scaffold($config) {
-    $patternLabTemplateManager = new PatternLabTemmplateManager($this->scaffolder);
-    foreach ($config['fields'] as $field_key => $field_info) {
-      $info = $this->getConfig($config, $field_key, $field_info);
-      $this->generateCode($info);
-      $patternLabTemplateManager->scaffold($info);
-    }
-  }
-
-  /**
-   * Helper function to generate machine name for fields.
-   */
-  public function getFieldName($config, $field_key) {
-    return $config['field_prefix'] . '_' . $field_key;
-  }
-
 
   /**
    * Helper function to load config and defaults.

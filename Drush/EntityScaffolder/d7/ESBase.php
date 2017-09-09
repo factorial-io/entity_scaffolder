@@ -5,10 +5,11 @@ namespace Drush\EntityScaffolder\d7;
 use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\ScaffolderBase;
 
-class ESEntityBase {
+class ESBase {
 
   protected $scaffolder;
   protected $plugins;
+  protected $template_dir;
 
   public function __construct(Scaffolder $scaffolder) {
     $this->scaffolder = $scaffolder;
@@ -18,7 +19,7 @@ class ESEntityBase {
   /**
    * Helper function to initialize code.
    */
-  protected function initCode() {
+  public function initCode() {
     $info = array();
     $module = 'fe_es';
     $filename = 'fe_es.features.inc';
@@ -63,38 +64,6 @@ class ESEntityBase {
   }
 
   /**
-   * Gets the directory from which the templates will be picked up.
-   */
-  public function getTemplateDir() {
-    return '/entity';
-  }
-
-  /**
-   * The main scaffolding action.
-   */
-  public function scaffold() {
-    $config_files = $this->loadScaffoldSourceConfigurations();
-    if ($config_files) {
-      foreach ($config_files as $file) {
-        $config = $this->getConfig($file);
-        if ($config) {
-          $this->generateCode($config);
-          foreach ($this->plugins as $key => $plugin) {
-            $plugin->scaffold($config);
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Loads scaffold source files.
-   */
-  public function loadScaffoldSourceConfigurations() {
-    return NULL;
-  }
-
-  /**
    * Helper function to load config and defaults.
    */
   public function getConfig($file) {
@@ -103,20 +72,11 @@ class ESEntityBase {
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplatedir() . '/config.yaml';
     $config['local_config'] = Utils::getConfig($local_config_file);
 
-    $config['entity_type'] = $config['local_config']['entity_type'];
-    $config['bundle'] = $config['machine_name'];
-    $config['field_prefix'] = "{$config['local_config']['short_name']}_{$config['machine_name']}";
-    $config['pattern'] = [];
-    $config['pattern'][] = array(
-      'block' => Scaffolder::HEADER,
-      'key' => 0,
-      'template' => $this->getTemplatedir() . '/pattern',
-    );
-    $config['pattern'][] = array(
-      'block' => Scaffolder::FOOTER,
-      'key' => 0,
-      'code' => "#}\n",
-    );
+    // Return config loaded without validation if no variable definitions found
+    // in local config files.
+    if (empty($config['local_config']['variables'])) {
+      return $config;
+    }
 
     // Check if input file is valid.
     if ($this->variablesValidate($config, $config['local_config']['variables'])) {
@@ -159,5 +119,21 @@ class ESEntityBase {
     }
     return $input;
   }
+
+
+  /**
+   * Gets the directory from which the templates will be picked up.
+   */
+  public function getTemplateDir() {
+    return $this->template_dir;
+  }
+
+  /**
+   * Sets the directory from which the templates will be picked up.
+   */
+  public function setTemplateDir($dir) {
+    $this->template_dir = $dir;
+  }
+
 
 }

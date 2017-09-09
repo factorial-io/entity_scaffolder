@@ -1,6 +1,7 @@
 name : Fieldable Panels Pane
 entity_type : fieldable_panels_pane
 short_name : fpp
+type : fpp
 dependencies :
   - ctools
   - features

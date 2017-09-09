@@ -4,7 +4,7 @@ namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
 
-class ESFieldPreprocess extends ESEntityBase {
+class ESFieldPreprocess extends ESField {
 
   public function generateCode($info) {
     $module = 'es_helper';
@@ -50,22 +50,6 @@ class ESFieldPreprocess extends ESEntityBase {
 
   }
 
-  /**
-   * Helper functions to create FPPS.
-   */
-  public function scaffold($config) {
-    foreach ($config['fields'] as $field_key => $field_info) {
-      $info = $this->getConfig($config, $field_key, $field_info);
-      $this->generateCode($info);
-    }
-  }
-
-  /**
-   * Helper function to generate machine name for fields.
-   */
-  public function getFieldName($config, $field_key) {
-    return $config['field_prefix'] . '_' . $field_key;
-  }
 
   /**
    * Helper function to generate machine name for fields.
@@ -73,7 +57,6 @@ class ESFieldPreprocess extends ESEntityBase {
   public function getPreprocessHookName($config, $field_key) {
     return $config['entity_type'] . '_' . $config['bundle'];
   }
-
 
   /**
    * Helper function to load config and defaults.

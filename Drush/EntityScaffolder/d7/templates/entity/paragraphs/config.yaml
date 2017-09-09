@@ -1,6 +1,7 @@
 name : Paragraphs Item
 short_name : pgf
 entity_type: paragraphs_item
+type : paragraphs
 dependencies :
   - ctools
   - features
