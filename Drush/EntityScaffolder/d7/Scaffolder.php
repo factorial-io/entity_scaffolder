@@ -111,11 +111,7 @@ class Scaffolder extends ScaffolderBase {
     // Write dynamic code to files.
     foreach ($files as $filepath => $file_contents) {
       if ($debug) {
-        echo "----------------------------------------------------------------\n";
-        echo $filepath . "\n";
-        echo "----------------------------------------------------------------\n";
-        echo $file_contents;
-        echo "================================================================\n";
+        Utils::debug($file_contents, $filepath);
       }
       Utils::write($filepath, $file_contents, $this->getWriteScheme($filepath));
     }

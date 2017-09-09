@@ -13,7 +13,7 @@ class ESPatternLabField extends ESPatternLab {
     $comments = [];
     $comments[] = array(
       'block' => Scaffolder::CONTENT,
-      'key' => $info['field_name'],
+      'key' => $config['field_name'],
       'template' => '/field_preprocess/' . $config['type'] . '/pattern',
     );
     return $comments;
@@ -27,8 +27,8 @@ class ESPatternLabField extends ESPatternLab {
     $info['entity_type'] = $config['entity_type'];
     $info['bundle'] = $config['bundle'];
     $info['field_name'] = $this->getFieldName($config, $field_key);
+    $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
     return $info;
   }
-
 
 }

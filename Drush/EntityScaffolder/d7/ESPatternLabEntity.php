@@ -10,7 +10,6 @@ class ESPatternLabEntity extends ESPatternLab {
    * Helper function to make comments for current instance.
    */
   public function getComments($config) {
-    Utils::debug($config, 'ccc');
     $comments = [];
     $comments[] = array(
       'block' => Scaffolder::HEADER,
