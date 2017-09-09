@@ -8,7 +8,7 @@
   
   <meta name="author" content="Factorial GmbH, Hamburg">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>config.yaml - Entity Scaffolder</title>
+  <title>EntityScaffolder - Entity Scaffolder</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "config.yaml";
-    var mkdocs_page_input_path = "configurations/config.md";
-    var mkdocs_page_url = "/configurations/config/";
+    var mkdocs_page_name = "EntityScaffolder";
+    var mkdocs_page_input_path = "contribute/entity-scaffolder.md";
+    var mkdocs_page_url = "/contribute/entity-scaffolder/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -66,29 +66,22 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">config.yaml</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#configyaml">config.yaml</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../../configurations/config/">config.yaml</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../entities/">Entities</a>
+        <a class="" href="../../configurations/entities/">Entities</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../fields/">Fields</a>
+        <a class="" href="../../configurations/fields/">Fields</a>
         
     </li>
 
@@ -102,15 +95,31 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../../contribute/entity-scaffolder/">EntityScaffolder</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">EntityScaffolder</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#plugin-enhancement">Plugin enhancement</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#contributing-field-templates">Contributing Field templates</a></li>
+                
+                    <li><a class="toctree-l4" href="#field-base">Field Base</a></li>
+                
+                    <li><a class="toctree-l4" href="#field-instance">Field Instance</a></li>
+                
+                    <li><a class="toctree-l4" href="#field-preprocess">Field Preprocess</a></li>
+                
+            
+            </ul>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../../contribute/documentation/">Documentation</a>
+        <a class="" href="../documentation/">Documentation</a>
         
     </li>
 
@@ -140,14 +149,14 @@
     
       
         
-          <li>Configurations &raquo;</li>
+          <li>Contirbution Guide &raquo;</li>
         
       
     
-    <li>config.yaml</li>
+    <li>EntityScaffolder</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://source.factorial.io/skakanat/entity_scaffolder/edit/develop/docs/docs/configurations/config.md"> Edit on GitLab</a>
+        <a href="https://source.factorial.io/skakanat/entity_scaffolder/edit/develop/docs/docs/contribute/entity-scaffolder.md"> Edit on GitLab</a>
       
     </li>
   </ul>
@@ -156,41 +165,47 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="configyaml">config.yaml</h1>
-<p>Project specific configuration file. All global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via <code>config-dir</code> option for <code>drush es</code>.</p>
-<pre><code class="yaml"># Pass the project specific directory locations.
-directories:
-  templates : 'sites/all/themes/custom/MyProjectTheme/templates'
-  theme : 'sites/all/themes/custom/MyProjectTheme'
-  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'
+                <p>If you get stuck at any point you can create a <a href="https://source.factorial.io/skakanat/entity_scaffolder/issues">ticket on GitLab</a>.</p>
+<h2 id="plugin-enhancement">Plugin enhancement</h2>
+<p>Contribution to plugin itself requires a good understanding of PHP, Drupal and features. The Scaffolder for D7 tries to create files which features would have created from configurations stored in the database. Contact the core developers to see how you could help in this department.</p>
+<h2 id="contributing-field-templates">Contributing Field templates</h2>
+<h3 id="field-base">Field Base</h3>
+<p>The templates and configurations required to create a field_base definition. Each new field definitions are added as new folder under <code>/Drush/EntityScaffolder/d7/templates/field_base</code>. </p>
+<pre><code>Drush/EntityScaffolder/d7/templates/field_base/file
+    config.yaml
+    feature.content.twig
 </code></pre>
 
+<p><code>config.yaml</code> supports following options</p>
 <table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Explanation</th>
+<th>Options</th>
+<th>Details</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>directories</td>
-<td>Pass the project specific directory locations</td>
+<td>dependencies</td>
+<td>Usedto declare the field dependency with drupal modules.</td>
 </tr>
 <tr>
-<td>directories.templates</td>
-<td>Path to template folder</td>
+<td>variables</td>
+<td>An array of vriables that is used to create the fields. The key is the name of the variable.</td>
 </tr>
 <tr>
-<td>directories.theme</td>
-<td>Path to the theme folder</td>
+<td>variables.%key%.required</td>
+<td>Boolean indicating if the variable is mandatory or not.</td>
 </tr>
 <tr>
-<td>directories.patternlab</td>
-<td>Path to patterlab sourcefolder</td>
+<td>variables.%key%.default</td>
+<td>Value that is assinged to the variable if user doesn't provide it in the configuration.</td>
 </tr>
 </tbody>
 </table>
+<p>The content of <code>feature.content.twig</code> is the snippet required to create the feature export for field_base.</p>
+<h3 id="field-instance">Field Instance</h3>
+<h3 id="field-preprocess">Field Preprocess</h3>
               
             </div>
           </div>
@@ -198,10 +213,10 @@ directories:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../entities/" class="btn btn-neutral float-right" title="Entities">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../documentation/" class="btn btn-neutral float-right" title="Documentation">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../../available-tasks/" class="btn btn-neutral" title="Available tasks"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../configurations/fields/" class="btn btn-neutral" title="Fields"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -229,10 +244,10 @@ directories:
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../../available-tasks/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../../configurations/fields/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../entities/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../documentation/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

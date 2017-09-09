@@ -17,4 +17,6 @@ pages:
   - 'config.yaml' : 'configurations/config.md'
   - 'Entities' : 'configurations/entities.md'
   - 'Fields' : 'configurations/fields.md'
-- contribute.md
+- Contirbution Guide:
+  - 'EntityScaffolder' : 'contribute/entity-scaffolder.md'
+  - 'Documentation' : 'contribute/documentation.md'

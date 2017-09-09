@@ -40,11 +40,19 @@
     
 
     
+        
     <url>
-     <loc>/contribute/</loc>
+     <loc>/contribute/entity-scaffolder/</loc>
      <lastmod>2017-09-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    <url>
+     <loc>/contribute/documentation/</loc>
+     <lastmod>2017-09-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
 </urlset>

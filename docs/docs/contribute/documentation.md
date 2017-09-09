@@ -1,15 +1,5 @@
-# Contributing to EntityScaffolder
 
-If you get stuck at any point you can create a [ticket on GitLab](https://source.factorial.io/skakanat/entity_scaffolder/issues).
-
-## Contributing to development
-
-_@TODO_
-
-## Improving Documenation
-
-_@TODO_
-
+#Improving Documenation
 
 !!! tip
     To edit existing pages, use the **Edit on GitLab** link on the top right corner of the page.
