@@ -110,6 +110,10 @@ class Utils {
    * Helper function to write file.
    */
   function writeFile($filepath, $file_contents) {
+    $parent = dirname($filepath);
+    if (!is_dir($parent)) {
+      mkdir($parent, 0777, TRUE);
+    }
     if (file_put_contents($filepath, $file_contents) === FALSE) {
       drush_log(dt('Error while writing to file @file', array('@file' => $filepath)), 'error');
     }
