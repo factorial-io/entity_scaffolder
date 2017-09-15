@@ -25,12 +25,7 @@ class ESFieldPreprocess extends ESField {
 
     $block = Scaffolder::CONTENT;
     $key = $info['preprocess_hook'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['field_name'];
-    if ($info['cardinality'] == 1) {
-      $template = '/field_preprocess/' . $info['type'] . '/code.content';
-    }
-    else {
-      $template = '/field_preprocess/' . $info['type'] . '/code.contents';
-    }
+    $template = '/field_preprocess/' . $info['type'] . '/code.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
