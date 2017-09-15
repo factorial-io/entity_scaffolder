@@ -2,6 +2,8 @@
 
 namespace Drush\EntityScaffolder;
 
+use Symfony\Component\Yaml\Parser;
+
 class Utils {
 
   const FILE_EXISTS_OVERWRITE = 'OVERWRITE';
@@ -37,7 +39,11 @@ class Utils {
    * Helper function to load config and defaults.
    */
   public function getConfig($file) {
-    $config = file_exists($file) ? \Spyc::YAMLLoad($file) : array();
+    $config = array();
+    if (file_exists($file)) {
+      $yaml = new Parser();
+      $config = $yaml->parse(file_get_contents($file));
+    }
     return $config;
   }
 

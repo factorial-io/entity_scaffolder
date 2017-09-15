@@ -4,16 +4,14 @@
  * @file
  * Provide Drush integration for entity schaffolding.
  */
+
+require_once __DIR__ . '/vendor/autoload.php';
+
 ini_set('memory_limit', -1);
 define('DRUPAL_ROOT', drush_entity_scaffolder_define_drupal_root());
 chdir(DRUPAL_ROOT);
 drush_log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'success');
 define('MAINTENANCE_MODE', 'update');
-
-
-require_once "libraries/Spyc/Spyc.php";
-require_once 'libraries/Twig/Autoloader.php';
-Twig_Autoloader::register();
 
 use Drush\EntityScaffolder\d7\Scaffolder;
 use Drush\EntityScaffolder\Utils;
@@ -58,9 +56,7 @@ function entity_scaffolder_drush_command() {
  * Before calling this we need to be bootstrapped to DRUPAL_BOOTSTRAP_DATABASE.
  */
 function drush_entity_scaffolder() {
-
   spl_autoload_register('drush_entity_scaffolder_autoload');
-
   drush_log("Scaffolding started.", 'success');
   // Load the D7 scaffolder by default.
   $scaffolder = new Scaffolder();
