@@ -65,10 +65,10 @@ class Scaffolder extends ScaffolderBase {
    */
   public function scaffold() {
     if (empty($this->getEntityTypes())) {
-      $this->logger->log(dt('Entity Scaffolder didn\'t find any definitions'), 'error');
+      Logger::log(dt('Entity Scaffolder didn\'t find any definitions'), 'error');
       return;
     }
-    $this->logger->log(dt('Found some entity definitions.'), 'status');
+    Logger::log(dt('Found some entity definitions.'), 'status');
     foreach ($this->getEntityTypes() as $entity_type) {
       if (isset($this->plugins[$entity_type])) {
         $this->plugins[$entity_type]->scaffold();
