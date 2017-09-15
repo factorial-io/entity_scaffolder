@@ -49,7 +49,7 @@ class ESBase {
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $key = 'paragraphs_info : ' . Scaffolder::FOOTER;
-    $code = "\n  return \$items;\n}";
+    $code = "\n  );\n\n  return \$items;\n}";
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $module = 'fe_es';
