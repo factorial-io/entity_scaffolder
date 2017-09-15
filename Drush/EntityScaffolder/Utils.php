@@ -53,20 +53,20 @@ class Utils {
   public function copyFolderContents($source, $destination) {
     if (!file_exists($destination) && !is_dir($destination)) {
       if (mkdir($destination)) {
-        drush_log(dt('Created directory : @dir', array('@dir' => $destination)), 'success');
+        Logger::log(dt('Created directory : @dir', array('@dir' => $destination)), 'success');
       }
       else {
-        drush_log(dt('Error while creating directory : @dir', array('@dir' => $destination)), 'error');
+        Logger::log(dt('Error while creating directory : @dir', array('@dir' => $destination)), 'error');
       }
     }
     $files = array();
     foreach (glob($source . '/*.*') as $file) {
       $file_name = basename($file);
       if (copy($file, $destination . '/' . $file_name)) {
-        drush_log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
+        Logger::log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
       }
       else {
-        drush_log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
+        Logger::log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
       }
     }
   }
@@ -121,10 +121,10 @@ class Utils {
       mkdir($parent, 0777, TRUE);
     }
     if (file_put_contents($filepath, $file_contents) === FALSE) {
-      drush_log(dt('Error while writing to file @file', array('@file' => $filepath)), 'error');
+      Logger::log(dt('Error while writing to file @file', array('@file' => $filepath)), 'error');
     }
     else {
-      drush_log(dt('Updated @file', array('@file' => $filepath)), 'success');
+      Logger::log(dt('Updated @file', array('@file' => $filepath)), 'success');
     }
   }
 

@@ -3,6 +3,7 @@
 namespace Drush\EntityScaffolder;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\Logger;
 
 class ScaffolderBase implements ScaffolderInterface {
 

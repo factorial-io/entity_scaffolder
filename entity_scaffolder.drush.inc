@@ -6,15 +6,17 @@
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
+spl_autoload_register('drush_entity_scaffolder_autoload');
+
+use Drush\EntityScaffolder\d7\Scaffolder;
+use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\Logger;
 
 ini_set('memory_limit', -1);
 define('DRUPAL_ROOT', drush_entity_scaffolder_define_drupal_root());
 chdir(DRUPAL_ROOT);
-drush_log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'success');
 define('MAINTENANCE_MODE', 'update');
 
-use Drush\EntityScaffolder\d7\Scaffolder;
-use Drush\EntityScaffolder\Utils;
 
 /**
  * Implements hook_drush_help().
@@ -38,7 +40,7 @@ function entity_scaffolder_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'options' => array(
       'config-dir' => 'Directory to read the config file/s from.',
-      'fire-bazooka' => 'Deletes all previous entries and force rebuild.',
+      'fire-bazooka' => '@todo: Deletes all previous entries and force rebuild.',
       'debug' => 'Runs entity_scaffolder in debug mode.',
     ),
     'examples' => array(
@@ -47,22 +49,48 @@ function entity_scaffolder_drush_command() {
     'aliases' => array('es'),
   );
 
+  $items['entity-scaffold-buddy'] = array(
+    'description' => '@todo: Helper command to interact with entity-scaffolder to know more.',
+    'callback' => 'drush_entity_scaffolder_buddy',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'arguments' => array(
+      'type' => 'entity or field',
+      'name' => 'Name of the Entity or field. Eg. fpp, text, list, etc...',
+    ),
+    'options' => array(
+      'debug' => 'Runs entity_scaffolder in debug mode.',
+    ),
+    'examples' => array(
+      'drush esb --debug' => 'This will provide an extensive details about entity that could be scaffolded.',
+    ),
+    'aliases' => array('esb'),
+  );
+
   return $items;
 }
 
 /**
- * Rebuild the registry.
- *
- * Before calling this we need to be bootstrapped to DRUPAL_BOOTSTRAP_DATABASE.
+ * Run entity scaffolder.
  */
 function drush_entity_scaffolder() {
-  spl_autoload_register('drush_entity_scaffolder_autoload');
-  drush_log("Scaffolding started.", 'success');
+  Logger::log("Scaffolding started.", 'status');
+  Logger::log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'status');
   // Load the D7 scaffolder by default.
   $scaffolder = new Scaffolder();
   $scaffolder->scaffold();
   $scaffolder->exportCode();
-  drush_log("Scaffolding finished.", 'success');
+  Logger::log("Scaffolding finished.", 'success');
+}
+
+/**
+ * Run entity scaffolder.
+ */
+function drush_entity_scaffolder_buddy() {
+  spl_autoload_register('drush_entity_scaffolder_autoload');
+  list($type, $name) = func_get_args();
+  // Load the D7 scaffolder by default.
+  $scaffolder = new Scaffolder();
+  $scaffolder->help($type, $name);
 }
 
 /**
@@ -76,7 +104,7 @@ function drush_entity_scaffolder_autoload($class) {
     require $file;
   }
   else {
-    drush_log("FILE NOT FOUND: $file", 'error');
+    Logger::log("FILE NOT FOUND: $file", 'error');
   }
 }
 
@@ -95,6 +123,6 @@ function drush_entity_scaffolder_define_drupal_root() {
     }
     $parent_count++;
   }
-  drush_log("Failure: Unable to discover DRUPAL_ROOT.", 'error');
+  Logger::log("Failure: Unable to discover DRUPAL_ROOT.", 'error');
   exit(1);
 }

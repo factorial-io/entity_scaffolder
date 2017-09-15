@@ -5,10 +5,53 @@ namespace Drush\EntityScaffolder\d7;
 use Drush\EntityScaffolder\ScaffolderInterface;
 use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\ScaffolderBase;
+use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
 
   protected $plugins;
+
+  public function help($type, $name) {
+    switch ($type) {
+      case 'entity':
+        if ($name && !empty($this->plugins[$name])) {
+          if (method_exists($this->plugins[$name], 'help')) {
+            $this->plugins[$name]->help();
+          }
+        }
+        else {
+          Logger::log('Please provide one of the supported entities to display more details.', 'warning');
+          $headers = array('Key', 'Example usage', 'Description');
+          $data = [];
+          $data[] = ['fpp', 'drush esb entity fpp' ,'Fieldable Panels Pane'];
+          $data[] = ['paragraphs', 'drush esb entity paragraphs' ,'Paragraphs Item'];
+          Logger::table($headers, $data, 'status');
+        }
+        break;
+
+      case 'field':
+        $plugins = [];
+        $plugins['field_base'] = new ESFieldBase($this);
+        $plugins['field_instance'] = new ESFieldInstance($this);
+        $plugins['preprocess'] = new ESFieldPreprocess($this);
+        $plugins['patternlab_template_manager'] = new ESPatternLabField($this);
+        foreach ($plugins as $plugin) {
+          if (method_exists($plugin, 'help')) {
+            $plugin->help($name);
+          }
+        }
+        break;
+
+      default:
+        Logger::log('Please provide more options to show details.', 'warning');
+        $headers = array('Key', 'Example usage', 'Description');
+        $data = [];
+        $data[] = ['entity', 'drush esb entity fpp' ,'Shows more details about Fieldable Panels Pane'];
+        $data[] = ['field', 'drush esb field text' ,'Shows more detail about text field'];
+        Logger::table($headers, $data, 'status');
+        break;
+    }
+  }
 
   public function __construct() {
     parent::__construct();
@@ -22,9 +65,10 @@ class Scaffolder extends ScaffolderBase {
    */
   public function scaffold() {
     if (empty($this->getEntityTypes())) {
-      drush_log(dt('Entity Scaffolder didn\'t find any definitions'), 'error');
+      $this->logger->log(dt('Entity Scaffolder didn\'t find any definitions'), 'error');
       return;
     }
+    $this->logger->log(dt('Found some entity definitions.'), 'status');
     foreach ($this->getEntityTypes() as $entity_type) {
       if (isset($this->plugins[$entity_type])) {
         $this->plugins[$entity_type]->scaffold();

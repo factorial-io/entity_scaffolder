@@ -7,3 +7,4 @@ variables :
     placeholder : 1
     required : false
     default : 1
+    description: Number of values that would be held in the field

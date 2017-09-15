@@ -3,8 +3,29 @@
 namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\Logger;
 
 class ESFieldBase extends ESField {
+
+  public function help($name) {
+    $config = $this->getConfig([], [], ['type' => $name]);
+    Logger::log('[field_base] : ' . $name, 'status');
+    Logger::log('Following are the values supported in configuration');
+    $headers = array('', 'Property', 'Variable type', 'Description');
+    $data = [];
+    $data[] = ['*', 'name', 'string', "The label of the fpp, which is displayed to the editors."];
+    $data[] = ['*', 'map', 'string', "The variable to which the values in this field will be mapped to\nPatternlab twig templates."];
+    $data[] = ['*', 'type', 'string', "The type of this field."];
+    $data[] = ['*', 'machine_name', 'machine name (string)', "String used to construct machine name of the field.\nThis will be prefixed with appropriate string under naming convention."];
+    if ($config['local_config']['variables']) {
+      foreach ($config['local_config']['variables'] as $key => $value) {
+        $required = $value['required'] ? "*" : '';
+        $data[] = [$required, $key, $value['type'], $value['description']];
+      }
+    }
+    Logger::table($headers, $data, 'status');
+    Logger::log('NOTE: A asterisk "*" in first column means the field is required.');
+  }
 
   public function generateCode($info) {
     $module = 'fe_es';

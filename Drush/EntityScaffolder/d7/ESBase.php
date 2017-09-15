@@ -3,6 +3,7 @@
 namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\Logger;
 use Drush\EntityScaffolder\ScaffolderBase;
 
 class ESBase {
@@ -80,7 +81,7 @@ class ESBase {
   public function processConfigData($config) {
 
     if (empty($config)) {
-      drush_log(dt('Configuration is empty'), 'error');
+      Logger::log(dt('Configuration is empty'), 'error');
       return NULL;
     }
 
@@ -112,7 +113,7 @@ class ESBase {
           '%key' => $key,
           '%file' => $input['_file'],
         );
-        drush_log(dt('Required variable %key is missing in %file', $vars), 'error');
+        Logger::log(dt('Required variable %key is missing in %file', $vars), 'error');
       }
     }
     return $has_all_required_variables;

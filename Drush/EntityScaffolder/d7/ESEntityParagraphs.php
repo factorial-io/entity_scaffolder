@@ -5,8 +5,20 @@ namespace Drush\EntityScaffolder\d7;
 use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\d7\ESBaseInterface;
 use Drush\EntityScaffolder\d7\ESEntity;
+use Drush\EntityScaffolder\Logger;
 
 class ESEntityParagraphs extends ESEntity implements ESBaseInterface {
+
+  public function help() {
+    Logger::log('[paragraphs] : Paragraphs Item', 'status');
+    Logger::log('Following are the values supported in configuration', 'status');
+    $headers = array('Property', 'Variable type', 'Description');
+    $data = [];
+    $data[] = ['name', 'string' ,'The label of the paragraph bundle, which is displayed to the editors.'];
+    $data[] = ['machine_name', 'machine name (string)' , 'Internal machine name.'];
+    $data[] = ['fields', 'array' ,'Array of field definitions that is attached to the entity'];
+    Logger::table($headers, $data, 'status');
+  }
 
   public function __construct(Scaffolder $scaffolder) {
     parent::__construct($scaffolder);
