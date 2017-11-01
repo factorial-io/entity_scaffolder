@@ -1,7 +1,7 @@
 {% if cardinality == 1 %}
   // Preprocess {{ field_name }}.
-  $vars['{{ map }}'] = "PLACEHOLDER for VIDEO";
+  $vars['{{ map }}'] = $vars['content']['{{ field_name }}'];
 {% else %}
   // Preprocess {{ field_name }}.
-  $vars['{{ map }}'] = ["PLACEHOLDER for VIDEO"];
+  $vars['{{ map }}'] = $vars['content']['{{ field_name }}'];
 {% endif %}
