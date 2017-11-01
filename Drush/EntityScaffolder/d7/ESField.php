@@ -20,6 +20,7 @@ class ESField extends ESBase {
    * Helper function to generate machine name for fields.
    */
   public function getFieldName($config, $field_key) {
+    $field_key = strtolower($field_key);
     return $config['field_prefix'] . '_' . $field_key;
   }
 
