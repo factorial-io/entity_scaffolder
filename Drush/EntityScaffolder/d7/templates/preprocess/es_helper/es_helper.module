@@ -30,6 +30,11 @@ function es_helper_preprocess_entity(&$variables) {
  */
 function es_helper_preprocess_fieldable_panels_pane(&$vars) {
 
+  $vars['title'] = '';
+  if (!empty($vars['elements']['#fieldable_panels_pane']->title)) {
+    $vars['title'] = $vars['elements']['#fieldable_panels_pane']->title;
+  }
+
   $fn = 'es_helper_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
   if (function_exists($fn)) {
     $fn($vars);
@@ -48,11 +53,6 @@ function es_helper_preprocess_fieldable_panels_pane(&$vars) {
     $vars['theme_hook_suggestions'][] = 'fieldable_panels_pane__' . str_replace('-', '_', $vars['elements']['#bundle']) . '__' . str_replace('-', '_', $view_mode);
   }
 
-  // Expose FPP title as title.
-  $vars['title'] = '';
-  if (!empty($vars['elements']['#fieldable_panels_pane']->title)) {
-    $vars['title'] = $vars['elements']['#fieldable_panels_pane']->title;
-  }
 }
 
 /**
