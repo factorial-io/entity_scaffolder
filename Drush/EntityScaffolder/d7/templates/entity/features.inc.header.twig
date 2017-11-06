@@ -3,3 +3,18 @@
  * @file
  * fe_es.features.inc
  */
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function fe_es_image_default_styles() {
+  $styles = array();
+
+  // Exported image style: original.
+  $styles['original'] = array(
+    'label' => 'Original',
+    'effects' => array(),
+  );
+
+  return $styles;
+}
