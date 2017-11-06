@@ -1,5 +1,7 @@
 
   {{ map }} ({{ field_name }})
-    type            : text_long
+    type            : link
     cardinality     : {{ cardinality }}
-    variable type   : text
+    variable type   : array
+      {{ map }}.label : Label
+      {{ map }}.url   : URL
