@@ -11,6 +11,7 @@ class ESField extends ESBase {
    */
   public function scaffold($config) {
     if (!isset($config['fields'])) {
+      // @todo insert a meaningful log message here.
       return;
     }
     foreach ($config['fields'] as $field_key => $field_info) {
