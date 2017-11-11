@@ -34,6 +34,8 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     $code = "\nfeatures[features_api][] = api:2";
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    $code = "\nfeatures[image][] = " . $info['machine_name'];
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     Logger::debug($info);
   }
 
@@ -52,8 +54,10 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
     if ($config_files) {
       foreach ($config_files as $file) {
         $config = $this->getConfig($file);
-        if ($config) {
-          $this->generateCode($config);
+        if (!empty($config['image_styles'])) {
+          foreach ($config['image_styles'] as $image_style_config) {
+            $this->generateCode($image_style_config);
+          }
         }
       }
     }
@@ -63,7 +67,18 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
    * Helper function to load config and defaults.
    */
   public function getConfig($file) {
-    $config = parent::getConfig($file);
-    return $this->processConfigData($config);
+    $config_data = parent::getConfig($file);
+    if ($config_data) {
+      if (!empty($config_data['image_styles'])) {
+        $prefix_machine_name = isset($config_data['prefix']['machine_name']) ? $config_data['prefix']['machine_name'] : '';
+        $prefix_name = isset($config_data['prefix']['name']) ? $config_data['prefix']['name'] : '';
+        foreach ($config_data['image_styles'] as &$config) {
+          $config['name'] = empty($config['name']) ? $config['machine_name'] : $config['name'];
+          $config['name'] = $prefix_name . $config['name'];
+          $config['machine_name'] = $prefix_machine_name . $config['machine_name'];
+        }
+      }
+    }
+    return $this->processConfigData($config_data);
   }
 }
