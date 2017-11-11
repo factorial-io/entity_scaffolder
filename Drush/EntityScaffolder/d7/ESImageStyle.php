@@ -7,7 +7,7 @@ use Drush\EntityScaffolder\d7\ESBaseInterface;
 use Drush\EntityScaffolder\d7\ESEntity;
 use Drush\EntityScaffolder\Logger;
 
-class ESImageStyle extends ESEntity implements ESBaseInterface {
+class ESImageStyle extends ESBase implements ESBaseInterface {
 
   public function help() {
     Logger::log('[image_style] : Image style', 'status');
@@ -34,13 +34,36 @@ class ESImageStyle extends ESEntity implements ESBaseInterface {
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     $code = "\nfeatures[features_api][] = api:2";
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    Logger::debug($info);
   }
 
   /**
    * Loads scaffold source files.
    */
   public function loadScaffoldSourceConfigurations() {
-    return Utils::getConfigFiles($this->scaffolder->getConfigDir());
+    return Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/image_style');
   }
 
+  /**
+   * The main scaffolding action.
+   */
+  public function scaffold() {
+    $config_files = $this->loadScaffoldSourceConfigurations();
+    if ($config_files) {
+      foreach ($config_files as $file) {
+        $config = $this->getConfig($file);
+        if ($config) {
+          $this->generateCode($config);
+        }
+      }
+    }
+  }
+
+  /**
+   * Helper function to load config and defaults.
+   */
+  public function getConfig($file) {
+    $config = parent::getConfig($file);
+    return $this->processConfigData($config);
+  }
 }
