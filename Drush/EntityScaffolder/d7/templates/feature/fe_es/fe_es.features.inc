@@ -12,18 +12,3 @@ function fe_es_ctools_plugin_api($module = NULL, $api = NULL) {
     return array("version" => "1");
   }
 }
-
-/**
- * Implements hook_image_default_styles().
- */
-function fe_es_image_default_styles() {
-  $styles = array();
-
-  // Exported image style: original.
-  $styles['original'] = array(
-    'label' => 'Original',
-    'effects' => array(),
-  );
-
-  return $styles;
-}
