@@ -36,7 +36,6 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     $code = "\nfeatures[image][] = " . $info['machine_name'];
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
-    Logger::debug($info);
 
     $module = 'fe_es';
     $filename = 'fe_es.features.inc';
@@ -50,6 +49,15 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
     $template = '/image_style/code.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    if ($info['effects']) {
+      foreach ($info['effects'] as $key => $effect) {
+        $key = 'image_styles : ' . Scaffolder::CONTENT . $info['machine_name'] . Scaffolder::CONTENT . $key;
+        $template = '/image_style/effects/' . $effect['name'] . '/feature.content';
+        $code = $this->scaffolder->render($template, $effect);
+        $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+      }
+    }
 
     $key = 'image_styles : ' . Scaffolder::CONTENT . $info['machine_name'] . Scaffolder::FOOTER;
     $template = '/image_style/code.footer';
