@@ -1,0 +1,15 @@
+{% if cardinality == 1 %}
+  // Preprocess {{ field_name }}.
+  if (!empty($vars['content']['{{ field_name }}'])) {
+    $vars['{{ map }}'] = $vars['content']['{{ field_name }}'];
+  }
+{% else %}
+  // Preprocess {{ field_name }}.
+  if (!empty($vars['content']['{{ field_name }}'])) {
+    $keys = element_children($vars['content']['{{ field_name }}']);
+    $images = array_map(function ($key) use ($vars) {
+      return $vars['content']['{{ field_name }}'][$key];
+    }, $keys);
+    $vars['{{ map }}'] = $images;
+  }
+{% endif %}
