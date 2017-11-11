@@ -46,6 +46,16 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
+    $key = 'image_styles : ' . Scaffolder::CONTENT . $info['machine_name'] . Scaffolder::HEADER;
+    $template = '/image_style/code.header';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    $key = 'image_styles : ' . Scaffolder::CONTENT . $info['machine_name'] . Scaffolder::FOOTER;
+    $template = '/image_style/code.footer';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
     $key = 'image_styles : ' . Scaffolder::FOOTER;
     $template = '/image_style/features.inc.hook.footer';
     $code = $this->scaffolder->render($template, $info);
@@ -89,6 +99,13 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
           $config['name'] = empty($config['name']) ? $config['machine_name'] : $config['name'];
           $config['name'] = $prefix_name . $config['name'];
           $config['machine_name'] = $prefix_machine_name . $config['machine_name'];
+          if ($config['effects']) {
+            foreach ($config['effects'] as $key => &$effects) {
+              $index = $key + 1;
+              $effects['index'] = $index;
+              $effects['weight'] = empty($effects['weight']) ? $index : $effects['weight'];
+            }
+          }
         }
       }
     }
