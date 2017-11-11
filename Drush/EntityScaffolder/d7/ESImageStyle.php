@@ -37,6 +37,19 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
     $code = "\nfeatures[image][] = " . $info['machine_name'];
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     Logger::debug($info);
+
+    $module = 'fe_es';
+    $filename = 'fe_es.features.inc';
+    $block = Scaffolder::CONTENT;
+    $key = 'image_styles : ' . Scaffolder::HEADER;
+    $template = '/image_style/features.inc.hook.header';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    $key = 'image_styles : ' . Scaffolder::FOOTER;
+    $template = '/image_style/features.inc.hook.footer';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
   }
 
   /**
