@@ -10,6 +10,9 @@ class ESField extends ESBase {
    * Helper functions to create FPPS.
    */
   public function scaffold($config) {
+    if (!isset($config['fields'])) {
+      return;
+    }
     foreach ($config['fields'] as $field_key => $field_info) {
       $info = $this->getConfig($config, $field_key, $field_info);
       $this->generateCode($info);
