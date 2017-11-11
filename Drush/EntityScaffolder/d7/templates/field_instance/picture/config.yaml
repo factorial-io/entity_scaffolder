@@ -1,0 +1,4 @@
+variables :
+  picture_mapping:
+    type : string
+    required : true
