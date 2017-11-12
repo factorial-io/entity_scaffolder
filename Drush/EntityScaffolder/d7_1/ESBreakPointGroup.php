@@ -35,6 +35,10 @@ class ESBreakPointGroup extends ESBase implements ESBaseInterface {
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
     $code = "\nfeatures[breakpoint_group][] = " . $info['machine_name'];
     $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    $code = "\nfeatures[ctools][] = breakpoints:default_breakpoint_group:1";
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+    $code = "\nfeatures[ctools][] = breakpoints:default_breakpoints:1";
+    $this->scaffolder->setCode($module, $filename, $block, $code, $code);
 
     // Add hook_ctools_plugin_api().
     $module = 'fe_es';
