@@ -1,0 +1,22 @@
+prefix:
+  machine_name: mobile_
+  name: "SET 1 : mobile "
+image_styles:
+  -
+    machine_name: 240x400
+    effects:
+      -
+        name: focal_point_scale_and_crop
+        data:
+          width: 240
+          height: 400
+      -
+        name: image_desaturate
+  -
+    machine_name: 480x800
+    effects:
+      -
+        name: focal_point_scale_and_crop
+        data:
+          width: 480
+          height: 800
