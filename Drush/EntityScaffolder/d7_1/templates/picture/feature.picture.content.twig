@@ -6,16 +6,16 @@
   $picture_mapping->machine_name = '{{ machine_name }}';
   $picture_mapping->breakpoint_group = '{{ breakpoint_group }}';
   $picture_mapping->mapping = array(
-  {% for breakpoint, m in mapping %}
+{% for breakpoint, m in mapping %}
     '{{ breakpoint }}' => array(
-    {% for scale, image_style in m %}
+{% for scale, image_style in m %}
       '{{ scale }}' => array(
-            'mapping_type' => 'image_style',
-            'image_style' => '{{ image_style }}',
-          ),
-    {% endfor %}
+        'mapping_type' => 'image_style',
+        'image_style' => '{{ image_style }}',
+      ),
+{% endfor %}
     ),
-  {% endfor %}
+{% endfor %}
   );
 
   $export['{{ machine_name }}'] = $picture_mapping;
