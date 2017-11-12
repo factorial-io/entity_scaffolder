@@ -134,12 +134,11 @@ class ESBreakPointGroup extends ESBase implements ESBaseInterface {
     $config_data = parent::getConfig($file);
     if ($config_data) {
       if (!empty($config_data['breakpoints'])) {
-        $prefix_machine_name = isset($config_data['prefix']['machine_name']) ? $config_data['prefix']['machine_name'] : '';
-        $prefix_name = isset($config_data['prefix']['name']) ? $config_data['prefix']['name'] : '';
-        foreach ($config_data['breakpoints'] as &$config) {
+        foreach ($config_data['breakpoints'] as $ndx => &$config) {
           $config['name'] = $config['machine_name'];
           $config['id'] = 'breakpoints.theme.' . $config_data['machine_name'] . '.' . $config['machine_name'];
           $config['group_name'] = $config_data['machine_name'];
+          $config['weight'] = $ndx;
           if (empty($config['multiplier'])) {
             $config['multiplier'] = ['1x' => '1x'];
           }
