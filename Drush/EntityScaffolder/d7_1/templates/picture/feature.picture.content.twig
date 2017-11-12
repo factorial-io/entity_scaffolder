@@ -1,0 +1,21 @@
+
+  $picture_mapping = new PictureMapping();
+  $picture_mapping->disabled = FALSE; /* Edit this to true to make a default picture_mapping disabled initially */
+  $picture_mapping->api_version = 2;
+  $picture_mapping->label = '{{ name }}';
+  $picture_mapping->machine_name = '{{ machine_name }}';
+  $picture_mapping->breakpoint_group = '{{ breakpoint_group }}';
+  $picture_mapping->mapping = array(
+  {% for breakpoint, m in mapping %}
+    '{{ breakpoint }}' => array(
+    {% for scale, image_style in m %}
+      '{{ scale }}' => array(
+            'mapping_type' => 'image_style',
+            'image_style' => '{{ image_style }}',
+          ),
+    {% endfor %}
+    ),
+  {% endfor %}
+  );
+
+  $export['{{ machine_name }}'] = $picture_mapping;
