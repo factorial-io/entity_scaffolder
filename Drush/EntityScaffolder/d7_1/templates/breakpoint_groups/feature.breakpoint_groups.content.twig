@@ -5,12 +5,10 @@
   $breakpoint_group->machine_name = '{{ machine_name }}';
   $breakpoint_group->name = '{{ name }}';
   $breakpoint_group->breakpoints = array(
-  {% for breakpoint in breakpoints %}
+{% for breakpoint in breakpoints %}
     {{ loop.index0 }} => '{{ breakpoint.id }}',
-  {% endfor %}
+{% endfor %}
   );
   $breakpoint_group->type = 'theme';
   $breakpoint_group->overridden = 0;
   $export['{{ machine_name }}'] = $breakpoint_group;
-
-

@@ -1,5 +1,4 @@
 
-
   $breakpoint = new stdClass();
   $breakpoint->disabled = FALSE; /* Edit this to true to make a default breakpoint disabled initially */
   $breakpoint->api_version = 1;
@@ -11,10 +10,9 @@
   $breakpoint->status = 1;
   $breakpoint->weight = {{ weight }};
   $breakpoint->multipliers = array(
-  {% for key, m in multiplier %}
+{% for key, m in multiplier %}
     '{{ key }}' => '{{ m }}',
-  {% endfor %}
+{% endfor %}
   );
 
   $export['{{ id }}'] = $breakpoint;
-
