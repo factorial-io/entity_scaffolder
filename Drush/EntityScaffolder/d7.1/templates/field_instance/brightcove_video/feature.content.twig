@@ -1,0 +1,35 @@
+
+
+  // Exported field_instance:
+  // '{{ entity_type }}-{{ bundle }}-{{ field_name }}'.
+  $field_instances['{{ entity_type }}-{{ bundle }}-{{ field_name }}'] = array(
+    'bundle' => '{{ bundle }}',
+    'deleted' => 0,
+    'description' => '{{ description | raw }}',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'brightcove',
+        'settings' => array(
+          'height' => {{ settings.height }},
+          'width' => {{ settings.width }},
+        ),
+        'type' => 'brightcove_default',
+        'weight' => 2,
+      ),
+    ),
+    'entity_type' => '{{ entity_type }}',
+    'field_name' => '{{ field_name }}',
+    'label' => '{{ label }}',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'brightcove',
+      'settings' => array(),
+      'type' => 'brightcove_field_video_browser',
+      'weight' => -2,
+    ),
+  );

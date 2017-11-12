@@ -1,0 +1,24 @@
+name : Fieldable Panels Pane
+entity_type : fieldable_panels_pane
+short_name : fpp
+type : fpp
+dependencies :
+  - ctools
+  - features
+  - fieldable_panels_panes
+variables :
+  name :
+    type : text
+    placeholder : PLACEHOLDER_NAME
+    required : true
+    default : ''
+  machine_name :
+    type : machine_name
+    placeholder : placeholder_machine_name
+    required : true
+    default : ''
+  description :
+    type : text
+    placeholder : PLACEHOLDER_DESCRIPTION
+    required : false
+    default : ''

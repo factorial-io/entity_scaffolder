@@ -1,0 +1,52 @@
+
+  // Exported field_instance: '{{ entity_type }}-{{ bundle }}-{{ field_name }}'.
+  $field_instances['{{ entity_type }}-{{ bundle }}-{{ field_name }}'] = array(
+    'bundle' => '{{ bundle }}',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '{{ description | raw }}',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_plain',
+        'weight' => 1,
+      ),
+    ),
+    'entity_type' => '{{ entity_type }}',
+    'field_name' => '{{ field_name }}',
+    'label' => '{{ label }}',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+{% for format in allowed_formats %}
+          '{{ format }}' => '{{ format }}',
+{% endfor %}
+        ),
+        'allowed_formats_toggle' => 1,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+{% for format in allowed_formats %}
+            '{{ format }}' => array(
+              'weight' => {{ loop.index }},
+            ),
+{% endfor %}
+          ),
+        ),
+      ),
+      'text_processing' => {{ text_processing }},
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 4,
+      ),
+      'type' => 'text_textarea',
+      'weight' => -3,
+    ),
+  );

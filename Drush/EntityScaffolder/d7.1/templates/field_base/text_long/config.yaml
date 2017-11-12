@@ -1,0 +1,9 @@
+dependencies :
+  - text
+  - fe_es_filters
+variables :
+  cardinality :
+    type : numeric
+    placeholder : 1
+    required : false
+    default : 1

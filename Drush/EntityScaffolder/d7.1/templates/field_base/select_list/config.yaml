@@ -1,0 +1,9 @@
+dependencies :
+  - list
+  - options
+variables :
+  cardinality :
+    type : numeric
+    placeholder : 1
+    required : false
+    default : 1

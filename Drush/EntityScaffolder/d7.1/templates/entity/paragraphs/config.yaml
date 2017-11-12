@@ -1,0 +1,19 @@
+name : Paragraphs Item
+short_name : pgf
+entity_type: paragraphs_item
+type : paragraphs
+dependencies :
+  - ctools
+  - features
+  - paragraphs
+variables :
+  name :
+    type : text
+    placeholder : PLACEHOLDER_NAME
+    required : true
+    default : ''
+  machine_name :
+    type : machine_name
+    placeholder : placeholder_machine_name
+    required : true
+    default : ''
