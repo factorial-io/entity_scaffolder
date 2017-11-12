@@ -1,6 +1,6 @@
 <?php
 
-namespace Drush\EntityScaffolder\d7;
+namespace Drush\EntityScaffolder\d7_1;
 
 use Drush\EntityScaffolder\Utils;
 

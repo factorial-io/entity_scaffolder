@@ -1,10 +1,10 @@
 <?php
 
-namespace Drush\EntityScaffolder\d7;
+namespace Drush\EntityScaffolder\d7_1;
 
 use Drush\EntityScaffolder\Utils;
-use Drush\EntityScaffolder\d7\ESBaseInterface;
-use Drush\EntityScaffolder\d7\ESEntity;
+use Drush\EntityScaffolder\d7_1\ESBaseInterface;
+use Drush\EntityScaffolder\d7_1\ESEntity;
 use Drush\EntityScaffolder\Logger;
 
 class ESImageStyle extends ESBase implements ESBaseInterface {
