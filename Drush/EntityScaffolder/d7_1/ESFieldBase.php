@@ -41,6 +41,7 @@ class ESFieldBase extends ESField {
     $block = Scaffolder::CONTENT;
     $key = $info['field_name'];
     $template = '/field/' . $info['type'] . '/base/feature.content';
+    $template = $this->getTemplateFile('/field/__type__/base/feature.content', $info);
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
@@ -76,7 +77,41 @@ class ESFieldBase extends ESField {
     $this->setTemplateDir('/field/' . $info['type'] . '/base');
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
-    return $this->processConfigData($info);
+
+    $field_config_file = $this->scaffolder->getTemplatedir() . '/field/' . $info['type'] . '/config.yaml';
+    $field_config = Utils::getConfig($field_config_file);
+
+    // Set parent if applicable.
+    if (!empty($field_config['parent']) && $field_config['parent'] !== $field_info['type']) {
+      $field_info['type'] = $field_config['parent'];
+      $parent = new ESFieldBase($this->scaffolder);
+      $parent->getConfig($config, $field_key, $field_info);
+      $this->setParent($parent);
+    }
+    $info = $this->processConfigData($info);
+    $this->setInfo($info);
+    return $this->getInfo();
   }
 
+  /**
+   * Helper function to get template file name respecting extention.
+   */
+  public function getTemplateFile($pattern) {
+    $info = $this->getInfo();
+    $file = str_replace('__type__', $info['type'], $pattern);
+    if(!$this->checkIfTemplateFileExists($file)) {
+      if ($parent = $this->getParent()) {
+        $file = $parent->getTemplateFile($pattern, $info);
+      }
+    }
+    return $file;
+  }
+
+  /**
+   * Helper function to check if a given template file exists.
+   */
+  public function checkIfTemplateFileExists($template_file) {
+    $file = $this->scaffolder->getTemplatedir() . $template_file . '.twig';
+    return Utils::fileNotEmpty($file);
+  }
 }

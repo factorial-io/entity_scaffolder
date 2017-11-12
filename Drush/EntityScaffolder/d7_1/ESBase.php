@@ -11,6 +11,8 @@ class ESBase {
   protected $scaffolder;
   protected $plugins;
   protected $template_dir;
+  protected $parent;
+  protected $info;
 
   public function __construct(Scaffolder $scaffolder) {
     $this->scaffolder = $scaffolder;
@@ -132,7 +134,6 @@ class ESBase {
     return $input;
   }
 
-
   /**
    * Gets the directory from which the templates will be picked up.
    */
@@ -147,5 +148,32 @@ class ESBase {
     $this->template_dir = $dir;
   }
 
+  /**
+   * Gets the directory from which the templates will be picked up.
+   */
+  public function getParent() {
+    return $this->parent;
+  }
+
+  /**
+   * Sets the directory from which the templates will be picked up.
+   */
+  public function setParent($parent) {
+    $this->parent = $parent;
+  }
+
+  /**
+   * Gets the directory from which the templates will be picked up.
+   */
+  public function getInfo() {
+    return $this->info;
+  }
+
+  /**
+   * Sets the directory from which the templates will be picked up.
+   */
+  public function setInfo($info) {
+    $this->info = $info;
+  }
 
 }
