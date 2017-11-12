@@ -12,26 +12,26 @@ class ESFieldPreprocess extends ESField {
     // Add File header.
     $block = Scaffolder::HEADER;
     $key = 0;
-    $template = '/field_preprocess/file.header';
+    $template = '/field/preprocess__file.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add Code block.
     $block = Scaffolder::CONTENT;
     $key = $info['preprocess_hook'] . ' : ' . Scaffolder::HEADER;
-    $template = '/field_preprocess/code.header';
+    $template = '/field/preprocess__code.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $block = Scaffolder::CONTENT;
     $key = $info['preprocess_hook'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['field_name'];
-    $template = '/field_preprocess/' . $info['type'] . '/code.content';
+    $template = '/field/' . $info['type'] . '/preprocess/code.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $block = Scaffolder::CONTENT;
     $key = $info['preprocess_hook'] . ' : ' . Scaffolder::FOOTER;
-    $template = '/field_preprocess/code.footer';
+    $template = '/field/preprocess__code.footer';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
@@ -39,7 +39,7 @@ class ESFieldPreprocess extends ESField {
     // Add file footer.
     $block = Scaffolder::FOOTER;
     $key = 0;
-    $template = '/field_preprocess/file.footer';
+    $template = '/field/preprocess__file.footer';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
@@ -65,7 +65,7 @@ class ESFieldPreprocess extends ESField {
     $info['field_name'] = $this->getFieldName($config, $field_key);
     $info['preprocess_hook'] = $this->getPreprocessHookName($config, $field_key);
     $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
-    $this->setTemplateDir('/field_preprocess/' . $info['type']);
+    $this->setTemplateDir('/field/' . $info['type'] . '/preprocess');
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
     return $this->processConfigData($info);

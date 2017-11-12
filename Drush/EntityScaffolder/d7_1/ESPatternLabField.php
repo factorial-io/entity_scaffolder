@@ -14,7 +14,7 @@ class ESPatternLabField extends ESPatternLab {
     $comments[] = array(
       'block' => Scaffolder::CONTENT,
       'key' => $config['field_name'],
-      'template' => '/field_preprocess/' . $config['type'] . '/pattern',
+      'template' => '/field/' . $config['type'] . '/preprocess/pattern',
     );
     return $comments;
   }

@@ -33,21 +33,21 @@ class ESFieldBase extends ESField {
     // Add File header.
     $block = Scaffolder::HEADER;
     $key = 0;
-    $template = '/field_base/feature.header';
+    $template = '/field/base__feature.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add Code block.
     $block = Scaffolder::CONTENT;
     $key = $info['field_name'];
-    $template = '/field_base/' . $info['type'] . '/feature.content';
+    $template = '/field/' . $info['type'] . '/base/feature.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add file footer.
     $block = Scaffolder::FOOTER;
     $key = 0;
-    $template = '/field_base/feature.footer';
+    $template = '/field/base__feature.footer';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
@@ -73,7 +73,7 @@ class ESFieldBase extends ESField {
     $info = $field_info;
     $info['field_name'] = $this->getFieldName($config, $field_key);
     $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];
-    $this->setTemplateDir('/field_base/' . $info['type']);
+    $this->setTemplateDir('/field/' . $info['type'] . '/base');
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
     return $this->processConfigData($info);
