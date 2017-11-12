@@ -64,7 +64,20 @@ class ESFieldInstance extends ESField {
     $this->setTemplateDir('/field/' . $info['type'] . '/instance');
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplateDir() . '/config.yaml';
     $info['local_config'] = Utils::getConfig($local_config_file);
-    return $this->processConfigData($info);
+
+    $field_config_file = $this->scaffolder->getTemplatedir() . '/field/' . $info['type'] . '/config.yaml';
+    $field_config = Utils::getConfig($field_config_file);
+
+    // Set parent if applicable.
+    if (!empty($field_config['parent']) && $field_config['parent'] !== $field_info['type']) {
+      $field_info['type'] = $field_config['parent'];
+      $parent = new ESFieldInstance($this->scaffolder);
+      $parent->getConfig($config, $field_key, $field_info);
+      $this->setParent($parent);
+    }
+    $info = $this->processConfigData($info);
+    $this->setInfo($info);
+    return $this->getInfo();
   }
 
 }
