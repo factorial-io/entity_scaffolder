@@ -1,0 +1,16 @@
+
+  $breakpoint_group = new stdClass();
+  $breakpoint_group->disabled = FALSE; /* Edit this to true to make a default breakpoint_group disabled initially */
+  $breakpoint_group->api_version = 1;
+  $breakpoint_group->machine_name = '{{ machine_name }}';
+  $breakpoint_group->name = '{{ name }}';
+  $breakpoint_group->breakpoints = array(
+  {% for breakpoint in breakpoints %}
+    {{ loop.index0 }} => '{{ breakpoint.id }}',
+  {% endfor %}
+  );
+  $breakpoint_group->type = 'theme';
+  $breakpoint_group->overridden = 0;
+  $export['{{ machine_name }}'] = $breakpoint_group;
+
+
