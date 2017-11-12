@@ -68,7 +68,8 @@ class ESFieldBase extends ESField {
   /**
    * Helper function to load config and defaults.
    */
-  public function getConfig($config, $field_key, $field_info) {
+  public function getConfig(...$params) {
+    list($config, $field_key, $field_info) = $params;
     $info = $field_info;
     $info['field_name'] = $this->getFieldName($config, $field_key);
     $info['cardinality'] = empty($info['cardinality']) ? 1 : $info['cardinality'];

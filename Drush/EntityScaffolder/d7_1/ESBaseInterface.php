@@ -32,7 +32,7 @@ interface ESBaseInterface {
   /**
    * Helper function to load config and defaults.
    */
-  function getConfig($file);
+  function getConfig(...$params);
 
   /**
    * Validate the input files.

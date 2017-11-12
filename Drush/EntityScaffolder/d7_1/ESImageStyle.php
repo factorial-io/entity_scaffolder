@@ -97,7 +97,8 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
   /**
    * Helper function to load config and defaults.
    */
-  public function getConfig($file) {
+  public function getConfig(...$params) {
+    list($file) = $params;
     $config_data = parent::getConfig($file);
     if ($config_data) {
       if (!empty($config_data['image_styles'])) {

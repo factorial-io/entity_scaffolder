@@ -67,7 +67,8 @@ class ESBase {
   /**
    * Helper function to load config and defaults.
    */
-  public function getConfig($file) {
+  public function getConfig(...$params) {
+    list($file) = $params;
     $config = Utils::getConfig($file);
     $config['_file'] = $file;
     $local_config_file = $this->scaffolder->getTemplatedir() . $this->getTemplatedir() . '/config.yaml';

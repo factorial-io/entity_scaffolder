@@ -28,7 +28,8 @@ class ESPatternLabEntity extends ESPatternLab {
   /**
    * Helper function to load config and defaults.
    */
-  public function getConfig($config, $field_key, $field_info) {
+  public function getConfig(...$params) {
+    list($config, $field_key, $field_info) = $params;
     $config['type'] = $config['local_config']['type'];
     return $config;
   }

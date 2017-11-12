@@ -31,7 +31,8 @@ class ESEntity extends ESBase {
   /**
    * Helper function to load config and defaults.
    */
-  public function getConfig($file) {
+  public function getConfig(...$params) {
+    list($file) = $params;
     $config = parent::getConfig($file);
     if ($config) {
       $config['entity_type'] = $config['local_config']['entity_type'];
