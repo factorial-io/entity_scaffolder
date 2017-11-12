@@ -8,7 +8,9 @@
 require_once __DIR__ . '/vendor/autoload.php';
 spl_autoload_register('drush_entity_scaffolder_autoload');
 
-use Drush\EntityScaffolder\d7\Scaffolder;
+use Drush\EntityScaffolder\ScaffolderBase;
+use Drush\EntityScaffolder\d7\Scaffolder as Scaffolder_d7;
+use Drush\EntityScaffolder\d7_1\Scaffolder as Scaffolder_d7_1;
 use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\Logger;
 
@@ -75,8 +77,7 @@ function entity_scaffolder_drush_command() {
 function drush_entity_scaffolder() {
   Logger::log("Scaffolding started.", 'status');
   Logger::log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'status');
-  // Load the D7 scaffolder by default.
-  $scaffolder = new Scaffolder();
+  $scaffolder = drush_entity_scaffolder_get_scaffolder();
   $scaffolder->scaffold();
   $scaffolder->exportCode();
   Logger::log("Scaffolding finished.", 'success');
@@ -88,9 +89,28 @@ function drush_entity_scaffolder() {
 function drush_entity_scaffolder_buddy() {
   spl_autoload_register('drush_entity_scaffolder_autoload');
   list($type, $name) = func_get_args();
-  // Load the D7 scaffolder by default.
-  $scaffolder = new Scaffolder();
-  $scaffolder->help($type, $name);
+  drush_entity_scaffolder_get_scaffolder()->help($type, $name);
+}
+
+/**
+ * Helper function to load the correct scaffolder based on context;
+ */
+function drush_entity_scaffolder_get_scaffolder() {
+  $scaffolder_base = new ScaffolderBase();
+  $config = $scaffolder_base->getConfig();
+  $version = isset($config['version']) ? $config['version'] : 'd7';
+  Logger::log("Scaffolder version " . $version, 'status');
+  switch ($version) {
+    case 'd7':
+      return new Scaffolder_d7();
+
+    case 'd7_1':
+      return new Scaffolder_d7_1();
+
+    default:
+      Logger::log("Scaffolder version " . $version . " not found. Loaded version d7.", 'error');
+      return new Scaffolder_d7();
+  }
 }
 
 /**

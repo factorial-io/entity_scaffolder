@@ -1,0 +1,13 @@
+
+      {{ index }} => array(
+        'name' => '{{ name }}',
+        'data' => array(
+          'width' => {{ data.width }},
+          'height' => {{ data.height }},
+          'focal_point_advanced' => array(
+            'shift_x' => '{{ data.focal_point_advanced.shift_x }}',
+            'shift_y' => '{{ data.focal_point_advanced.shift_y }}',
+          ),
+        ),
+        'weight' => {{ weight }},
+      ),

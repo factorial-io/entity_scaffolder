@@ -1,0 +1,9 @@
+
+  {{ map }} ({{ field_name }})
+    type            : file
+    cardinality     : {{ cardinality }}
+    variable type   : array
+    sub properties  :
+      url   : text  - Absolute url of the file
+      label : text  - Name of the file
+      file  : array - More Details about file
