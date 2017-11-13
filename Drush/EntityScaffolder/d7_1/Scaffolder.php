@@ -57,6 +57,8 @@ class Scaffolder extends ScaffolderBase {
     parent::__construct();
     $this->setTemplateDir(__DIR__ . '/templates');
     $this->plugins['image_style'] = new ESImageStyle($this);
+    $this->plugins['breakpoint_groups'] = new ESBreakPointGroup($this);
+    $this->plugins['picture'] = new ESPicture($this);
     $this->plugins['fpp'] = new ESEntityFPP($this);
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
   }

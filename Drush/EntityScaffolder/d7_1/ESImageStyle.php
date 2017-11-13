@@ -104,19 +104,41 @@ class ESImageStyle extends ESBase implements ESBaseInterface {
       if (!empty($config_data['image_styles'])) {
         $prefix_machine_name = isset($config_data['prefix']['machine_name']) ? $config_data['prefix']['machine_name'] : '';
         $prefix_name = isset($config_data['prefix']['name']) ? $config_data['prefix']['name'] : '';
-        foreach ($config_data['image_styles'] as &$config) {
-          $config['name'] = empty($config['name']) ? $config['machine_name'] : $config['name'];
-          $config['name'] = $prefix_name . $config['name'];
-          $config['machine_name'] = $prefix_machine_name . $config['machine_name'];
-          if ($config['effects']) {
-            foreach ($config['effects'] as $key => &$effects) {
-              $index = $key + 1;
-              $effects['index'] = $index;
-              $effects['weight'] = empty($effects['weight']) ? $index : $effects['weight'];
+        $multiplier_config = isset($config_data['multiplier']) ? $config_data['multiplier'] : ['1x' => '1x'];
+        $multiplier = [];
+        foreach ($multiplier_config as $key => $value) {
+          $multiplier[$value] = floatval(str_replace('x', '', $value));
+        }
+
+        $new_image_styles = [];
+        foreach ($multiplier as $suffix => $scale) {
+          foreach ($config_data['image_styles'] as $config) {
+            $config['name'] = empty($config['name']) ? $config['machine_name'] : $config['name'];
+            $config['name'] = $prefix_name . $config['name'];
+            $config['machine_name'] = $prefix_machine_name . $config['machine_name'];
+            if (count($multiplier) > 1) {
+              $config['name'] .= '@' . $suffix;
+              $config['machine_name'] .= '_' . $suffix;
             }
+            $config['machine_name'] = preg_replace("/[^a-z0-9_]/", '_', $config['machine_name']);
+
+            if ($config['effects']) {
+              foreach ($config['effects'] as $key => &$effects) {
+                $index = $key + 1;
+                $effects['index'] = $index;
+                $effects['weight'] = empty($effects['weight']) ? $index : $effects['weight'];
+                foreach (array('width', 'height') as $k) {
+                  if (isset ($effects['data'][$k])) {
+                    $effects['data'][$k] = round($effects['data'][$k] * $scale);
+                  }
+                }
+              }
+            }
+            $new_image_styles[] = $config;
           }
         }
       }
+      $config_data['image_styles'] = $new_image_styles;
     }
     return $this->processConfigData($config_data);
   }
