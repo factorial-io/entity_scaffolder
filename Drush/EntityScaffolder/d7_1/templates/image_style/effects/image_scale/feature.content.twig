@@ -1,0 +1,10 @@
+
+      {{ index }} => array(
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => {% if data.width is not empty %}{{ data.width }}{% else %}''{% endif %},
+          'height' => {% if data.height is not empty %}{{ data.height }}{% else %}''{% endif %},
+          'upscale' => {% if data.upscale is not empty %}{{ data.upscale }}{% else %}''{% endif %},
+        ),
+        'weight' => {{ weight }},
+      ),
