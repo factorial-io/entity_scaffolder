@@ -75,6 +75,9 @@ class ESFieldInstance extends ESField {
       $parent->getConfig($config, $field_key, $field_info);
       $this->setParent($parent);
     }
+    if (empty($info['required'])) {
+      $info['required'] = 0;
+    }
     $info = $this->processConfigData($info);
     $this->setInfo($info);
     return $this->getInfo();
