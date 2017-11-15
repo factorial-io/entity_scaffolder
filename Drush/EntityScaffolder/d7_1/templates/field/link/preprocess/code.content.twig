@@ -4,7 +4,7 @@
     'label' => isset($vars['{{ field_name }}'][0]['title']) ? $vars['{{ field_name }}'][0]['title'] : '',
     'url' => isset($vars['{{ field_name }}'][0]['url']) ? url($vars['{{ field_name }}'][0]['url'], array('absolute' => TRUE) + $vars['{{ field_name }}'][0]['attributes']) : '',
   );
-  if(empty($vars['{{ map }}']['label'])) {
+  if (empty($vars['{{ map }}']['label'])) {
     $vars['{{ map }}'] = [];
   }
 {% else %}
@@ -12,7 +12,7 @@
   $vars['{{ map }}'] = array();
   if(!empty($vars['{{ field_name }}'])) {
     foreach($vars['{{ field_name }}'] as $value) {
-      if(empty($value['title'])) {
+      if (empty($value['title'])) {
         $vars['{{ map }}'][] = [];
         continue;
       }
