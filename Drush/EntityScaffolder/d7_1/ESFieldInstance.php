@@ -78,6 +78,9 @@ class ESFieldInstance extends ESField {
     if (empty($info['required'])) {
       $info['required'] = 0;
     }
+    if (empty($info['weight'])) {
+      $info['weight'] = 0;
+    }
     $info = $this->processConfigData($info);
     $this->setInfo($info);
     return $this->getInfo();
