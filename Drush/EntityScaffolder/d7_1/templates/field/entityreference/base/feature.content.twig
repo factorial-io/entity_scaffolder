@@ -28,7 +28,7 @@
           'type' => 'property',
         ),
         'target_bundles' => array(
-{% for target_bundles in target_bundle %}
+{% for target_bundle in target_bundles %}
           '{{ target_bundle }}' => '{{ target_bundle }}',
 {% endfor %}
         ),
