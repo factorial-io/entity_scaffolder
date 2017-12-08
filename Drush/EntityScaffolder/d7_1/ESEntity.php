@@ -2,9 +2,6 @@
 
 namespace Drush\EntityScaffolder\d7_1;
 
-use Drush\EntityScaffolder\Utils;
-use Drush\EntityScaffolder\ScaffolderBase;
-
 class ESEntity extends ESBase {
 
   /**
@@ -26,7 +23,6 @@ class ESEntity extends ESBase {
       }
     }
   }
-
 
   /**
    * Helper function to load config and defaults.
@@ -63,15 +59,16 @@ class ESEntity extends ESBase {
    * Helper function to populate weight of fields.
    */
   public function populateWeights(&$list, $start = 1, $delta = 1) {
-    if(empty($list) || !is_array($list)) {
+    if (empty($list) || !is_array($list)) {
       return;
     }
     $weight = $start;
-    foreach($list as &$item) {
-      if(!isset($item['weight'])) {
+    foreach ($list as &$item) {
+      if (!isset($item['weight'])) {
         $item['weight'] = $weight;
       }
       $weight = $weight + $delta;
     }
   }
+
 }
