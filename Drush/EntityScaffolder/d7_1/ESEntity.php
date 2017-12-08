@@ -43,4 +43,35 @@ class ESEntity extends ESBase {
     return $this->processConfigData($config);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function processConfigData($config) {
+    if ($config) {
+      $config = parent::processConfigData($config);
+      // Since field can be attached to entity, lets process field defintions
+      // to have weight, if needed.
+      if ($config['fields']) {
+        $this->populateWeights($config['fields']);
+      }
+      return $config;
+    }
+    return NULL;
+  }
+
+  /**
+   * Helper function to populate weight of fields.
+   */
+  public function populateWeights(&$list, $start = 1, $delta = 1) {
+    if(empty($list) || !is_array($list)) {
+      return;
+    }
+    $weight = $start;
+    foreach($list as &$item) {
+      if(!isset($item['weight'])) {
+        $item['weight'] = $weight;
+      }
+      $weight = $weight + $delta;
+    }
+  }
 }
