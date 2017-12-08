@@ -50,7 +50,7 @@ class ESEntity extends ESBase {
       // to have weight, if needed.
       $scaffolder_config = $this->scaffolder->getConfig();
       if (!isset($scaffolder_config['weight']['auto_populate']) || $scaffolder_config['weight']['auto_populate'] != FALSE) {
-        $start = isset($scaffolder_config['weight']['start']) ? $scaffolder_config['weight']['start'] : 1;
+        $start = isset($scaffolder_config['weight']['start']) ? $scaffolder_config['weight']['start'] : 0;
         $delta = isset($scaffolder_config['weight']['delta']) ? $scaffolder_config['weight']['delta'] : 1;
         if ($config['fields']) {
           $this->populateWeights($config['fields'], $start, $delta);
@@ -64,7 +64,7 @@ class ESEntity extends ESBase {
   /**
    * Helper function to populate weight of fields.
    */
-  public function populateWeights(&$list, $start = 1, $delta = 1) {
+  public function populateWeights(&$list, $start = 0, $delta = 1) {
     if (empty($list) || !is_array($list)) {
       return;
     }
