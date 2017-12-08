@@ -45,10 +45,16 @@ class ESEntity extends ESBase {
   public function processConfigData($config) {
     if ($config) {
       $config = parent::processConfigData($config);
+
       // Since field can be attached to entity, lets process field defintions
       // to have weight, if needed.
-      if ($config['fields']) {
-        $this->populateWeights($config['fields']);
+      $scaffolder_config = $this->scaffolder->getConfig();
+      if (!isset($scaffolder_config['weight']['auto_populate']) || $scaffolder_config['weight']['auto_populate'] != FALSE) {
+        $start = isset($scaffolder_config['weight']['start']) ? $scaffolder_config['weight']['start'] : 1;
+        $delta = isset($scaffolder_config['weight']['delta']) ? $scaffolder_config['weight']['delta'] : 1;
+        if ($config['fields']) {
+          $this->populateWeights($config['fields'], $start, $delta);
+        }
       }
       return $config;
     }
