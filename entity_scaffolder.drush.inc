@@ -78,8 +78,21 @@ function drush_entity_scaffolder() {
   Logger::log("Scaffolding started.", 'status');
   Logger::log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'status');
   $scaffolder = drush_entity_scaffolder_get_scaffolder();
+  // Check if current scaffolder version is outdated.
+  $log = $scaffolder->getLoggedScaffolderInfo();
+  if (isset($log['version'])) {
+    $version_compare = version_compare($scaffolder::VERSION, $log['version']);
+    if ($version_compare < 0) {
+      Logger::log("Entity Scaffolder found in your syste is outdated. Scaffolding will exit.", 'error');
+      return;
+    }
+    elseif ($version_compare > 0) {
+      Logger::log("Entity Scaffolder found in your system is of newer version than the one that was used to scaffold earlier.", 'warning');
+    }
+  }
   $scaffolder->scaffold();
   $scaffolder->exportCode();
+  $scaffolder->logScaffolderInfo();
   Logger::log("Scaffolding finished.", 'success');
 }
 

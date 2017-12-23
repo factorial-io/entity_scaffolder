@@ -9,6 +9,9 @@ use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
 
+  // @see http://php.net/version_compare.
+  const VERSION = '7.0.0';
+
   protected $plugins;
 
   public function help($type, $name) {
