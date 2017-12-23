@@ -1,0 +1,134 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "What is EntityScaffolder\n\n\nEntityScaffolder is a scaffolding tool. It is used to create Entities and Fields quickly and conviniently for a Drupal project.\n\n\nThe EntityScaffolder makes use of the Drush and other third party components which allows you to automatically generate much of code required to create some entities and fields. In addition, EntityScaffolder also provides some helper functions to support theming integration with patternlab based frontend.\n\n\nSome common tasks are:\n\n\n\n\nCreate Entites\n\n\nFildable Panels Pane\n\n\nParagraphs\n\n\n\n\n\n\nAttach fields to created entities\n\n\nText\n\n\nLong Text\n\n\nFile\n\n\nImage\n\n\nParagraph\n\n\n\n\n\n\nCreate placeholder Drupal Templates\n\n\nAdd some preprocessing to the templates to provide sensible defaults to work with\n\n\n\n\nInstallation\n\n\nEntity Scaffolder depends on drush (the \nDRU\npal \nSH\nell). To use entity_scaffodler, you have to first download and install drush from \ndrush\n. Install instructions can be found at Drush's \nREADME.txt\n. It contains\na section about installing other commands like drush_make.\n\n\nHere is the relevant section.\n\n\nYou can put this folder in a number of places:\n\n- In a .drush folder in your HOME folder. Note, that you have to make the\n  .drush folder yourself (so you end up with ~/.drush/entity_scaffodler/README.md).\n- In a folder specified with the include option (see above).\n- In /path/to/drush/commands (not a Smart Thing, but it would work).\n\n\n\n\nScaffold File Layout\n\n\nYour scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under \n_tools/es\n and will exist at the top level of your project.\n\n\nThe typical project you can create will look something like this:\n\n\n_tools/es/\n    config.yaml\n    fpp/\n        gallery.yaml\n        copy.yaml\n        intro.yaml\n        video.yaml\n        multimedia.yaml\n    paragraphs/\n        video.yaml\n        text.yaml\n        headline.yaml\n\n\n\n\nRunning EntityScaffolder\n\n\nUse EntityScaffolder as drush plugin\n\n\n$ cd \nyour-drupal-root-folder\n\n$ drush es\n\n\n\n\nThis will read cofniguration files from \n_tool/es\n directory under \nyour-drupal-root-folder\n.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#what-is-entityscaffolder", 
+            "text": "EntityScaffolder is a scaffolding tool. It is used to create Entities and Fields quickly and conviniently for a Drupal project.  The EntityScaffolder makes use of the Drush and other third party components which allows you to automatically generate much of code required to create some entities and fields. In addition, EntityScaffolder also provides some helper functions to support theming integration with patternlab based frontend.  Some common tasks are:   Create Entites  Fildable Panels Pane  Paragraphs    Attach fields to created entities  Text  Long Text  File  Image  Paragraph    Create placeholder Drupal Templates  Add some preprocessing to the templates to provide sensible defaults to work with", 
+            "title": "What is EntityScaffolder"
+        }, 
+        {
+            "location": "/#installation", 
+            "text": "Entity Scaffolder depends on drush (the  DRU pal  SH ell). To use entity_scaffodler, you have to first download and install drush from  drush . Install instructions can be found at Drush's  README.txt . It contains\na section about installing other commands like drush_make.  Here is the relevant section.  You can put this folder in a number of places:\n\n- In a .drush folder in your HOME folder. Note, that you have to make the\n  .drush folder yourself (so you end up with ~/.drush/entity_scaffodler/README.md).\n- In a folder specified with the include option (see above).\n- In /path/to/drush/commands (not a Smart Thing, but it would work).", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/#scaffold-file-layout", 
+            "text": "Your scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under  _tools/es  and will exist at the top level of your project.  The typical project you can create will look something like this:  _tools/es/\n    config.yaml\n    fpp/\n        gallery.yaml\n        copy.yaml\n        intro.yaml\n        video.yaml\n        multimedia.yaml\n    paragraphs/\n        video.yaml\n        text.yaml\n        headline.yaml", 
+            "title": "Scaffold File Layout"
+        }, 
+        {
+            "location": "/#running-entityscaffolder", 
+            "text": "Use EntityScaffolder as drush plugin  $ cd  your-drupal-root-folder \n$ drush es  This will read cofniguration files from  _tool/es  directory under  your-drupal-root-folder .", 
+            "title": "Running EntityScaffolder"
+        }, 
+        {
+            "location": "/available-tasks/", 
+            "text": "entity_scaffolder\n\n\nUse the information provided in scaffold source files to create features and helper modules.\n\n\nUsage:\n\n\n$ drush es\n\n\n\n\nAvailable Options\n\n\n\n\n\n\n\n\nOptions\n\n\nDefault\n\n\nDetails\n\n\n\n\n\n\n\n\n\n\nconfig-dir\n\n\n_tools/es\n\n\nRelative path to the  directory where the scaffold source files have to be picked up from\n\n\n\n\n\n\ndebug\n\n\nfalse\n\n\nIf set to true, prints the output of scaffolder on screen", 
+            "title": "Available tasks"
+        }, 
+        {
+            "location": "/available-tasks/#entity_scaffolder", 
+            "text": "Use the information provided in scaffold source files to create features and helper modules.  Usage:  $ drush es  Available Options     Options  Default  Details      config-dir  _tools/es  Relative path to the  directory where the scaffold source files have to be picked up from    debug  false  If set to true, prints the output of scaffolder on screen", 
+            "title": "entity_scaffolder"
+        }, 
+        {
+            "location": "/configurations/config/", 
+            "text": "config.yaml\n\n\nProject specific configuration file. All global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via \nconfig-dir\n option for \ndrush es\n.\n\n\n# Pass the project specific directory locations.\ndirectories:\n  templates : 'sites/all/themes/custom/MyProjectTheme/templates'\n  theme : 'sites/all/themes/custom/MyProjectTheme'\n  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'\n\n\n\n\n\n\n\n\n\n\nKey\n\n\nExplanation\n\n\n\n\n\n\n\n\n\n\ndirectories\n\n\nPass the project specific directory locations\n\n\n\n\n\n\ndirectories.templates\n\n\nPath to template folder\n\n\n\n\n\n\ndirectories.theme\n\n\nPath to the theme folder\n\n\n\n\n\n\ndirectories.patternlab\n\n\nPath to patterlab sourcefolder", 
+            "title": "config.yaml"
+        }, 
+        {
+            "location": "/configurations/config/#configyaml", 
+            "text": "Project specific configuration file. All global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via  config-dir  option for  drush es .  # Pass the project specific directory locations.\ndirectories:\n  templates : 'sites/all/themes/custom/MyProjectTheme/templates'\n  theme : 'sites/all/themes/custom/MyProjectTheme'\n  patternlab: 'sites/all/themes/custom/MyProjectTheme/source'     Key  Explanation      directories  Pass the project specific directory locations    directories.templates  Path to template folder    directories.theme  Path to the theme folder    directories.patternlab  Path to patterlab sourcefolder", 
+            "title": "config.yaml"
+        }, 
+        {
+            "location": "/configurations/entities/", 
+            "text": "Entities\n\n\nUse the following table to determine the folder under which the configuration files for entities have to be placed.\n\n\n\n\n\n\n\n\nFolder Name\n\n\nEntity Type\n\n\n\n\n\n\n\n\n\n\nfpp\n\n\nFieldable Panels Panes\n\n\n\n\n\n\nparagraphs\n\n\nParagraph Items\n\n\n\n\n\n\n\n\nCreate a file for each entity bundle inside the respective folders. Usually the files are named according to the bundles.\n\n\nAn example bundle specific configuration file looks like below\n\n\n# Label of the Drupal entity bundle.\nname: Brochure\n\n# Machine name in Drupal.\nmachine_name: brochure\n\n# Fields acttached to the bundles.\nfields:\n  files:\n    map: download_brochure\n    cardinality: 1\n    type: file\n    label: PDF of our Brochure\n    file_extensions: \npdf\n\n  introduction:\n    map: introduction\n    type: text_long\n    label: Introduction\n    allowed_formats:\n      - html\n    default_format: html", 
+            "title": "Entities"
+        }, 
+        {
+            "location": "/configurations/entities/#entities", 
+            "text": "Use the following table to determine the folder under which the configuration files for entities have to be placed.     Folder Name  Entity Type      fpp  Fieldable Panels Panes    paragraphs  Paragraph Items     Create a file for each entity bundle inside the respective folders. Usually the files are named according to the bundles.  An example bundle specific configuration file looks like below  # Label of the Drupal entity bundle.\nname: Brochure\n\n# Machine name in Drupal.\nmachine_name: brochure\n\n# Fields acttached to the bundles.\nfields:\n  files:\n    map: download_brochure\n    cardinality: 1\n    type: file\n    label: PDF of our Brochure\n    file_extensions:  pdf \n  introduction:\n    map: introduction\n    type: text_long\n    label: Introduction\n    allowed_formats:\n      - html\n    default_format: html", 
+            "title": "Entities"
+        }, 
+        {
+            "location": "/configurations/fields/", 
+            "text": "Field Instances and Field Bases are defined in the \nEntity bundle\n they are attached to.\n\n\nFollowing fields are supported,\n\n\nText\n\n\n@TODO\n\n\nLong Text\n\n\n\n\n\n\n\n\nOptions\n\n\nDescriptions\n\n\n\n\n\n\n\n\n\n\ntype\n\n\nType of the field. Must be \ntext_long\n.\n\n\n\n\n\n\nmap\n\n\nPatternlab mapping\n\n\n\n\n\n\ncadrinality\n\n\nNumber of values stored in this field. -1 means unlimitted.\n\n\n\n\n\n\nlabel\n\n\nDrupal Field Label\n\n\n\n\n\n\nallowed formats\n\n\nList of allowed text formats.\n\n\n\n\n\n\ndefault_format\n\n\nDefault text format for the field.\n\n\n\n\n\n\n\n\nExample\n\n\nname: Copy\nmachine_name: copy\nfields:\n  content:\n    type: text_long\n    map: content\n    cardinality: 1\n    label: Content\n    allowed_formats:\n      - html\n    default_format: html\n\n\n\n\nFile\n\n\n@TODO\n\n\nImage\n\n\n@TODO\n\n\nParagraph\n\n\n@TODO", 
+            "title": "Fields"
+        }, 
+        {
+            "location": "/configurations/fields/#text", 
+            "text": "@TODO", 
+            "title": "Text"
+        }, 
+        {
+            "location": "/configurations/fields/#long-text", 
+            "text": "Options  Descriptions      type  Type of the field. Must be  text_long .    map  Patternlab mapping    cadrinality  Number of values stored in this field. -1 means unlimitted.    label  Drupal Field Label    allowed formats  List of allowed text formats.    default_format  Default text format for the field.     Example  name: Copy\nmachine_name: copy\nfields:\n  content:\n    type: text_long\n    map: content\n    cardinality: 1\n    label: Content\n    allowed_formats:\n      - html\n    default_format: html", 
+            "title": "Long Text"
+        }, 
+        {
+            "location": "/configurations/fields/#file", 
+            "text": "@TODO", 
+            "title": "File"
+        }, 
+        {
+            "location": "/configurations/fields/#image", 
+            "text": "@TODO", 
+            "title": "Image"
+        }, 
+        {
+            "location": "/configurations/fields/#paragraph", 
+            "text": "@TODO", 
+            "title": "Paragraph"
+        }, 
+        {
+            "location": "/contribute/entity-scaffolder/", 
+            "text": "If you get stuck at any point you can create a \nticket on GitLab\n.\n\n\nPlugin enhancement\n\n\nContribution to plugin itself requires a good understanding of PHP, Drupal and features. The Scaffolder for D7 tries to create files which features would have created from configurations stored in the database. Contact the core developers to see how you could help in this department.\n\n\nContributing Field templates\n\n\nField Base\n\n\nThe templates and configurations required to create a field_base definition. Each new field definitions are added as new folder under \n/Drush/EntityScaffolder/d7/templates/field_base\n. \n\n\nDrush/EntityScaffolder/d7/templates/field_base/file\n    config.yaml\n    feature.content.twig\n\n\n\n\nconfig.yaml\n supports following options\n\n\n\n\n\n\n\n\nOptions\n\n\nDetails\n\n\n\n\n\n\n\n\n\n\ndependencies\n\n\nUsedto declare the field dependency with drupal modules.\n\n\n\n\n\n\nvariables\n\n\nAn array of vriables that is used to create the fields. The key is the name of the variable.\n\n\n\n\n\n\nvariables.%key%.required\n\n\nBoolean indicating if the variable is mandatory or not.\n\n\n\n\n\n\nvariables.%key%.default\n\n\nValue that is assinged to the variable if user doesn't provide it in the configuration.\n\n\n\n\n\n\n\n\nThe content of \nfeature.content.twig\n is the snippet required to create the feature export for field_base.\n\n\nField Instance\n\n\nField Preprocess", 
+            "title": "EntityScaffolder"
+        }, 
+        {
+            "location": "/contribute/entity-scaffolder/#plugin-enhancement", 
+            "text": "Contribution to plugin itself requires a good understanding of PHP, Drupal and features. The Scaffolder for D7 tries to create files which features would have created from configurations stored in the database. Contact the core developers to see how you could help in this department.", 
+            "title": "Plugin enhancement"
+        }, 
+        {
+            "location": "/contribute/entity-scaffolder/#contributing-field-templates", 
+            "text": "", 
+            "title": "Contributing Field templates"
+        }, 
+        {
+            "location": "/contribute/entity-scaffolder/#field-base", 
+            "text": "The templates and configurations required to create a field_base definition. Each new field definitions are added as new folder under  /Drush/EntityScaffolder/d7/templates/field_base .   Drush/EntityScaffolder/d7/templates/field_base/file\n    config.yaml\n    feature.content.twig  config.yaml  supports following options     Options  Details      dependencies  Usedto declare the field dependency with drupal modules.    variables  An array of vriables that is used to create the fields. The key is the name of the variable.    variables.%key%.required  Boolean indicating if the variable is mandatory or not.    variables.%key%.default  Value that is assinged to the variable if user doesn't provide it in the configuration.     The content of  feature.content.twig  is the snippet required to create the feature export for field_base.", 
+            "title": "Field Base"
+        }, 
+        {
+            "location": "/contribute/entity-scaffolder/#field-instance", 
+            "text": "", 
+            "title": "Field Instance"
+        }, 
+        {
+            "location": "/contribute/entity-scaffolder/#field-preprocess", 
+            "text": "", 
+            "title": "Field Preprocess"
+        }, 
+        {
+            "location": "/contribute/documentation/", 
+            "text": "Improving Documenation\n\n\n\n\nTip\n\n\nTo edit existing pages, use the \nEdit on GitLab\n link on the top right corner of the page.\n\n\nTo add a new page to documentation please follow \nthe guideline provided by MKdocs\n to add new page and link them within the documentation.\n\n\n\n\n\n\nNote\n\n\n\n\nInstall MkDocs\n.\n\n\nClone \nthe repo\n locally and switch to \ndevelop\n branch.\n\n\nUsing Terminal, navigate to \n/docs\n folder.\n\n\nRun \nmkdocs build\n\n\ncommit and push\n\n\n\n\n\n\nResources\n\n\n\n\nWriting your docs in MKdocs", 
+            "title": "Documentation"
+        }, 
+        {
+            "location": "/contribute/documentation/#improving-documenation", 
+            "text": "Tip  To edit existing pages, use the  Edit on GitLab  link on the top right corner of the page.  To add a new page to documentation please follow  the guideline provided by MKdocs  to add new page and link them within the documentation.    Note   Install MkDocs .  Clone  the repo  locally and switch to  develop  branch.  Using Terminal, navigate to  /docs  folder.  Run  mkdocs build  commit and push", 
+            "title": "Improving Documenation"
+        }, 
+        {
+            "location": "/contribute/documentation/#resources", 
+            "text": "Writing your docs in MKdocs", 
+            "title": "Resources"
+        }
+    ]
+}

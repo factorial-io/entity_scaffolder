@@ -4,7 +4,7 @@
     'bundle' => '{{ bundle }}',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => '{{ description | raw }}',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -37,7 +37,7 @@
           ),
         ),
       ),
-      'text_processing' => 1,
+      'text_processing' => {{ text_processing }},
       'user_register_form' => FALSE,
     ),
     'widget' => array(

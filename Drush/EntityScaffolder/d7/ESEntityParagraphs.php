@@ -3,15 +3,30 @@
 namespace Drush\EntityScaffolder\d7;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\d7\ESBaseInterface;
+use Drush\EntityScaffolder\d7\ESEntity;
+use Drush\EntityScaffolder\Logger;
 
-class ESEntityParagraphs extends ESEntityBase {
+class ESEntityParagraphs extends ESEntity implements ESBaseInterface {
+
+  public function help() {
+    Logger::log('[paragraphs] : Paragraphs Item', 'status');
+    Logger::log('Following are the values supported in configuration', 'status');
+    $headers = array('Property', 'Variable type', 'Description');
+    $data = [];
+    $data[] = ['name', 'string' ,'The label of the paragraph bundle, which is displayed to the editors.'];
+    $data[] = ['machine_name', 'machine name (string)' , 'Internal machine name.'];
+    $data[] = ['fields', 'array' ,'Array of field definitions that is attached to the entity'];
+    Logger::table($headers, $data, 'status');
+  }
 
   public function __construct(Scaffolder $scaffolder) {
     parent::__construct($scaffolder);
     $this->plugins['field_base'] = new ESFieldBase($this->scaffolder);
     $this->plugins['field_instance'] = new ESFieldInstance($this->scaffolder);
     $this->plugins['preprocess'] = new ESFieldPreprocess($this->scaffolder);
-    $this->plugins['patternlab_template_manager'] = new PatternLabTemmplateManager($this->scaffolder);
+    $this->plugins['patternlab_template_manager'] = new ESPatternLabField($this->scaffolder);
+    $this->setTemplateDir('/entity/paragraphs');
   }
 
   public function generateCode($info) {
@@ -20,7 +35,7 @@ class ESEntityParagraphs extends ESEntityBase {
     // Add File header.
     $block = Scaffolder::CONTENT;
     $key = 'paragraphs_info : ' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
-    $template = '/entity/paragraphs/features.inc.paragraphs_info';
+    $template = $this->getTemplateDir() . '/features.inc.paragraphs_info';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
@@ -42,41 +57,10 @@ class ESEntityParagraphs extends ESEntityBase {
   }
 
   /**
-   * Helper functions to create FPPS.
+   * Loads scaffold source files.
    */
-  public function scaffold() {
-    $config_files = Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/paragraphs');
-    foreach ($config_files as $file) {
-      $config = $this->getConfig($file);
-      $this->generateCode($config);
-      foreach ($this->plugins as $key => $plugin) {
-        $plugin->scaffold($config);
-      }
-    }
-  }
-
-  /**
-   * Helper function to load config and defaults.
-   */
-  public function getConfig($file) {
-    $config = parent::getConfig($file);
-    $config['entity_type'] = 'paragraphs_item';
-    $config['bundle'] = $config['machine_name'];
-    $config['field_prefix'] = 'pgf_' . $config['machine_name'];
-    $local_config_file = $this->scaffolder->getTemplatedir() . '/entity/paragraphs/config.yaml';
-    $config['local_config'] = Utils::getConfig($local_config_file);
-    $config['pattern'] = [];
-    $config['pattern'][] = array(
-      'block' => Scaffolder::HEADER,
-      'key' => 0,
-      'template' => '/entity/paragraphs/pattern',
-    );
-    $config['pattern'][] = array(
-      'block' => Scaffolder::FOOTER,
-      'key' => 0,
-      'code' => "#}\n",
-    );
-    return $config;
+  public function loadScaffoldSourceConfigurations() {
+    return Utils::getConfigFiles($this->scaffolder->getConfigDir() . '/paragraphs');
   }
 
 }

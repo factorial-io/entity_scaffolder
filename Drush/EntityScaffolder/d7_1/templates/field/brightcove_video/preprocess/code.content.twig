@@ -1,0 +1,16 @@
+{% if cardinality == 1 %}
+  // Preprocess {{ field_name }}.
+  $vars['{{ map }}'] = $vars['content']['{{ field_name }}'];
+{% else %}
+  // Preprocess {{ field_name }}.
+  $vars['{{ map }}'] = $videos = array();
+  foreach (element_children($vars['content']['{{ field_name }}']) as $key) {
+    $videos[] = $vars['content']['{{ field_name }}'][$key];
+    unset($vars['content']['{{ field_name }}'][$key]);
+  }
+  foreach ($videos as $video) {
+    $v = $vars['content']['{{ field_name }}'];
+    $v['0'] = $video;
+    $vars['{{ map }}'][] = $v;
+  }
+{% endif %}

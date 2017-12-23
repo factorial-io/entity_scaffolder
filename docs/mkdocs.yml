@@ -12,8 +12,11 @@ copyright: "© 2017 Factorial GmbH, Hamburg"
 
 pages:
 - index.md
-- installation.md
-- usage.md
 - available-tasks.md
-- configuration.md
-- contribute.md
+- Configurations:
+  - 'config.yaml' : 'configurations/config.md'
+  - 'Entities' : 'configurations/entities.md'
+  - 'Fields' : 'configurations/fields.md'
+- Contirbution Guide:
+  - 'EntityScaffolder' : 'contribute/entity-scaffolder.md'
+  - 'Documentation' : 'contribute/documentation.md'

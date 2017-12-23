@@ -1,0 +1,12 @@
+{% if cardinality == 1 %}
+  // Preprocess {{ field_name }}.
+  $vars['{{ map }}'] = isset($vars['{{ field_name }}'][0]['value']) ? $vars['{{ field_name }}'][0]['value'] : '';
+{% else %}
+  // Preprocess {{ field_name }}.
+  $vars['{{ map }}'] = array();
+  if(!empty($vars['{{ field_name }}'])) {
+    foreach ($vars['{{ field_name }}'] as $value) {
+      $vars['{{ map }}'][] = isset($value['value']) ? $value['value'] : '';
+    }
+  }
+{% endif %}

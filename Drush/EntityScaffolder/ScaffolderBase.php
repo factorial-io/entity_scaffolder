@@ -3,8 +3,13 @@
 namespace Drush\EntityScaffolder;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\Logger;
+use Symfony\Component\Yaml\Yaml;
 
 class ScaffolderBase implements ScaffolderInterface {
+  // @see http://php.net/version_compare.
+  const VERSION = '0';
+  const LOG_FILENAME = '.es.log.yaml';
 
   const HEADER = '_00_';
   const CONTENT = '_50_';
@@ -128,6 +133,24 @@ class ScaffolderBase implements ScaffolderInterface {
    */
   function render($template, $replacements) {
     return Utils::render($this->getTemplateDir(), $template, $replacements);
+  }
+
+  /**
+   * Inject current scaffolder details into config directory.
+   */
+  function logScaffolderInfo() {
+    $info = [
+      'version' => $this::VERSION,
+    ];
+    $yaml = Yaml::dump($info);
+    Utils::write($this->getConfigDir() . '/' . $this::LOG_FILENAME, $yaml);
+  }
+
+  /**
+   * Inject current scaffolder details into config directory.
+   */
+  function getLoggedScaffolderInfo() {
+    return Utils::getConfig($this->getConfigDir() . '/' . $this::LOG_FILENAME);
   }
 
 }
