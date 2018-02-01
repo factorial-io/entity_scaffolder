@@ -15,8 +15,14 @@ pages:
 - available-tasks.md
 - Configurations:
   - 'config.yaml' : 'configurations/config.md'
+- 'Fieldable entities':
   - 'Entities' : 'configurations/entities.md'
   - 'Fields' : 'configurations/fields.md'
-- Contirbution Guide:
+- Pictures:
+  - 'Breakpoint Groups': 'configurations/breakpoint_groups.md'
+  - 'Image styles': 'configurations/image_styles.md'
+  - 'Pictures': 'configurations/pictures.md'
+
+- Contribution Guide:
   - 'EntityScaffolder' : 'contribute/entity-scaffolder.md'
   - 'Documentation' : 'contribute/documentation.md'

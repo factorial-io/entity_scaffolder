@@ -6,15 +6,17 @@ The EntityScaffolder makes use of the Drush and other third party components whi
 
 Some common tasks are:
 
- * Create Entites
-     - Fildable Panels Pane
+ * Create Entities
+     - Fieldable Panels Pane
      - Paragraphs
  * Attach fields to created entities
      - Text
      - Long Text
      - File
      - Image
+     - Picture
      - Paragraph
+ * Create image-styles, breakpoints and picture configurations
  * Create placeholder Drupal Templates
  * Add some preprocessing to the templates to provide sensible defaults to work with
 
@@ -53,6 +55,16 @@ _tools/es/
         video.yaml
         text.yaml
         headline.yaml
+    breakpoint_groups/
+        Frontend.yaml
+    image_style/
+        article_image_portrait.yaml
+        article_image.yaml
+        card-related.yaml
+    picture/
+        article-image-portrait.yaml
+        article-image.yaml
+        card-related.yaml
 ```
 
 ## Running EntityScaffolder
