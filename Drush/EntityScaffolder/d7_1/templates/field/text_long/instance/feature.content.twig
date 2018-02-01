@@ -2,7 +2,11 @@
   // Exported field_instance: '{{ entity_type }}-{{ bundle }}-{{ field_name }}'.
   $field_instances['{{ entity_type }}-{{ bundle }}-{{ field_name }}'] = array(
     'bundle' => '{{ bundle }}',
-    'default_value' => NULL,
+    'default_value' => array(
+      0 => array(
+        'value' => '{{ default_value | raw }}',
+      ),
+    ),
     'deleted' => 0,
     'description' => '{{ description | raw }}',
     'display' => array(
