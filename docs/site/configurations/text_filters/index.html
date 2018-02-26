@@ -8,7 +8,7 @@
   
   <meta name="author" content="Factorial GmbH, Hamburg">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Fields - Entity Scaffolder</title>
+  <title>Features - Entity Scaffolder</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Fields";
-    var mkdocs_page_input_path = "configurations/fields.md";
-    var mkdocs_page_url = "/configurations/fields/";
+    var mkdocs_page_name = "Features";
+    var mkdocs_page_input_path = "configurations/text_filters.md";
+    var mkdocs_page_url = "/configurations/text_filters/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -88,27 +88,8 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Fields</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#text">Text</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#long-text">Long Text</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#file">File</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#image">Image</a></li>
-                
-            
-                <li class="toctree-l3"><a href="#paragraph">Paragraph</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../fields/">Fields</a>
         
     </li>
 
@@ -117,8 +98,19 @@
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../text_filters/">Features</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Features</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#what-are-features">What are features?</a></li>
+                
+                    <li><a class="toctree-l4" href="#fe_es">fe_es</a></li>
+                
+                    <li><a class="toctree-l4" href="#fe_es_filters">fe_es_filters</a></li>
+                
+            
+            </ul>
         
     </li>
 <li>
@@ -195,15 +187,11 @@
     <li><a href="../..">Docs</a> &raquo;</li>
     
       
-        
-          <li>Fieldable entities &raquo;</li>
-        
-      
     
-    <li>Fields</li>
+    <li>Features</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://source.factorial.io/skakanat/entity_scaffolder/edit/develop/docs/docs/configurations/fields.md"> Edit on GitLab</a>
+        <a href="https://source.factorial.io/skakanat/entity_scaffolder/edit/develop/docs/docs/configurations/text_filters.md"> Edit on GitLab</a>
       
     </li>
   </ul>
@@ -212,65 +200,27 @@
           <div role="main">
             <div class="section">
               
-                <p>Field Instances and Field Bases are defined in the <strong>Entity bundle</strong> they are attached to.</p>
-<p>Following fields are supported,</p>
-<h2 id="text">Text</h2>
-<p>@TODO</p>
-<h2 id="long-text">Long Text</h2>
-<table>
-<thead>
-<tr>
-<th>Options</th>
-<th>Descriptions</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>type</td>
-<td>Type of the field. Must be <code>text_long</code>.</td>
-</tr>
-<tr>
-<td>map</td>
-<td>Patternlab mapping</td>
-</tr>
-<tr>
-<td>cadrinality</td>
-<td>Number of values stored in this field. -1 means unlimitted.</td>
-</tr>
-<tr>
-<td>label</td>
-<td>Drupal Field Label</td>
-</tr>
-<tr>
-<td>allowed formats</td>
-<td>List of allowed text formats.</td>
-</tr>
-<tr>
-<td>default_format</td>
-<td>Default text format for the field.</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example</strong></p>
-<pre><code>name: Copy
-machine_name: copy
-fields:
-  content:
-    type: text_long
-    map: content
-    cardinality: 1
-    label: Content
-    allowed_formats:
-      - html
-    default_format: html
-</code></pre>
-
-<h2 id="file">File</h2>
-<p>@TODO</p>
-<h2 id="image">Image</h2>
-<p>@TODO</p>
-<h2 id="paragraph">Paragraph</h2>
-<p>@TODO</p>
+                <h1 id="what-are-features">What are features?</h1>
+<p><a href="https://www.drupal.org/project/features">Features</a> provides a UI and API for
+taking different site building components from modules with exportables and
+bundling them together in a single feature module. A feature module is like any
+other Drupal module except that it contains additional information in its info
+file so that configuration can be checked, updated, or reverted programmatically.</p>
+<p>Entity Scaffolder makes use of features module to export its code. The actual
+creation and update of the entities and fields are taken care by Features module.</p>
+<h2 id="fe_es">fe_es</h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not edit this feature manually. Changes will be lost/overriden next time
+you run <code>drush es</code>.</p>
+</div>
+<p>Main features module created by Entity Scaffolder. Everytime you run <code>drush es</code>
+the folder gets overwritten.</p>
+<h2 id="fe_es_filters">fe_es_filters</h2>
+<p>Provides default text filters. The feature is not over-written in subsequent runs.
+This allows updating and export of the feature per instance.</p>
+<p><a href="https://www.drupal.org/node/213156">Read more about text filters and input format on
+Drupal.org</a></p>
               
             </div>
           </div>
@@ -278,10 +228,10 @@ fields:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../text_filters/" class="btn btn-neutral float-right" title="Features">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../breakpoint_groups/" class="btn btn-neutral float-right" title="Breakpoint Groups">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../entities/" class="btn btn-neutral" title="Entities"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../fields/" class="btn btn-neutral" title="Fields"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -309,10 +259,10 @@ fields:
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../entities/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../fields/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../text_filters/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../breakpoint_groups/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

@@ -85,6 +85,14 @@
     </li>
 
         
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Fieldable entities</span></li>
+
+        
             
     <li class="toctree-l1 ">
         <a class="" href="configurations/entities/">Entities</a>
@@ -103,8 +111,44 @@
 <li>
           
             <li>
+    <li class="toctree-l1 ">
+        <a class="" href="configurations/text_filters/">Features</a>
+        
+    </li>
+<li>
+          
+            <li>
     <ul class="subnav">
-    <li><span>Contirbution Guide</span></li>
+    <li><span>Pictures</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="configurations/breakpoint_groups/">Breakpoint Groups</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="configurations/image_styles/">Image styles</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="configurations/pictures/">Pictures</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Contribution Guide</span></li>
 
         
             
@@ -163,8 +207,8 @@
 <p>The EntityScaffolder makes use of the Drush and other third party components which allows you to automatically generate much of code required to create some entities and fields. In addition, EntityScaffolder also provides some helper functions to support theming integration with patternlab based frontend.</p>
 <p>Some common tasks are:</p>
 <ul>
-<li>Create Entites<ul>
-<li>Fildable Panels Pane</li>
+<li>Create Entities<ul>
+<li>Fieldable Panels Pane</li>
 <li>Paragraphs</li>
 </ul>
 </li>
@@ -173,9 +217,11 @@
 <li>Long Text</li>
 <li>File</li>
 <li>Image</li>
+<li>Picture</li>
 <li>Paragraph</li>
 </ul>
 </li>
+<li>Create image-styles, breakpoints and picture configurations</li>
 <li>Create placeholder Drupal Templates</li>
 <li>Add some preprocessing to the templates to provide sensible defaults to work with</li>
 </ul>
@@ -206,6 +252,16 @@ a section about installing other commands like drush_make.</p>
         video.yaml
         text.yaml
         headline.yaml
+    breakpoint_groups/
+        Frontend.yaml
+    image_style/
+        article_image_portrait.yaml
+        article_image.yaml
+        card-related.yaml
+    picture/
+        article-image-portrait.yaml
+        article-image.yaml
+        card-related.yaml
 </code></pre>
 
 <h2 id="running-entityscaffolder">Running EntityScaffolder</h2>
@@ -263,5 +319,5 @@ $ drush es
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-09-09 05:44:28
+Build Date UTC : 2018-02-26 12:17:33
 -->

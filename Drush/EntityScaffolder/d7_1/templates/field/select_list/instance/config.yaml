@@ -1,0 +1,6 @@
+variables :
+  default_value :
+    type : text
+    placeholder : 1
+    required : false
+    default : false
