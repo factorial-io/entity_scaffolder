@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/available-tasks/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -21,19 +21,53 @@
         
     <url>
      <loc>/configurations/config/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
+    
+
+    
+        
     <url>
      <loc>/configurations/entities/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/configurations/fields/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>/configurations/text_filters/</loc>
+     <lastmod>2018-02-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>/configurations/breakpoint_groups/</loc>
+     <lastmod>2018-02-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/configurations/image_styles/</loc>
+     <lastmod>2018-02-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/configurations/pictures/</loc>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
@@ -43,13 +77,13 @@
         
     <url>
      <loc>/contribute/entity-scaffolder/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/contribute/documentation/</loc>
-     <lastmod>2017-09-09</lastmod>
+     <lastmod>2018-02-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

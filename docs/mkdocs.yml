@@ -18,6 +18,7 @@ pages:
 - 'Fieldable entities':
   - 'Entities' : 'configurations/entities.md'
   - 'Fields' : 'configurations/fields.md'
+- Features : 'configurations/text_filters.md'
 - Pictures:
   - 'Breakpoint Groups': 'configurations/breakpoint_groups.md'
   - 'Image styles': 'configurations/image_styles.md'
