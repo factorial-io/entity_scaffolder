@@ -1,11 +1,25 @@
-{% if cardinality == 1 %}
+{% if formatted %}
+  {% if cardinality == 1 %}
   // Preprocess {{ field_name }}.
-{% if text_processing %}
+  $vars['{{ map }}'] = isset($vars['content']['{{ field_name }}'][0]) ? $vars['content']['{{ field_name }}'][0] : '';
+  {% else %}
+  // Preprocess {{ field_name }}.
+  $vars['{{ map }}'] = array();
+  if (!empty($vars['content']['{{ field_name }}'])) {
+    foreach (element_children($vars['content']['{{ field_name }}']) as $delta) {
+      $vars['{{ map }}'][] = $vars['content']['{{ field_name }}'][$delta];
+    }
+  }
+  {% endif %}
+{% else %}
+  {% if cardinality == 1 %}
+  // Preprocess {{ field_name }}.
+    {% if text_processing %}
   $vars['{{ map }}'] = isset($vars['{{ field_name }}'][0]['value']) ? check_markup($vars['{{ field_name }}'][0]['value'], $vars['{{ field_name }}'][0]['format'])  : '';
-{% else %}
+    {% else %}
   $vars['{{ map }}'] = isset($vars['{{ field_name }}'][0]['value']) ? $vars['{{ field_name }}'][0]['value'] : '';
-{% endif %}
-{% else %}
+    {% endif %}
+  {% else %}
   // Preprocess {{ field_name }}.
   $vars['{{ map }}'] = array();
   if (!empty($vars['{{ field_name }}'])) {
@@ -17,4 +31,5 @@
     {% endif %}
     }
   }
+  {% endif %}
 {% endif %}
