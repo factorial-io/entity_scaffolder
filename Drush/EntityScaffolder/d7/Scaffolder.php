@@ -68,6 +68,8 @@ class Scaffolder extends ScaffolderBase {
    * Start scaffolding.
    */
   public function scaffold() {
+    Logger::log(dt('Config files are setup to use legacy version of Entity Scaffolder. Please port the definitions to d7_1.'), 'warning');
+    Logger::log(dt('Make sure you test the exports thoroughly before committing your changes after the port.'), 'warning');
     if (empty($this->getEntityTypes())) {
       Logger::log(dt('Entity Scaffolder didn\'t find any definitions'), 'error');
       return;
