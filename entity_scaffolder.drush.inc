@@ -75,9 +75,17 @@ function entity_scaffolder_drush_command() {
  * Run entity scaffolder.
  */
 function drush_entity_scaffolder() {
-  Logger::log("Scaffolding started.", 'status');
   Logger::log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'status');
   $scaffolder = drush_entity_scaffolder_get_scaffolder();
+  $config = $scaffolder->getConfig();
+  if (isset($config['locked']) && $config['locked']) {
+    Logger::log("Configuration is locked.", 'warning');
+    if ($config['lock message']) {
+      Logger::log("LOCK MESSAGE : " . $config['lock message'], 'warning');
+    }
+    Logger::log("Scaffolder quits without scaffolding.", 'error');
+    return ;
+  }
   // Check if current scaffolder version is outdated.
   $log = $scaffolder->getLoggedScaffolderInfo();
   if (isset($log['version'])) {
