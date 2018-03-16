@@ -96,6 +96,17 @@ function drush_entity_scaffolder() {
     }
     elseif ($version_compare > 0) {
       Logger::log("Entity Scaffolder found in your system is of newer version than the one that was used to scaffold earlier.", 'warning');
+      $response = drush_prompt("Do you wish to continue? (y/n)", "n", TRUE);
+      $response = strtolower($response);
+      switch ($response) {
+        case 'y':
+        case 'yes':
+          break;
+
+        default:
+          Logger::log("Scaffolding aborted.", 'error');
+          return;
+      }
     }
   }
   $scaffolder->scaffold();
