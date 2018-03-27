@@ -66,7 +66,7 @@ class Utils {
         Logger::log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
       }
       else {
-        Logger::log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
+        Logger::log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'error');
       }
     }
   }
