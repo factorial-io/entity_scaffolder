@@ -1,0 +1,25 @@
+name : Fabalicious
+interactive: true
+variables :
+  directory :
+    label : Path to root
+    required : true
+    default : '.'
+    hidden : true
+  project_short_name :
+    label : Short name of the project
+    required : true
+    default : ''
+  project_bi_code :
+    label : BI Project Code
+    required : true
+    default : ''
+  project_port_web :
+    label : Port number - WEB
+    required : true
+    default : ''
+  project_port_solr :
+    label : Port number - SOLR
+    requierd : true
+    default : ''
+  

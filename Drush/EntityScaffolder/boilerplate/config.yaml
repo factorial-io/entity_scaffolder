@@ -3,6 +3,11 @@ commands:
     - config
     - theme
     - module_deploy
+  init-bi:
+    - fabalicious_bi_d7
+    - config
+    - theme
+    - module_deploy
 interactive : true
 variables :
   version :
