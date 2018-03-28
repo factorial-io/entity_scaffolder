@@ -1,0 +1,263 @@
+<?php
+
+/**
+ * @file
+ * Theme.inc.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function {{ theme_machine_name }}_theme($existing, $type, $theme, $path) {
+
+  $theme_declaration = array();
+
+  return $theme_declaration;
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function {{ theme_machine_name }}_theme_registry_alter(&$theme_registry) {
+  // Override the F*CK*P from bi-hub module..
+  if (isset($theme_registry['brightcove_field_embed'])) {
+    $theme_registry['brightcove_field_embed']['theme path'] = path_to_theme();
+    $theme_registry['brightcove_field_embed']['template'] = 'brightcove-field-embed';
+  }
+}
+
+/**
+ * Overwrite theme function to add buttons.
+ */
+function {{ theme_machine_name }}_panels_ipe_toolbar($vars) {
+  if (arg(0) == 'search' && arg(1) == 'node') {
+    return;
+  }
+  $buttons = $vars['buttons'];
+  // menu_get_object returns published node, so we need a workaround.
+  // @see https://www.drupal.org/node/2021903
+  $node = {{ theme_machine_name }}_helper_menu_get_object();
+  $node_is_published = {{ theme_machine_name }}_helper_published_revision_state($node);
+  if ($tabs = menu_local_tasks()) {
+
+    foreach ($tabs['tabs']['output'] as $key => $tab) {
+      $button = array(
+        '#type' => 'link',
+        '#title' => $tab['#link']['title'],
+        '#href' => $tab['#link']['href'],
+        '#id' => drupal_html_id('panels-ipe-local-task'),
+        '#attributes' => array(
+          'class' => array('panels-ipe-startedit', 'panels-ipe-pseudobutton'),
+        ),
+        '#prefix' => '<div class="panels-ipe-pseudobutton-container">',
+        '#suffix' => '</div>',
+      );
+      $first_key = key($buttons);
+      // Remove view draft when on draft.
+      if ($tab['#link']['path'] == 'node/%/draft' && !$node_is_published) {
+        $button = FALSE;
+      }
+
+      // Remove view published when on published.
+      if ($tab['#link']['path'] == 'node/%/view' && $node_is_published) {
+        $button = FALSE;
+      }
+
+      $buttons[$first_key][$key . '_tabs'] = $button;
+    }
+  }
+  ctools_include('cleanstring');
+
+  $output = "<div id='panels-ipe-control-container' class='clearfix'>";
+  foreach ($buttons as $key => $ipe_buttons) {
+    $key = ctools_cleanstring($key);
+    $output .= "<div id='panels-ipe-control-$key' class='panels-ipe-control'>";
+
+    // Controls in this container will appear when the IPE is not on.
+    $output .= '<div class="panels-ipe-button-container clearfix">';
+    foreach ($ipe_buttons as $bkey => $button) {
+      // Disable IPE "customize this page" link on published revisions of nodes.
+      if ($bkey == 'panels-ipe-startedit') {
+        if ($node_is_published) {
+          $button = FALSE;
+        }
+      }
+
+      // Disable Change Layout link since ther is only one layout.
+      if ($bkey == 'panels-ipe-change-layout') {
+        continue;
+      }
+      $output .= is_string($button) ? $button : drupal_render($button);
+    }
+    $output .= '</div>';
+
+    // Controls in this container will appear when the IPE is on. It is usually
+    // filled via AJAX.
+    $output .= '<div class="panels-ipe-form-container clearfix"></div>';
+    $output .= '</div>';
+  }
+
+  $output .= "</div>";
+
+  return $output;
+}
+
+/**
+ * Implements hook_pager().
+ */
+function {{ theme_machine_name }}_pager(&$variables) {
+  $tags = $variables['tags'];
+  $element = $variables['element'];
+  $parameters = $variables['parameters'];
+  $quantity = $variables['quantity'];
+  global $pager_page_array, $pager_total;
+
+  // Calculate various markers within this pager piece:
+  // Middle is used to "center" pages around the current page.
+  $pager_middle = ceil($quantity / 2);
+  // Current is the page we are currently paged to.
+  $pager_current = $pager_page_array[$element] + 1;
+  // First is the first page listed by this pager piece (re quantity)
+  $pager_first = $pager_current - $pager_middle + 1;
+  // Last is the last page listed by this pager piece (re quantity)
+  $pager_last = $pager_current + $quantity - $pager_middle;
+  // Max is the maximum page number.
+  $pager_max = $pager_total[$element];
+  // End of marker calculations.
+  // Prepare for generation loop.
+  $i = $pager_first;
+  if ($pager_last > $pager_max) {
+    // Adjust "center" if at end of query.
+    $i = $i + ($pager_max - $pager_last);
+    $pager_last = $pager_max;
+  }
+  if ($i <= 0) {
+    // Adjust "center" if at start of query.
+    $pager_last = $pager_last + (1 - $i);
+    $i = 1;
+  }
+  // End of generation loop preparation.
+  $li_first = theme('pager_first', array(
+    'text' => (isset($tags[0]) ? $tags[0] : t('first')),
+    'element' => $element,
+    'parameters' => $parameters,
+  ));
+  $li_previous = theme('pager_previous', array(
+    'text' => (isset($tags[1]) ? $tags[1] : t('‹ prev')),
+    'element' => $element,
+    'interval' => 1,
+    'parameters' => $parameters,
+  ));
+  $li_next = theme('pager_next', array(
+    'text' => (isset($tags[3]) ? $tags[3] : t('next ›')),
+    'element' => $element,
+    'interval' => 1,
+    'parameters' => $parameters,
+  ));
+  $li_last = theme('pager_last', array(
+    'text' => (isset($tags[4]) ? $tags[4] : t('last')),
+    'element' => $element,
+    'parameters' => $parameters,
+  ));
+  $li_current_mobile = 'current 1 of 5';
+
+  if ($pager_total[$element] > 1) {
+    // if ($li_first) {
+    //   $items[] = array(
+    //     'class' => array('pager-first'),
+    //     'data' => $li_first,
+    //   );
+    // }
+
+    if ($li_previous) {
+      $items[] = array(
+        'class' => array('pager-previous'),
+        'data' => $li_previous,
+      );
+    }
+    else {
+      $items[] = array(
+        'class' => array('pager-previous', 'disabled'),
+        'data' => t('‹ prev'),
+      );
+    }
+
+    // $items[] = array(
+    //   'class' => array('pager-current-mobile'),
+    //   'data' => t('Page @current of @total', array('@current' => $pager_current, '@total' => $pager_max)),
+    // );
+
+    // When there is more than one page, create the pager list.
+    if ($i != $pager_max) {
+      if ($i > 1) {
+        $items[] = array(
+          'class' => array('pager-ellipsis'),
+          'data' => '…',
+        );
+      }
+      // Now generate the actual pager piece.
+      for (; $i <= $pager_last && $i <= $pager_max; $i++) {
+        if ($i < $pager_current) {
+          $items[] = array(
+            'class' => array('pager-item'),
+            'data' => theme('pager_previous', array(
+              'text' => $i,
+              'element' => $element,
+              'interval' => ($pager_current - $i),
+              'parameters' => $parameters,
+            )),
+          );
+        }
+        if ($i == $pager_current) {
+          $items[] = array(
+            'class' => array('pager-current'),
+            'data' => $i,
+          );
+        }
+        if ($i > $pager_current) {
+          $items[] = array(
+            'class' => array('pager-item'),
+            'data' => theme('pager_next', array(
+              'text' => $i,
+              'element' => $element,
+              'interval' => ($i - $pager_current),
+              'parameters' => $parameters,
+            )),
+          );
+        }
+      }
+      if ($i < $pager_max) {
+        $items[] = array(
+          'class' => array('pager-ellipsis'),
+          'data' => '…',
+        );
+      }
+    }
+    // End generation.
+    if ($li_next) {
+      $items[] = array(
+        'class' => array('pager-next'),
+        'data' => $li_next,
+      );
+    }
+    else {
+      $items[] = array(
+        'class' => array('pager-next', 'disabled'),
+        'data' => t('next ›'),
+      );
+    }
+    // if ($li_last) {
+    //   $items[] = array(
+    //     'class' => array('pager-last'),
+    //     'data' => $li_last,
+    //   );
+    // }
+    return theme('item_list', array(
+      'items' => $items,
+      'attributes' => array(
+        'class' => array('pager', 'js-Pagination'),
+        'data-patternlab-path' => array(ssc_utils_patternlab_path()),
+      ),
+    ));
+  }
+}

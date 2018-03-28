@@ -1,0 +1,15 @@
+name = {{ theme_machine_name }}
+core = 7.x
+engine = twig
+php = 5.6
+plugins[panels][layouts] = layouts
+
+; inject:css
+stylesheets[all][] = source/css/index.css
+; endinject
+
+; inject:js
+scripts[] = source/js/index.js
+scripts[] = ckeditor.styles.js
+; endinject
+

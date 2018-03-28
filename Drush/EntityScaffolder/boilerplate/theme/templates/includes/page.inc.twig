@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @file
+ * Contains page specific theme preprocess.
+ */
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function {{ theme_machine_name }}_preprocess_page(&$variables) {
+  // Prepare menus.
+  $variables['main_navigation_items'] = {{ theme_machine_name }}_get_menu('main-menu');
+  $variables['footer_navigation_items'] = {{ theme_machine_name }}_get_menu('menu-footer-menu');
+}

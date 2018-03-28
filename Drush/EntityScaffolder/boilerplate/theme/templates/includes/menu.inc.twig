@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * menu.inc
+ */
+
+/**
+ * Helper function to retrieved menu in proper format.
+ */
+function {{ theme_machine_name }}_get_menu($menu_name) {
+  static $current_path = NULL;
+  if ($current_path === NULL) {
+    $current_path = current_path();
+  }
+
+  $tree = menu_tree($menu_name);
+
+  return _{{ theme_machine_name }}_get_menu_impl($tree, $current_path);
+}
+
+/**
+ * Recursive helper to parse.
+ */
+function _{{ theme_machine_name }}_get_menu_impl($tree, $current_path) {
+
+  $items = array();
+  foreach ($tree as $ndx => $menu) {
+    if (is_numeric($ndx)) {
+      $link['label'] = $menu['#title'];
+      $link['is_selected'] = FALSE;
+      $link['url'] = ($menu['#href'] === '<nolink>') ? '#' : url($menu['#href'], $menu['#localized_options']);
+      if (drupal_valid_path($menu['#href'])) {
+        if (isset($menu['#localized_options']['attributes']['class'])) {
+          $link['is_selected'] = in_array('active-trail', $menu['#localized_options']['attributes']['class']);
+        }
+
+        // Check if it should open in a new window. the menu should get cached.
+        $link['target'] = FALSE;
+        if (_menu_target_retarget_link($menu['#original_link']['mlid'])) {
+          $link['target'] = '_blank';
+        }
+        $uri = ltrim($link['url'], '/');
+        if (drupal_match_path($current_path, $uri)) {
+          $link['is_selected'] = TRUE;
+        }
+        if (is_array($menu['#below'])) {
+          $link['children'] = _{{ theme_machine_name }}_get_menu_impl($menu['#below'], $current_path);
+        }
+        $items[] = $link;
+      }
+    }
+  }
+  return $items;
+
+}
