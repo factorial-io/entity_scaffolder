@@ -16,11 +16,27 @@ class BoilerPlate {
   }
 
   /**
+   * Generate Boilerplate Code.
+   */
+  public function generate($arg) {
+    $config = $this->loadConfig();
+    if (isset($config['commands'][$arg])) {
+      foreach ($config['commands'][$arg] as $type) {
+        $this->generateType($type);
+      }
+    }
+    else {
+      $this->generateType($arg);
+    }
+  }
+
+  /**
    * Start scaffolding.
    */
-  public function generate($type) {
+  public function generateType($type) {
     // Load Config File.
-    $config = $this->loadConfig($type);
+    $config = $this->loadConfigForType($type);
+    Logger::log(dt('Generate - @name', array('@name' => $config['name'])), 'status');
     $args = [
       'version' => $config['version'],
     ];
@@ -32,6 +48,7 @@ class BoilerPlate {
         }
       }
     }
+    Logger::log(dt('Copying files started'), 'status');
     $out = [];
     $dir_path = $this->getTemplateDir() . '/' . $type . '/templates';
     $dir = new \RecursiveDirectoryIterator($dir_path);
@@ -56,6 +73,7 @@ class BoilerPlate {
       $destination = $args['directory'] . $destination;
       Utils::write($destination, $file_content);
     }
+    Logger::log(dt('Copying files finished'), 'status');
   }
 
   /**
@@ -92,7 +110,15 @@ class BoilerPlate {
   /**
    * Load configuration data.
    */
-  protected function loadConfig($type) {
+  protected function loadConfig() {
+    $config = Utils::getConfig($this->getTemplateDir() . '/config.yaml');
+    return $config;
+  }
+
+  /**
+   * Load configuration data.
+   */
+  protected function loadConfigForType($type) {
     $dir = $this->getTemplateDir() . '/' . $type;
     $config = Utils::getConfig($dir . '/config.yaml');
     $defaults = array(
