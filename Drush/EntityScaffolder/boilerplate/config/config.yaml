@@ -1,0 +1,25 @@
+name : Entity Scaffolder Configuration
+interactive: true
+variables :
+  version :
+    label : Version of Entity Scaffolder to use
+    required : true
+    default : 'd7_1'
+  directory :
+    label : Path to Entity Scaoffolder config directory
+    required : true
+    default : '_tools/es'
+  directories_theme :
+    label : Path to theme folder (without terminating slash "/")
+    required : true
+    default : ''
+  directories_templates :
+    label : Path to templates folder (relative to theme)
+    required : true
+    default : 'templates'
+    pattern : '{{ directories_theme }}/{{ directories_templates }}'
+  directories_patternlab :
+    label : Path to patternlab (relative to theme)
+    required : true
+    default : 'source'
+    pattern : '{{ directories_theme }}/{{ directories_patternlab }}'
