@@ -6,3 +6,5 @@ export/*
 public/*
 vendor/*
 source/styleguide/*
+source/css/index.css.map
+source/js/index.js.map
