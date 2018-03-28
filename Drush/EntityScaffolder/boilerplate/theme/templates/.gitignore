@@ -4,6 +4,8 @@ build
 .idea
 export/*
 public/*
+!public/styleguide/
+!public/index.html
 vendor/*
 source/styleguide/*
 source/css/index.css.map
