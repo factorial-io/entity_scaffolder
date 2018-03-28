@@ -1,0 +1,33 @@
+version: '2'
+services:
+  web:
+    image: factorial/drupal-docker:php-56
+    ports:
+      - "$SSH_PORT:22"
+    volumes:
+      - .:/var/www
+    links:
+      - mysql:mysql
+    environment:
+      AMAZEEIO: AMAZEEIO
+      AMAZEEIO_URL: $VHOST
+      VHOST: $VHOST
+      WEB_ROOT: $WEB_ROOT
+    networks:
+      - default
+      - amazeeio-network
+
+  mysql:
+    image: mysql
+    volumes:
+      - "db-data:/var/lib/mysql"
+
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+
+volumes:
+  db-data:
+
+networks:
+  amazeeio-network:
+    external: true

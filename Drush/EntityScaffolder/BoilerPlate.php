@@ -16,22 +16,32 @@ class BoilerPlate {
   }
 
   /**
-   * Start scaffolding.
+   * Generate Boilerplate Code.
    */
-  public function generate($type) {
-    // Load Config File.
-    $config = $this->loadConfig($type);
-    $args = [
-      'version' => $config['version'],
-    ];
-    if ($config['interactive']) {
-      foreach ($config['variables'] as $key => $value) {
-        $args[$key] = drush_prompt($value['label'], $value['default'], $value['required']);
-        if (isset($value['pattern'])) {
-          $args[$key] = Utils::renderInline($value['pattern'], $args);
-        }
+  public function generate($command) {
+    $config = $this->loadConfig();
+    $args = array();
+    $this->loadInteractiveVariables($config, $args);
+
+    if (isset($config['commands'][$command])) {
+      foreach ($config['commands'][$command] as $type) {
+        $this->generateType($type, $args);
       }
     }
+    else {
+      $this->generateType($command, $args);
+    }
+  }
+
+  /**
+   * Start scaffolding.
+   */
+  public function generateType($type, $args) {
+    // Load Config File.
+    $config = $this->loadConfigForType($type);
+    Logger::log(dt('Generate - @name', array('@name' => $config['name'])), 'status');
+    $this->loadInteractiveVariables($config, $args);
+    Logger::log(dt('Copying files started'), 'status');
     $out = [];
     $dir_path = $this->getTemplateDir() . '/' . $type . '/templates';
     $dir = new \RecursiveDirectoryIterator($dir_path);
@@ -55,6 +65,28 @@ class BoilerPlate {
       }
       $destination = $args['directory'] . $destination;
       Utils::write($destination, $file_content);
+    }
+    Logger::log(dt('Copying files finished'), 'status');
+  }
+
+  /**
+   * Helper fuction to load interactive variables.
+   */
+  protected function loadInteractiveVariables($config, &$args) {
+    if ($config['interactive']) {
+      foreach ($config['variables'] as $key => $value) {
+
+        if ($value['hidden']) {
+          $args[$key] = $value['default'];
+        }
+        else {
+          $args[$key] = drush_prompt($value['label'], $value['default'], $value['required']);
+        }
+
+        if (isset($value['pattern'])) {
+          $args[$key] = Utils::renderInline($value['pattern'], $args);
+        }
+      }
     }
   }
 
@@ -92,7 +124,15 @@ class BoilerPlate {
   /**
    * Load configuration data.
    */
-  protected function loadConfig($type) {
+  protected function loadConfig() {
+    $config = Utils::getConfig($this->getTemplateDir() . '/config.yaml');
+    return $config;
+  }
+
+  /**
+   * Load configuration data.
+   */
+  protected function loadConfigForType($type) {
     $dir = $this->getTemplateDir() . '/' . $type;
     $config = Utils::getConfig($dir . '/config.yaml');
     $defaults = array(

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  web:
+    ports:
+      - "$SSH_PORT:22"
+  solr:
+    ports:
+      - {{ project_port_solr }}:8983

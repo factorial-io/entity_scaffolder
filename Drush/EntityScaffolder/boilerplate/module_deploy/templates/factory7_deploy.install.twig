@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Install hooks.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function {{ project_short_code }}_deploy_install() {
+  for ($i = 7001; $i < 8000; $i++) {
+    $candidate = '{{ project_short_code }}_deploy_update_' . $i;
+    if (function_exists($candidate)) {
+      $sandbox = array();
+      do {
+        $candidate($sandbox);
+      } while (!isset($sandbox['#finished']) || $sandbox['#finished']);
+    }
+  }
+}

@@ -7,12 +7,12 @@ variables :
     label : Theme machine name
     required : true
     default : ''
+    pattern : '{{ project_short_code }}_frontend'
+    hidden : true
   directory :
     label : Directory where theme is kept
     required : true
     default : 'sites/all/themes/custom'
     pattern : '{{ directory }}/{{ theme_machine_name }}'
-  theme_machine_name :
-    label : Theme machine name
-    required : true
-    default : ''
+    hidden : true
+
