@@ -1,0 +1,37 @@
+/** @define Button */
+
+.Button {
+  display: block;
+  width: 100%;
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-1);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--color-turquoise);
+  border-radius: 2px;
+}
+
+.Button:focus {
+  outline: transparent;
+}
+
+.Button:hover {
+  cursor: pointer;
+}
+
+.Button--light {
+  color: var(--color-black);
+  background-color: var(--color-white);
+}
+
+@media (--md-lg-viewport) {
+  .Button {
+    display: inline-block;
+    width: auto;
+    padding-right: var(--space-3);
+    padding-left: var(--space-3);
+  }
+}
+
