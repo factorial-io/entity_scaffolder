@@ -2,3 +2,15 @@ commands:
   init:
     - config
     - theme
+    - module_deploy
+interactive : true
+variables :
+  version :
+    label : Version of Entity Scaffolder to use
+    required : true
+    default : 'd7_1'
+    hidden : true
+  project_short_code :
+    label : Project short code
+    required : true
+    default : ''

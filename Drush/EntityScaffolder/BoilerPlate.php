@@ -18,36 +18,29 @@ class BoilerPlate {
   /**
    * Generate Boilerplate Code.
    */
-  public function generate($arg) {
+  public function generate($command) {
     $config = $this->loadConfig();
-    if (isset($config['commands'][$arg])) {
-      foreach ($config['commands'][$arg] as $type) {
-        $this->generateType($type);
+    $args = array();
+    $this->loadInteractiveVariables($config, $args);
+
+    if (isset($config['commands'][$command])) {
+      foreach ($config['commands'][$command] as $type) {
+        $this->generateType($type, $args);
       }
     }
     else {
-      $this->generateType($arg);
+      $this->generateType($command, $args);
     }
   }
 
   /**
    * Start scaffolding.
    */
-  public function generateType($type) {
+  public function generateType($type, $args) {
     // Load Config File.
     $config = $this->loadConfigForType($type);
     Logger::log(dt('Generate - @name', array('@name' => $config['name'])), 'status');
-    $args = [
-      'version' => $config['version'],
-    ];
-    if ($config['interactive']) {
-      foreach ($config['variables'] as $key => $value) {
-        $args[$key] = drush_prompt($value['label'], $value['default'], $value['required']);
-        if (isset($value['pattern'])) {
-          $args[$key] = Utils::renderInline($value['pattern'], $args);
-        }
-      }
-    }
+    $this->loadInteractiveVariables($config, $args);
     Logger::log(dt('Copying files started'), 'status');
     $out = [];
     $dir_path = $this->getTemplateDir() . '/' . $type . '/templates';
@@ -74,6 +67,27 @@ class BoilerPlate {
       Utils::write($destination, $file_content);
     }
     Logger::log(dt('Copying files finished'), 'status');
+  }
+
+  /**
+   * Helper fuction to load interactive variables.
+   */
+  protected function loadInteractiveVariables($config, &$args) {
+    if ($config['interactive']) {
+      foreach ($config['variables'] as $key => $value) {
+
+        if ($value['hidden']) {
+          $args[$key] = $value['default'];
+        }
+        else {
+          $args[$key] = drush_prompt($value['label'], $value['default'], $value['required']);
+        }
+
+        if (isset($value['pattern'])) {
+          $args[$key] = Utils::renderInline($value['pattern'], $args);
+        }
+      }
+    }
   }
 
   /**
