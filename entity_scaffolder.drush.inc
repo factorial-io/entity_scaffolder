@@ -9,6 +9,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 spl_autoload_register('drush_entity_scaffolder_autoload');
 
 use Drush\EntityScaffolder\ScaffolderBase;
+use Drush\EntityScaffolder\BoilerPlate;
 use Drush\EntityScaffolder\d7\Scaffolder as Scaffolder_d7;
 use Drush\EntityScaffolder\d7_1\Scaffolder as Scaffolder_d7_1;
 use Drush\EntityScaffolder\Utils;
@@ -44,6 +45,7 @@ function entity_scaffolder_drush_command() {
       'config-dir' => 'Directory to read the config file/s from.',
       'fire-bazooka' => '@todo: Deletes all previous entries and force rebuild.',
       'debug' => 'Runs entity_scaffolder in debug mode.',
+      'version' => 'Use a specific version of Entity Scaffolder',
     ),
     'examples' => array(
       'drush es --config-dir="_tools/es"' => 'Looks for config file/s in _tools/es and runs scaffolding job.',
@@ -51,9 +53,26 @@ function entity_scaffolder_drush_command() {
     'aliases' => array('es'),
   );
 
-  $items['entity-scaffold-buddy'] = array(
+  $items['entity-scaffold-boilerplate'] = array(
+    'description' => 'Generate Boilderplate code.',
+    'callback' => 'drush_entity_scaffolder_boilerplate',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'arguments' => array(
+      'type' => 'Boilerplate Type',
+    ),
+    'options' => array(
+      'debug' => 'Runs entity_scaffolder in debug mode.',
+      'version' => 'Use a specific version of Entity Scaffolder',
+    ),
+    'examples' => array(
+      'drush esb --debug' => 'This will provide an extensive details about boilderplate that would be generated.',
+    ),
+    'aliases' => array('esb'),
+  );
+
+  $items['entity-scaffold-helper'] = array(
     'description' => '@todo: Helper command to interact with entity-scaffolder to know more.',
-    'callback' => 'drush_entity_scaffolder_buddy',
+    'callback' => 'drush_entity_scaffolder_helper',
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'arguments' => array(
       'type' => 'entity or field',
@@ -61,11 +80,12 @@ function entity_scaffolder_drush_command() {
     ),
     'options' => array(
       'debug' => 'Runs entity_scaffolder in debug mode.',
+      'version' => 'Use a specific version of Entity Scaffolder',
     ),
     'examples' => array(
-      'drush esb --debug' => 'This will provide an extensive details about entity that could be scaffolded.',
+      'drush esh --debug' => 'This will provide an extensive details about entity that could be scaffolded.',
     ),
-    'aliases' => array('esb'),
+    'aliases' => array('esh'),
   );
 
   return $items;
@@ -118,10 +138,20 @@ function drush_entity_scaffolder() {
 /**
  * Run entity scaffolder.
  */
-function drush_entity_scaffolder_buddy() {
+function drush_entity_scaffolder_helper() {
   spl_autoload_register('drush_entity_scaffolder_autoload');
   list($type, $name) = func_get_args();
   drush_entity_scaffolder_get_scaffolder()->help($type, $name);
+}
+
+/**
+ * Run entity scaffolder for boilderplate.
+ */
+function drush_entity_scaffolder_boilerplate() {
+  spl_autoload_register('drush_entity_scaffolder_autoload');
+  list($type) = func_get_args();
+  $boilerPlate = new BoilerPlate();
+  $boilerPlate->generate($type);
 }
 
 /**
@@ -130,8 +160,11 @@ function drush_entity_scaffolder_buddy() {
 function drush_entity_scaffolder_get_scaffolder() {
   $scaffolder_base = new ScaffolderBase();
   $config = $scaffolder_base->getConfig();
-  $version = isset($config['version']) ? $config['version'] : 'd7';
+  $version = isset($config['version']) ? $config['version'] : '';
   Logger::log("Scaffolder version " . $version, 'status');
+  if ($v = drush_get_option('version')) {
+    $version = $v;
+  }
   switch ($version) {
     case 'd7':
       return new Scaffolder_d7();
@@ -140,8 +173,9 @@ function drush_entity_scaffolder_get_scaffolder() {
       return new Scaffolder_d7_1();
 
     default:
-      Logger::log("Scaffolder version " . $version . " not found. Loaded version d7.", 'error');
-      return new Scaffolder_d7();
+
+      Logger::log("Scaffolder version " . $version . " not found. Loaded version d7_1.", 'error');
+      return new Scaffolder_d7_1();
   }
 }
 

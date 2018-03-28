@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="{{ language.language }}" dir="{{ language.dir }}" itemscope itemtype="http://schema.org/MedicalWebPage">
+<head>
+  {{ head }}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ head_title }}</title>
+  <link rel="apple-touch-icon" sizes="57x57" href="{{ patternlab_path() }}/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="{{ patternlab_path() }}/favicons/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="{{ patternlab_path() }}/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="{{ patternlab_path() }}/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="{{ patternlab_path() }}/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="{{ patternlab_path() }}/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="{{ patternlab_path() }}/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="{{ patternlab_path() }}/favicons/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ patternlab_path() }}/favicons/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="{{ patternlab_path() }}/favicons/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="256x256"  href="{{ patternlab_path() }}/favicons/android-chrome-256x256.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ patternlab_path() }}/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="{{ patternlab_path() }}/favicons/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ patternlab_path() }}/favicons/favicon-16x16.png">
+  <link rel="manifest" href="{{ patternlab_path() }}/favicons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="{{ patternlab_path() }}/favicons/mstile-150x150.png">
+  <meta name="msapplication-config" content="{{ patternlab_path() }}/favicons/browserconfig.xml" />
+  <meta name="theme-color" content="#ffffff">
+  <script src="{{ patternlab_path() }}/js/vendor/modernizr-custom.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7861796/7419192/css/fonts.css" />
+  {{ styles }}
+</head>
+<body class="{{ classes }}" {{ attributes }}>
+  <div class="u-hiddenVisually" id="skip-link">
+    <a href="#main-content" class="element-invisible element-focusable">{{ 'Skip to main content'|t }}</a>
+  </div>
+  {{ page_top }}
+  {{ page }}
+  {{ page_bottom }}
+  {{ scripts }}
+</body>
+</html>

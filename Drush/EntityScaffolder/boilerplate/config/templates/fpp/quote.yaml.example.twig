@@ -1,0 +1,27 @@
+name: Quote
+machine_name: quote
+fields:
+  headline:
+    map: headline
+    type: text_long
+    label: Title
+    text_processing: 0
+    allowed_formats:
+      - plain_text
+    default_format: plain_text
+    weight: 1
+  body:
+    map: quote
+    type: text_long
+    label: Body
+    text_processing: 0
+    allowed_formats:
+      - plain_text
+    default_format: plain_text
+    weight: 2
+  cta:
+    type: link
+    map: cta
+    cardinality: 1
+    label: CTA
+    weight: 3
