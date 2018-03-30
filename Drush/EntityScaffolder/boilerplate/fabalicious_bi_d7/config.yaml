@@ -7,7 +7,7 @@ variables :
     default : '.'
     hidden : true
   project_short_name :
-    label : Short name of the project
+    label : Short name of the project. This will be used to create url, project folder names and so on.
     required : true
     default : ''
   project_bi_code :
