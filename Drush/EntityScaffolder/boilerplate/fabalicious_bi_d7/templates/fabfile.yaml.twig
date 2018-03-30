@@ -1,5 +1,5 @@
-{% set project_short_name_stripped %}{{ project_short_name|replace({ ' ':'', '_':'', '-':''}) }}{% endset %}
-{% set project_short_name_safe_value %}{{ project_short_name|replace({ ' ':'-', '_':'-'}) }}{% endset %}
+{% set project_short_name_stripped %}{{ project_short_name|lower|replace({ ' ':'', '_':'', '-':''}) }}{% endset %}
+{% set project_short_name_safe_value %}{{ project_short_name|lower|replace({ ' ':'-', '_':'-'}) }}{% endset %}
 name: {{ project_short_name_safe_value }}
 deploymentModule: {{ project_short_code }}_deploy
 
@@ -108,8 +108,8 @@ dockerHosts:
     environment:
       COMPOSE_FILE: "docker-compose.yml:docker-compose-mbb.yml"
     inheritsFrom:
-      - ../../fabalicious/2.0/mbb-docker.yaml
-      - http://config.factorial.io/docker/2.0/docker-compose.yaml
+      - https://config.factorial.io/mbb/2.0/mbb-docker.yaml
+      - https://config.factorial.io/docker/2.0/docker-compose.yaml
 
   clients.factorial.io:
     environment:
@@ -117,17 +117,6 @@ dockerHosts:
     inheritsFrom:
       - http://config.factorial.io/clients.factorial.io/2.0/docker.yaml
       - http://config.factorial.io/docker/2.0/docker-compose.yaml
-
-  hub-staging.lan.rmh.de:
-    environment:
-      VHOST: "%host.docker.vhost%"
-    inheritsFrom:
-      - http://config.factorial.io/clients.factorial.io/2.0/docker.yaml
-      - http://config.factorial.io/docker/2.0/docker-compose.yaml
-    user: volkan
-    host: hub-staging.lan.rmh.de
-    rootFolder: /home/volkan
-    port: 22
 
 hosts:
   mbb:
@@ -159,31 +148,6 @@ hosts:
     xdebug:
       php_version: 5
 
-  cachalot:
-    host: {{ project_short_name_safe_value }}.docker.amazee.io
-
-  int.{{ project_short_name_safe_value }}.hub-staging.lan.rmh.de:
-    inheritsFrom: ./host.yaml
-    type: dev
-    ignoreSubmodules: true
-    port: 2777
-    branch: int
-    rootFolder: /var/www/
-    database:
-      name: {{ project_short_name_stripped }}_dev
-      host: mysql
-      pass: admin
-      user: root
-    supportsInstalls: true
-    ignoreSubmodules: true
-    docker:
-      name: {{ project_short_name_stripped }}int_web_1
-      configuration: hub-staging.lan.rmh.de
-      projectFolder: {{ project_short_name_stripped }}--int
-      vhost: int.{{ project_short_name_stripped }}.hub-staging.lan.rmh.de
-    reset:
-      - "drush vset -y error_level 0"
-      - "execute(script, copyHtAccess)"
 
   {{ project_short_name_safe_value }}-int:
     port: 22
