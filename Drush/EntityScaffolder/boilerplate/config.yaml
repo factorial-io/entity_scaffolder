@@ -8,6 +8,7 @@ commands:
     - config
     - theme
     - module_deploy
+    - module_utils
 interactive : true
 variables :
   version :
