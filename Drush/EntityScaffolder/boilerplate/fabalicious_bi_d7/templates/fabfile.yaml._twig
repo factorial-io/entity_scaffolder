@@ -1,5 +1,3 @@
-{% set project_short_name_stripped %}{{ project_short_name|lower|replace({ ' ':'', '_':'', '-':''}) }}{% endset %}
-{% set project_short_name_safe_value %}{{ project_short_name|lower|replace({ ' ':'-', '_':'-'}) }}{% endset %}
 name: {{ project_short_name_safe_value }}
 deploymentModule: {{ project_short_code }}_deploy
 

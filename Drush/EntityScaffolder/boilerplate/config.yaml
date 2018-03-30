@@ -17,6 +17,6 @@ variables :
     default : 'd7_1'
     hidden : true
   project_short_code :
-    label : Project short code (used as prefix for modules and themes, e.g. `bif`)
+    label : Project short code. Used for various prefixes like module names, theme names, etc. Suggested to use 2 or 3 alphabets.
     required : true
     default : ''

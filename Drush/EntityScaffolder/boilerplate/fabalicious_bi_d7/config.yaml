@@ -10,16 +10,31 @@ variables :
     label : Short name of the project, (used for the host-name and project-folder, e.g. `BI france`)
     required : true
     default : ''
+  project_short_name_stripped :
+    label : Project short name stripped
+    required : true
+    default : ''
+    hidden : true
+    pattern : "{{ project_short_name|lower|replace({ ' ':'', '_':'', '-':''}) }}"
+  project_short_name_safe_value :
+    label : Project short name safe value
+    required : true
+    default : ''
+    hidden : true
+    pattern : "{{ project_short_name|lower|replace({ ' ':'-', '_':'-'}) }}"
   project_bi_code :
-    label : BI Project Code
+    label : BI Project Code (in jira.bi-scrum.com)
     required : true
     default : ''
   project_port_web :
     label : Port number - WEB
     required : true
     default : ''
+    hidden : true
+    pattern : '{{ random(55535) + 10000 }}'
   project_port_solr :
     label : Port number - SOLR
     requierd : true
     default : ''
-
+    hidden : true
+    pattern : '{{ random(55535) + 10000 }}'

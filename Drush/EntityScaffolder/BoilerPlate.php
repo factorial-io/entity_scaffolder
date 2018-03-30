@@ -52,7 +52,7 @@ class BoilerPlate {
       }
       $destination = $this->getDestination($file, $dir_path);
       $file_content = '';
-      if ($file->getExtension() == "twig") {
+      if ($file->getExtension() == "_twig") {
         $file_content = Utils::render($file->getPath(), $file->getBasename(), $args);
       }
       else {
@@ -111,11 +111,11 @@ class BoilerPlate {
   protected function getDestination($file, $template_dir_path) {
     $file_path = $file->getPath();
 
-    if ($file->getExtension() == "skip") {
-      $file_name = basename($file->getFilename(), '.skip');
+    if ($file->getExtension() == "_twig") {
+      $file_name = basename($file->getFilename(), '._twig');
     }
     else {
-      $file_name = basename($file->getFilename(), '.twig');
+      $file_name = $file->getFilename();
     }
 
     return str_replace($template_dir_path, '', $file_path) . '/' . $file_name;

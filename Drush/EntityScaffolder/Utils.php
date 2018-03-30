@@ -139,8 +139,15 @@ class Utils {
     $twig->addExtension(new \Twig_Extension_Debug());
 
     $extention = pathinfo($template, PATHINFO_EXTENSION);
-    if ($extention != 'twig') {
-      $template .= '.twig';
+
+    switch ($extention) {
+      case '_twig':
+      case 'twig':
+        break;
+
+      default:
+        $template .= '.twig';
+        break;
     }
 
     return $twig->render($template, $replacements);
