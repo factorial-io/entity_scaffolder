@@ -10,8 +10,20 @@ variables :
     label : Short name of the project. This will be used to create url, project folder names and so on.
     required : true
     default : ''
+  project_short_name_stripped :
+    label : Project short name stripped
+    required : true
+    default : ''
+    hidden : true
+    pattern : "{{ project_short_name|replace({ ' ':'', '_':'', '-':''}) }}"
+  project_short_name_safe_value :
+    label : Project short name safe value
+    required : true
+    default : ''
+    hidden : true
+    pattern : "{{ project_short_name|replace({ ' ':'-', '_':'-'}) }}"
   project_bi_code :
-    label : BI Project Code
+    label : BI Project Code (in jira.bi-scrum.com)
     required : true
     default : ''
   project_port_web :
@@ -26,4 +38,3 @@ variables :
     default : ''
     hidden : true
     pattern : '{{ random(55535) + 10000 }}'
-    
