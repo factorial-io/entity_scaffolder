@@ -18,8 +18,12 @@ variables :
     label : Port number - WEB
     required : true
     default : ''
+    hidden : true
+    pattern : '{{ random(55535) + 10000 }}'
   project_port_solr :
     label : Port number - SOLR
     requierd : true
     default : ''
-  
+    hidden : true
+    pattern : '{{ random(55535) + 10000 }}'
+    
