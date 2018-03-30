@@ -7,7 +7,7 @@ variables :
     default : '.'
     hidden : true
   project_short_name :
-    label : Short name of the project
+    label : Short name of the project, (used for the host-name and project-folder, e.g. `BI france`)
     required : true
     default : ''
   project_bi_code :
@@ -22,4 +22,4 @@ variables :
     label : Port number - SOLR
     requierd : true
     default : ''
-  
+

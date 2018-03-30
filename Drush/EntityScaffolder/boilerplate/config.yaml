@@ -17,6 +17,6 @@ variables :
     default : 'd7_1'
     hidden : true
   project_short_code :
-    label : Project short code
+    label : Project short code (used as prefix for modules and themes, e.g. `bif`)
     required : true
     default : ''
