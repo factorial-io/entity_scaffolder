@@ -256,7 +256,7 @@ function {{ theme_machine_name }}_pager(&$variables) {
       'items' => $items,
       'attributes' => array(
         'class' => array('pager', 'js-Pagination'),
-        'data-patternlab-path' => array(ssc_utils_patternlab_path()),
+        'data-patternlab-path' => array({{ project_short_code }}_utils_patternlab_path()),
       ),
     ));
   }
