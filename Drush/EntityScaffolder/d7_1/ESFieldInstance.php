@@ -48,6 +48,13 @@ class ESFieldInstance extends ESField {
     $block = Scaffolder::CONTENT;
     $key = $code;
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+      
+    if (!empty($info['local_config']['dependencies'])) {
+      foreach ($info['local_config']['dependencies'] as $dependency) {
+        $code = "\ndependencies[] = {$dependency}";
+        $this->scaffolder->setCode($module, $filename, $block, $code, $code);
+      }
+    }
   }
 
   /**
