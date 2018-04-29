@@ -97,6 +97,14 @@ function entity_scaffolder_drush_command() {
 function drush_entity_scaffolder() {
   Logger::log("DRUPAL_ROOT is " . DRUPAL_ROOT, 'status');
   $scaffolder = drush_entity_scaffolder_get_scaffolder();
+  if (!$scaffolder) {
+    if (!($config_dir = drush_get_option('config-dir'))) {
+      $config_dir = '.tools/es';
+    }
+    Logger::log("Make sure `" . $config_dir . "/config.yaml` exists and has version specified. Eg. `version : d7_1`", 'warning');
+    Logger::log("Scaffolder quits without scaffolding.", 'error');
+    return ;
+  }
   $config = $scaffolder->getConfig();
   if (isset($config['locked']) && $config['locked']) {
     Logger::log("Configuration is locked.", 'warning');
@@ -173,9 +181,8 @@ function drush_entity_scaffolder_get_scaffolder() {
       return new Scaffolder_d7_1();
 
     default:
-
-      Logger::log("Scaffolder version " . $version . " not found. Loaded version d7_1.", 'error');
-      return new Scaffolder_d7_1();
+      Logger::log("Couldin't detect scaffolder version.", 'error');
+      return NULL;
   }
 }
 
