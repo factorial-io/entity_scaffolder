@@ -155,7 +155,7 @@
       "sites/all/themes/contrib/{$name}": ["type:drupal-theme"],
       "sites/all/themes/engines/tfd7": ["drupal/tfd7"],
       "sites/all/profiles/contrib/{$name}": ["type:drupal-profile"],
-      "_tools/": ["factorial-io/fabalicious"]
+      ".tools/": ["factorial-io/fabalicious"]
     },
     "preserve-paths": [
       "sites/all/modules/contrib",

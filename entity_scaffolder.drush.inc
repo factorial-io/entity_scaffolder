@@ -48,7 +48,7 @@ function entity_scaffolder_drush_command() {
       'version' => 'Use a specific version of Entity Scaffolder',
     ),
     'examples' => array(
-      'drush es --config-dir="_tools/es"' => 'Looks for config file/s in _tools/es and runs scaffolding job.',
+      'drush es --config-dir=".tools/es"' => 'Looks for config file/s in .tools/es and runs scaffolding job.',
     ),
     'aliases' => array('es'),
   );

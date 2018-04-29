@@ -4,7 +4,7 @@ variables :
   directory :
     label : Path to Entity Scaoffolder config directory
     required : true
-    default : '_tools/es'
+    default : '.tools/es'
     hidden : true
   directories_theme :
     label : Path to theme folder (without terminating slash "/")

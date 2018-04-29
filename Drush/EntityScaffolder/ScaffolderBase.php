@@ -42,7 +42,7 @@ class ScaffolderBase implements ScaffolderInterface {
 
   protected function findConfigDir() {
     if (!($config_dir = drush_get_option('config-dir'))) {
-      $config_dir = '_tools/es';
+      $config_dir = '.tools/es';
     }
     return $config_dir;
   }

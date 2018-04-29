@@ -4,7 +4,7 @@ Breakpoint Groups contain the configuration of breakpoints and their grouping. B
 
 Breakpoint groups should resemble the frontend breakpoint configuration.
 
-Breakpoint groups are defined in one yaml file which is stored in the `_tools/es/breakpoint_groups`-folder.
+Breakpoint groups are defined in one yaml file which is stored in the `.tools/es/breakpoint_groups`-folder.
 
 A grou consists of a list of breakpoints which store a machine-name a media-query and a list of multipliers (for retina-displays)
 

@@ -34,7 +34,7 @@ excludeFiles:
 
 scripts:
   copyHtAccess:
-    - cd %host.gitRootFolder% && cp _tools/htaccess .htaccess
+    - cd %host.gitRootFolder% && cp .tools/htaccess .htaccess
   behat:
     - fail_on_error(0)
     - cd %host.gitRootFolder% && bin/behat %arguments.combined%

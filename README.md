@@ -7,10 +7,10 @@ It reads the configuration from yaml files and creates appropriate feature files
 Checkout the code in `~/.drush/` so that it is recognized as plugin.
 
 ## Example Usage:
-1. Create gallery.yaml under `%drupal_root%/_tools/es/fpp/` so the structure looks like the following.
+1. Create gallery.yaml under `%drupal_root%/.tools/es/fpp/` so the structure looks like the following.
 
     ```
-        _tools
+        .tools
          |__es
             |__fpp
                |__gallery.yaml
