@@ -83,9 +83,9 @@ function {{ theme_machine_name }}_panels_ipe_toolbar($vars) {
         }
       }
 
-      // Disable Change Layout link since ther is only one layout.
       if ($bkey == 'panels-ipe-change-layout') {
-        continue;
+        // Uncomment the following line to hide the change layout button.
+        // continue;
       }
       $output .= is_string($button) ? $button : drupal_render($button);
     }
