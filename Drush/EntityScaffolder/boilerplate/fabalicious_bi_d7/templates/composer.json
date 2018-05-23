@@ -131,10 +131,12 @@
   "scripts": {
     "post-install-cmd": [
       "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-      "find \"sites/all/\" -name .git -type d -exec rm -rf {} +"
+      "find \"sites/all/\" -name .git -type d -exec rm -rf {} +",
+      "rm -rf \"core\""
     ],
     "post-update-cmd": [
-      "find \"sites/all/\" -name .git -type d -exec rm -rf {} +"
+      "find \"sites/all/\" -name .git -type d -exec rm -rf {} +",
+      "rm -rf \"core\""
     ]
   },
   "extra": {
