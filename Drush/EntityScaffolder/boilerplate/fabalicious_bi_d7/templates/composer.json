@@ -119,7 +119,11 @@
     "drupal/menu_target": "^1.7",
     "drupal/pathologic": "^3.1",
     "drupal/banana_dashboard": "1.x-dev",
-    "drupal-composer/preserve-paths": "^0.1.4"
+    "drupal-composer/preserve-paths": "^0.1.4",
+    "drupal/apachesolr_api": "1.x-dev",
+    "drupal/field_tools": "^1.0@alpha",
+    "drupal/field_group_table": "^1.6",
+    "drupal/apachesolr_realtime": "^1.4"
   },
   "config": {
     "vendor-dir": "vendor"
