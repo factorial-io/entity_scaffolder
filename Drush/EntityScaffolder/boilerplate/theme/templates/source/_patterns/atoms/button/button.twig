@@ -1,0 +1,17 @@
+{#
+  Button
+
+    - label
+    - url
+    - id
+    - target
+    - modifier
+
+#}
+
+{% set tag = url is not empty ? 'a' : 'button' %}
+<{{ tag }} class="Button{%if modifier%} {{ modifier }}{%endif%}" {%if url%}href="{{ url }}"{%endif%} {%if target%}target="{{ target }}"{%endif%} title="{{ label }}">
+  {{ label }}
+</{{ tag }}>
+
+

@@ -1,0 +1,68 @@
+<?php
+
+/**
+ * @file
+ * Custom preprocessing of fieldable panel panes.
+ */
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function {{ theme_machine_name }}_preprocess_fieldable_panels_pane(&$vars) {
+  // Add hook suggestions for each bundle and viewmode.
+  $view_mode = $vars['elements']['#view_mode'];
+  if ($view_mode != 'full') {
+    $vars['theme_hook_suggestions'][] = 'fieldable_panels_pane____' . $view_mode;
+    $vars['theme_hook_suggestions'][] = 'fieldable_panels_pane__' . str_replace('-', '_', $vars['elements']['#bundle']) . '__' . str_replace('-', '_', $view_mode);
+  }
+}
+
+/**
+ * Implements hook_preprocess_fieldable_panels_pane_jumpmenu().
+ */
+function {{ theme_machine_name }}_preprocess_fieldable_panels_pane_jumpmenu(&$vars) {
+  // Preprocess fpp_jumpmenu_menu_data.
+  $content = $vars['menu_data'];
+  $lines = explode(PHP_EOL, $content);
+  $vars['items'] = _{{ theme_machine_name }}_parse_tree_data($lines);
+}
+
+/**
+ * Helper function convert given set of lines into tree.
+ */
+function _{{ theme_machine_name }}_parse_tree_data($lines) {
+  // Example structure:
+  // .-------------------------------------.
+  // Menu Item 1 | anchor_link_1
+  // Menu Item 2 | anchor_link_2
+  // - Menu Item 2.a | achor_link_2_a
+  // - Menu Item 2.b | achor_link_2_b
+  // - Menu Item 2.c | achor_link_2_c
+  // Menu Item 3 | anchor_link_3
+  // .-------------------------------------.
+  $tree = array();
+  $depth = 0;
+  $previous_depth = 0;
+  $parents = array();
+  foreach ($lines as $key => $line) {
+    $item = NULL;
+    $line = trim($line);
+    $item_data = ltrim($line, '-');
+    $depth = strlen($line) - strlen($item_data);
+    $data = explode('|', $item_data);
+    $label = array_slice($data, 0, -1);
+    $alias = end($data);
+    $item = array(
+      'alias' => trim($alias),
+      'label' => trim(implode('|', $label)),
+    );
+    if ($depth) {
+      $parent['subsections'][$key] = $item;
+    }
+    else {
+      $tree[$key] = $item;
+      $parent = &$tree[$key];
+    }
+  }
+  return $tree;
+}

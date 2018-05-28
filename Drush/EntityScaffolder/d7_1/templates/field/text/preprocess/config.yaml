@@ -1,0 +1,6 @@
+variables :
+  formatted :
+    type : boolean
+    required : false
+    default : true
+    

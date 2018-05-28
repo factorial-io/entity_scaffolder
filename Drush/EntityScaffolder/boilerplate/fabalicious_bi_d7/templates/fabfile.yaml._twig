@@ -1,0 +1,170 @@
+name: {{ project_short_name_safe_value }}
+deploymentModule: {{ project_short_code }}_deploy
+
+requires: 2.0.0
+needs:
+  - ssh
+  - docker
+  - drush7
+  - git
+  - files
+
+dockerKeyFile: ./ssh-keys/docker-root-key
+dockerAuthorizedKeyFile: ./ssh-keys/authorized_keys
+dockerKnownHostsFile: ./ssh-keys/known_hosts
+
+
+repository: https://shuber@bitbucket.bi-scrum.com/scm/{{ project_bi_code }}/site-code.git
+
+inheritsFrom:
+  - https://config.factorial.io/docker/2.0/xdebug.yaml
+
+excludeFiles:
+  backup:
+    - "styles"
+    - "tmp"
+  copyFrom:
+    - "tmp"
+    - "styles"
+    - "php"
+    - "js"
+    - "css"
+    - "twig_cache"
+    - "xmlsitemap"
+
+scripts:
+  copyHtAccess:
+    - cd %host.gitRootFolder% && cp .tools/htaccess .htaccess
+  behat:
+    - fail_on_error(0)
+    - cd %host.gitRootFolder% && bin/behat %arguments.combined%
+    - fail_on_error(1)
+  reindex-content:
+    - cd %host.siteFolder% && drush solr-delete-index; drush solr-mark-all; drush solr-index;
+  patternlab:
+    - cd %host.rootFolder%/sites/all/themes/custom/{{ project_short_code }}_frontend && php core/console --generate
+  setSolrUrlForDev:
+    - "drush vset apachesolr_default_environment solr"
+    - >
+      drush vset apachesolr_environments
+      --format=json
+      '{"solr": {"url": "http://solr:8983/solr/mycore" } }'
+
+common:
+  copyDBFromFinished:
+    dev:
+      - execute(script, reindex-content)
+    stage:
+      - execute(script, reindex-content)
+    test:
+      - execute(script, reindex-content)
+    prod:
+      - execute(script, reindex-content)
+
+  reset:
+    dev:
+      - "drush vset devel_rebuild_theme_registry FALSE"
+      - "drush vdel -y googleanalytics_account"
+      - "drush vset -y file_public_path 'sites/default/files'"
+      - "drush vset -y file_private_path 'sites/default/files/private'"
+      - "drush vset -y file_temporary_path 'sites/default/files/private/tmp'"
+      - "drush vset -y --exact cache 0"
+      - "drush vset -y --exact preprocess_css 0"
+      - "drush vset -y --exact preprocess_js 0"
+      - "drush en shield -y"
+      - "drush vset -y shield_user rmh"
+      - "drush vset -y shield_pass rmh"
+      - "drush vset -y shield_print 'Enter security credentials to access'"
+      - "drush vset admin_menu_tweak_modules 1"
+      - "drush vset admin_menu_tweak_permissions 1"
+      - execute(script, patternlab)
+      - execute(script, setSolrUrlForDev)
+    stage:
+      - execute(script, patternlab)
+      - execute(script, setSolrUrlForDev)
+      - "drush en shield -y"
+      - "drush vset -y shield_user rmh"
+      - "drush vset -y shield_pass rmh"
+      - "drush vset -y shield_print 'Enter security credentials to access'"
+    test:
+      - execute(script, patternlab)
+    prod:
+      - execute(script, patternlab)
+
+dockerHosts:
+  default:
+    tasks:
+      start:
+        - docker start %name%
+      stop:
+        - docker stop %name%
+      logs:
+        - docker logs %name%
+      ps:
+        - docker ps
+  mbb:
+    environment:
+      COMPOSE_FILE: "docker-compose.yml:docker-compose-mbb.yml"
+    inheritsFrom:
+      - https://config.factorial.io/mbb/2.0/mbb-docker.yaml
+      - https://config.factorial.io/docker/2.0/docker-compose.yaml
+
+  clients.factorial.io:
+    environment:
+      VHOST: "%host.docker.vhost%"
+    inheritsFrom:
+      - http://config.factorial.io/clients.factorial.io/2.0/docker.yaml
+      - http://config.factorial.io/docker/2.0/docker-compose.yaml
+
+hosts:
+  mbb:
+    host: {{ project_short_name_safe_value }}.test
+    user: root
+    password: root
+    port: {{ project_port_web }}
+    type: dev
+    rootFolder: /var/www/
+    gitRootFolder: /var/www/
+    siteFolder: /sites/default
+    filesFolder: /sites/default/files
+    backupFolder: /var/www/backups
+    branch: int
+    supportsInstalls: true
+    docker:
+      name: {{ project_short_name_stripped }}_web_1
+      configuration: mbb
+      projectFolder: {{ project_bi_code }}-{{ project_short_name_safe_value }}
+    database:
+      name: {{ project_short_name_stripped }}
+      user: root
+      pass: admin
+      host: mysql
+    reset:
+      - "drush vset -y error_level 2"
+      - "drush vset -y error_level 0"
+      - "execute(script, copyHtAccess)"
+    xdebug:
+      php_version: 5
+
+
+  {{ project_short_name_safe_value }}-int:
+    port: 22
+    branch: int
+    host: int-{{ project_bi_code }}.bi-customerhub.com
+    user: {{ project_bi_code }}d
+    type: stage
+    ignoreSubmodules: true
+    supportsInstalls: false
+    supportsCopyFrom: false
+    rootFolder: /home/{{ project_bi_code }}d/public_html
+    gitRootFolder: /home/{{ project_bi_code }}d/public_html
+    siteFolder: /sites/default
+    filesFolder: /sites/default/files
+    backupFolder: /home/{{ project_bi_code }}d/backups
+    gitOptions:
+      pull: []
+    needs:
+      - ssh
+      - drush7
+      - git
+      - files

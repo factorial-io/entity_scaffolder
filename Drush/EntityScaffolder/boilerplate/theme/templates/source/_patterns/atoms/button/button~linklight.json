@@ -1,0 +1,7 @@
+{
+  "label": "a light link",
+  "type": "a",
+  "url": "www.factorial.io",
+  "target": "_blank",
+  "modifier": "Button--light"
+}

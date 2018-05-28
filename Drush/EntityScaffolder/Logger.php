@@ -12,13 +12,13 @@ class Logger {
 
   public function formatMessage($message, $level = self::LEVEL_STATUS) {
     switch ($level) {
-      case self::LEVEL_ERROR:   $prefix = "%w%F%1 (✖╭╮✖) %n%r "; break;
+      case self::LEVEL_ERROR:   $prefix = "%w%F%1 ✖ %n%r "; break;
 
-      case self::LEVEL_WARNING: $prefix = "%w%F%3 ¯\_(ツ)_/¯ %n%y "; break;
+      case self::LEVEL_WARNING: $prefix = "%w%F%3 ϟ %n%y "; break;
 
-      case self::LEVEL_DEBUG:   $prefix = "%b ᒡ◯ᵔ◯ᒢ  "; break;
+      case self::LEVEL_DEBUG:   $prefix = "%b ☼  "; break;
 
-      case self::LEVEL_SUCCESS:  $prefix = "%g【ツ】%n "; break;
+      case self::LEVEL_SUCCESS:  $prefix = "%g ✓ %n "; break;
 
       case self::LEVEL_STATUS:  $prefix = "%n"; break;
 

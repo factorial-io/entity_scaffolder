@@ -12,5 +12,5 @@ $ drush es
 
  Options      |   Default  | Details
 --------------|------------|--------------
-  config-dir  |  _tools/es | Relative path to the  directory where the scaffold source files have to be picked up from
+  config-dir  |  .tools/es | Relative path to the  directory where the scaffold source files have to be picked up from
   debug       |  false     | If set to true, prints the output of scaffolder on screen

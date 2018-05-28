@@ -66,7 +66,7 @@ class Utils {
         Logger::log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
       }
       else {
-        Logger::log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'success');
+        Logger::log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'error');
       }
     }
   }
@@ -137,7 +137,31 @@ class Utils {
       'debug' => TRUE,
     ));
     $twig->addExtension(new \Twig_Extension_Debug());
-    return $twig->render($template . '.twig', $replacements);
+
+    $extention = pathinfo($template, PATHINFO_EXTENSION);
+
+    switch ($extention) {
+      case '_twig':
+      case 'twig':
+        break;
+
+      default:
+        $template .= '.twig';
+        break;
+    }
+
+    return $twig->render($template, $replacements);
+  }
+
+  /**
+   * Helper function to render using Twig.
+   */
+  function renderInline($pattern, $replacements) {
+    $loader = new \Twig_Loader_Array(array(
+      'pattern.twig' => $pattern,
+    ));
+    $twig = new \Twig_Environment($loader);
+    return $twig->render('pattern.twig', $replacements);
   }
 
   /**

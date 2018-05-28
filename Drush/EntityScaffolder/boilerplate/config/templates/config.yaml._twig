@@ -1,0 +1,7 @@
+version : {{ version }}
+project_short_code : {{ project_short_code }}
+# Pass the project specific directory locations.
+directories :
+  theme : {{ directories_theme }}
+  templates : {{ directories_templates }}
+  patternlab : {{ directories_patternlab }}

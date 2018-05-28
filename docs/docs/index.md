@@ -38,12 +38,12 @@ You can put this folder in a number of places:
 
 ## Scaffold File Layout
 
-Your scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under `_tools/es` and will exist at the top level of your project.
+Your scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under `.tools/es` and will exist at the top level of your project.
 
 The typical project you can create will look something like this:
 
 ```
-_tools/es/
+.tools/es/
     config.yaml
     fpp/
         gallery.yaml
@@ -76,4 +76,4 @@ $ cd <your-drupal-root-folder>
 $ drush es
 ```
 
-This will read cofniguration files from `_tool/es` directory under `your-drupal-root-folder`.
+This will read cofniguration files from `.tool/es` directory under `your-drupal-root-folder`.
