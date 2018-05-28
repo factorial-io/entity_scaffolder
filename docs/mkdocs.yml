@@ -6,24 +6,28 @@ markdown_extensions:
 repo_url: https://source.factorial.io/skakanat/entity_scaffolder
 repo_name: GitLab
 edit_uri: edit/develop/docs/docs/
-site_description: "Entity Scaffolder Documentation"
-site_author: "Factorial GmbH, Hamburg"
-copyright: "© 2017 Factorial GmbH, Hamburg"
+site_description: Entity Scaffolder Documentation
+site_author: Factorial GmbH, Hamburg
+copyright: © 2018 Factorial GmbH, Hamburg
 
 pages:
-- index.md
-- available-tasks.md
-- Configurations:
-  - 'config.yaml' : 'configurations/config.md'
-- 'Fieldable entities':
-  - 'Entities' : 'configurations/entities.md'
-  - 'Fields' : 'configurations/fields.md'
-- Features : 'configurations/text_filters.md'
-- Pictures:
-  - 'Breakpoint Groups': 'configurations/breakpoint_groups.md'
-  - 'Image styles': 'configurations/image_styles.md'
-  - 'Pictures': 'configurations/pictures.md'
+  - index.md
+  - available-tasks.md
+  - Configurations:
+      - config.yaml: configurations/config.md
+  - Fieldable entities:
+      - Entities: configurations/entities.md
+      - Fields: configurations/fields.md
+  - Features: configurations/text_filters.md
+  - Pictures:
+      - Breakpoint Groups: configurations/breakpoint_groups.md
+      - Image styles: configurations/image_styles.md
+      - Pictures: configurations/pictures.md
 
-- Contribution Guide:
-  - 'EntityScaffolder' : 'contribute/entity-scaffolder.md'
-  - 'Documentation' : 'contribute/documentation.md'
+  - Contribution Guide:
+      - EntityScaffolder: contribute/entity-scaffolder.md
+      - Documentation: contribute/documentation.md
+extra_css:
+  - css/version-select.css
+extra_javascript:
+  - js/version-select.js
