@@ -36,6 +36,10 @@ You can put this folder in a number of places:
 - In /path/to/drush/commands (not a Smart Thing, but it would work).
 ```
 
+!!! note
+    After checking out the repo, please run `composer install` inside the entity_scaffodler directory.
+
+
 ## Scaffold File Layout
 
 Your scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under `.tools/es` and will exist at the top level of your project.
