@@ -76,4 +76,4 @@ $ cd <your-drupal-root-folder>
 $ drush es
 ```
 
-This will read cofniguration files from `_tool/es` directory under `your-drupal-root-folder`.
+This will read cofniguration files from `.tool/es` directory under `your-drupal-root-folder`.
