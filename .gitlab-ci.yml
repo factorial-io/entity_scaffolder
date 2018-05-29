@@ -2,6 +2,7 @@
 pages:
   stage: deploy
   script:
+  - pwd
   - mkdir .public
   - cp -r docs/site/* .public
   - mv .public public
@@ -10,3 +11,4 @@ pages:
     - public
   only:
   - master
+  - develop
