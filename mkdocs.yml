@@ -3,9 +3,9 @@ theme: readthedocs
 markdown_extensions:
   - admonition
 
-repo_url: https://source.factorial.io/skakanat/entity_scaffolder
-repo_name: GitLab
-edit_uri: edit/develop/docs/docs/
+repo_url: https://github.com/factorial-io/entity_scaffolder
+repo_name: GitHub
+# edit_uri: edit/develop/docs/docs/
 site_description: Entity Scaffolder Documentation
 site_author: Factorial GmbH, Hamburg
 copyright: © 2018 Factorial GmbH, Hamburg
