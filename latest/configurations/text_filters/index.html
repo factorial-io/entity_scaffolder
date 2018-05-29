@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Factorial GmbH, Hamburg">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Features - Entity Scaffolder</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+  <link href="../../css/version-select.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Features";
+    var mkdocs_page_input_path = "configurations/text_filters.md";
+    var mkdocs_page_url = "/configurations/text_filters/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Entity Scaffolder</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">What is EntityScaffolder</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../available-tasks/">Available tasks</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Configurations</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../config/">config.yaml</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Fieldable entities</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../entities/">Entities</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../fields/">Fields</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Features</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#what-are-features">What are features?</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#fe_es">fe_es</a></li>
+        
+            <li><a class="toctree-l3" href="#fe_es_filters">fe_es_filters</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pictures</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../breakpoint_groups/">Breakpoint Groups</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../image_styles/">Image styles</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../pictures/">Pictures</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Contribution Guide</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../contribute/entity-scaffolder/">EntityScaffolder</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../contribute/documentation/">Documentation</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Entity Scaffolder</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Features</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://source.factorial.io/skakanat/entity_scaffolder/edit/develop/docs/docs/configurations/text_filters.md"> Edit on GitLab</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="what-are-features">What are features?</h1>
+<p><a href="https://www.drupal.org/project/features">Features</a> provides a UI and API for
+taking different site building components from modules with exportables and
+bundling them together in a single feature module. A feature module is like any
+other Drupal module except that it contains additional information in its info
+file so that configuration can be checked, updated, or reverted programmatically.</p>
+<p>Entity Scaffolder makes use of features module to export its code. The actual
+creation and update of the entities and fields are taken care by Features module.</p>
+<h2 id="fe_es">fe_es</h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not edit this feature manually. Changes will be lost/overriden next time
+you run <code>drush es</code>.</p>
+</div>
+<p>Main features module created by Entity Scaffolder. Everytime you run <code>drush es</code>
+the folder gets overwritten.</p>
+<h2 id="fe_es_filters">fe_es_filters</h2>
+<p>Provides default text filters. The feature is not over-written in subsequent runs.
+This allows updating and export of the feature per instance.</p>
+<p><a href="https://www.drupal.org/node/213156">Read more about text filters and input format on
+Drupal.org</a></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../breakpoint_groups/" class="btn btn-neutral float-right" title="Breakpoint Groups">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../fields/" class="btn btn-neutral" title="Fields"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>© 2018 Factorial GmbH, Hamburg</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../fields/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../breakpoint_groups/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/version-select.js"></script>
+      <script src="../../search/require.js"></script>
+      <script src="../../search/search.js"></script>
+
+</body>
+</html>
