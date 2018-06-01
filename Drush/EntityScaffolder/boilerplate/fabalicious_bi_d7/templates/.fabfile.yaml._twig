@@ -10,7 +10,7 @@ needs:
   - files
 
 dockerKeyFile: ./ssh-keys/docker-root-key
-dockerAuthorizedKeyFile: ./ssh-keys/authorized_keys
+dockerAuthorizedKeyFile: <PLEASE-REPLACE-WITH-A-KEYS.FACTORIAL.IO-URL>
 dockerKnownHostsFile: ./ssh-keys/known_hosts
 
 
