@@ -3,6 +3,11 @@ Entity Scaffolder is a drush plugin.
 
 It reads the configuration from yaml files and creates appropriate feature files and preprocess functions.
 
+## Documentation
+
+A detailed documentation is hosted here https://factorial-io.github.io/entity_scaffolder/.
+A video introduction can be found here https://vimeo.com/260325910
+
 ## Installation
 - Checkout the code in `~/.drush/` so that it is recognized as plugin.
 - run `composer install`
