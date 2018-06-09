@@ -90,6 +90,7 @@
     "drupal/facetapi": "1.5.0",
     "drupal/nodeviewcount": "3.0.0-beta1",
     "drupal/apachesolr_panels": "1.1.0",
+    "drupal/apachesolr_sort": "1.0.0",
     "drupal/panels": "3.9.0",
     "drupal/panelizer": "3.x-dev#9100a6253bcd52b9f64fe23d9d14611a5cae024f",
     "drupal/redirect": "^1.0@RC",
@@ -123,8 +124,11 @@
     "drupal/apachesolr_api": "1.x-dev",
     "drupal/field_tools": "^1.0@alpha",
     "drupal/field_group_table": "^1.6",
+    "drupal/taxonomy_access_fix": "^2.4",
     "drupal/apachesolr_realtime": "^1.4",
-    "drupal/clean_maintenance": "^1.6"
+    "drupal/clean_maintenance": "^1.6",
+    "drupal/select2": "^1.0",
+    "drupal/linkit": "^3.5"
   },
   "config": {
     "vendor-dir": "vendor"
