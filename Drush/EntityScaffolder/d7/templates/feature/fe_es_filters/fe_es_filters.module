@@ -1,7 +1,0 @@
-<?php
-/**
- * @file
- * Code for the FE ES Filters feature.
- */
-
-include_once 'fe_es_filters.features.inc';

@@ -10,16 +10,13 @@ spl_autoload_register('drush_entity_scaffolder_autoload');
 
 use Drush\EntityScaffolder\ScaffolderBase;
 use Drush\EntityScaffolder\BoilerPlate;
-use Drush\EntityScaffolder\d7\Scaffolder as Scaffolder_d7;
 use Drush\EntityScaffolder\d7_1\Scaffolder as Scaffolder_d7_1;
-use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\Logger;
 
 ini_set('memory_limit', -1);
 define('DRUPAL_ROOT', drush_entity_scaffolder_define_drupal_root());
 chdir(DRUPAL_ROOT);
 define('MAINTENANCE_MODE', 'update');
-
 
 /**
  * Implements hook_drush_help().
@@ -103,7 +100,7 @@ function drush_entity_scaffolder() {
     }
     Logger::log("Make sure `" . $config_dir . "/config.yaml` exists and has version specified. Eg. `version : d7_1`", 'warning');
     Logger::log("Scaffolder quits without scaffolding.", 'error');
-    return ;
+    return;
   }
   $config = $scaffolder->getConfig();
   if (isset($config['locked']) && $config['locked']) {
@@ -112,7 +109,7 @@ function drush_entity_scaffolder() {
       Logger::log("LOCK MESSAGE : " . $config['lock message'], 'warning');
     }
     Logger::log("Scaffolder quits without scaffolding.", 'error');
-    return ;
+    return;
   }
   // Check if current scaffolder version is outdated.
   $log = $scaffolder->getLoggedScaffolderInfo();
@@ -163,7 +160,7 @@ function drush_entity_scaffolder_boilerplate() {
 }
 
 /**
- * Helper function to load the correct scaffolder based on context;
+ * Helper function to load the correct scaffolder based on context.
  */
 function drush_entity_scaffolder_get_scaffolder() {
   $scaffolder_base = new ScaffolderBase();
@@ -175,7 +172,8 @@ function drush_entity_scaffolder_get_scaffolder() {
   }
   switch ($version) {
     case 'd7':
-      return new Scaffolder_d7();
+      Logger::log("Support for d7 version discontinued. Please port the project.", 'error');
+      return NULL;
 
     case 'd7_1':
       return new Scaffolder_d7_1();
@@ -193,7 +191,7 @@ function drush_entity_scaffolder_autoload($class) {
   if (0 !== strpos($class, 'Drush\EntityScaffolder')) {
     return;
   }
-  if (is_file($file = dirname(__FILE__) . '/' .str_replace( '\\', '/', $class).'.php')) {
+  if (is_file($file = dirname(__FILE__) . '/' . str_replace('\\', '/', $class) . '.php')) {
     require $file;
   }
   else {
@@ -203,10 +201,10 @@ function drush_entity_scaffolder_autoload($class) {
 
 /**
  * Find the drupal root directory by looking in parent directories.
+ *
  * If unable to discover it, fail and exit.
  */
 function drush_entity_scaffolder_define_drupal_root() {
-  // This is the smallest number of directories to go up: from /sites/all/modules/registry_rebuild.
   $parent_count = 0;
   // 8 seems reasonably far to go looking up.
   while ($parent_count < 8) {
