@@ -11,7 +11,7 @@ class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
   const VERSION = '7.1.2';
 
-  const TEMPLATE_OVERRIDE = 'OVERRIDE';
+  const TEMPLATE_DEFAULT = 'DEFAULT';
   const TEMPLATE_EXTEND = 'EXTEND';
   const TEMPLATE_FALLBACK = 'FALLBACK';
 
@@ -99,7 +99,7 @@ class Scaffolder extends ScaffolderBase {
       foreach ($config['templates'] as $key => $value) {
         $dir = getcwd() . '/' . $this->getConfigDir() . $value['dir'];
         switch ($value['type']) {
-          case $this::TEMPLATE_OVERRIDE:
+          case $this::TEMPLATE_DEFAULT:
             $this->setTemplateDir($dir . '/templates');
             $this->setExtendedTemplateDirs(0, $dir . '/templates');
             break;
