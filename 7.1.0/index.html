@@ -56,6 +56,9 @@
     <li class="toctree-l2"><a href="#migration-guide">Migration guide</a></li>
     
 
+    <li class="toctree-l2"><a href="#pass-the-project-specific-directory-locations">Pass the project specific directory locations.</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -109,8 +112,8 @@
           <div role="main">
             <div class="section">
               
-                <div class="admonition note">
-<p class="admonition-title">Note</p>
+                <div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>Version 7.1.0 has been discontinued. It is advised to migrate the project
 to 7.1.1 or above.</p>
 </div>
@@ -118,23 +121,31 @@ to 7.1.1 or above.</p>
 <ul>
 <li>The default location of the scaffolder config files have changed from <code>_tools/es</code> to <code>.tools/es</code>.
    So in case you still want to use the default folder structure, please move the files.</li>
-<li>Create a <code>config.yaml</code> inside <code>.tools/es</code> directory. An example configuration file is as follows.
-   Please adapt the shortcode and directory locations as per your project.
-    <code>project_short_code : bif
-    # Pass the project specific directory locations.
-    directories :
-      theme : sites/all/themes/custom/bif_frontend
-      templates : sites/all/themes/custom/bif_frontend/templates
-      patternlab : sites/all/themes/custom/bif_frontend/source</code></li>
-<li>Create/Update <code>.es.log.yaml</code> file in <code>.tools/es</code> to with the version of
+<li>
+<p>Create a <code>config.yaml</code> inside <code>.tools/es</code> directory. An example configuration file is as follows.
+   Please adapt the shortcode and directory locations as per your project.</p>
+<p>```
+project_short_code : bif</p>
+<h1 id="pass-the-project-specific-directory-locations">Pass the project specific directory locations.</h1>
+<p>directories :
+  theme : sites/all/themes/custom/bif_frontend
+  templates : sites/all/themes/custom/bif_frontend/templates
+  patternlab : sites/all/themes/custom/bif_frontend/source
+```</p>
+</li>
+<li>
+<p>Create/Update <code>.es.log.yaml</code> file in <code>.tools/es</code> to with the version of
     scaffolder you want are using.
-    Eg.
-    <code>version: 7.1.1</code></li>
-<li>run <code>drush es</code></li>
+    Eg.</p>
+<p><code>version: 7.1.1</code></p>
+</li>
+<li>
+<p>run <code>drush es</code></p>
+</li>
 <li>check generated code and verify by testing.</li>
 </ul>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The main difference in the generated code should be regarding how the field
 pre-processing is done before it is used in templates. The later strategy
 respects Drupal's field formatters.</p>
@@ -193,5 +204,5 @@ respects Drupal's field formatters.</p>
 
 <!--
 MkDocs version : 0.17.3
-Build Date UTC : 2018-06-16 14:24:03
+Build Date UTC : 2018-06-16 14:24:54
 -->
