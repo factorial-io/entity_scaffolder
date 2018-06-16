@@ -12,18 +12,6 @@ copyright: © 2018 Factorial GmbH, Hamburg
 
 pages:
   - index.md
-  - available-tasks.md
-  - Configurations:
-      - config.yaml: configurations/config.md
-  - Fieldable entities:
-      - Entities: configurations/entities.md
-      - Fields: configurations/fields.md
-  - Features: configurations/text_filters.md
-  - Pictures:
-      - Breakpoint Groups: configurations/breakpoint_groups.md
-      - Image styles: configurations/image_styles.md
-      - Pictures: configurations/pictures.md
-
   - Contribution Guide:
       - EntityScaffolder: contribute/entity-scaffolder.md
       - Documentation: contribute/documentation.md
