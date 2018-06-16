@@ -213,11 +213,11 @@ directories :
 <p>A list of custom template definitions for scaffolding.</p>
 <p>Supports 3 strategies,</p>
 <ul>
-<li><strong>OVERRIDE</strong> - Replace the template definitions provided by Entity Scaffolder, and sets itself as <code>default</code>.</li>
-<li><strong>FALLBACK</strong> - Use these templates only if they are missing in <code>default</code></li>
-<li><strong>EXTEND</strong> - Use <code>default</code> template only if they are missing in these templates.</li>
+<li><strong>DEFAULT</strong> - Replace the template definitions provided by Entity Scaffolder, and sets itself as <em>DEFAULT</em>.</li>
+<li><strong>FALLBACK</strong> - Use these templates only if they are missing in <em>DEFAULT</em></li>
+<li><strong>EXTEND</strong> - Use <em>DEFAULT</em> template only if they are missing in these templates.</li>
 </ul>
-<p>So in short, EXTEND &gt; <code>default</code> &gt; FALLBACK.</p>
+<p>So in short, EXTEND &gt; DEFAULT &gt; FALLBACK.</p>
 <pre><code class="yaml">templates:
   factorial:
     # Can be FALLBACK, EXTEND or OVERRIDE.
