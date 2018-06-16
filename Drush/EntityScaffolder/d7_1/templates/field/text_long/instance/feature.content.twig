@@ -14,7 +14,7 @@
         'label' => 'hidden',
         'module' => 'text',
         'settings' => array(),
-        'type' => 'text_plain',
+        'type' => {% if text_processing %}'text_default'{% else %}'text_plain'{% endif %},
         'weight' => 1,
       ),
     ),
