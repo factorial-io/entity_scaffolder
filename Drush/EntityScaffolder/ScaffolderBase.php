@@ -18,6 +18,7 @@ class ScaffolderBase implements ScaffolderInterface {
   protected $config_dir;
   protected $entity_types;
   protected $template_dir;
+  protected $extended_template_dirs;
   protected $code;
   protected $config;
 
@@ -83,6 +84,7 @@ class ScaffolderBase implements ScaffolderInterface {
    * Sets the directory from which the templates has to be picked up.
    */
   public function setTemplateDir($dir) {
+    Logger::log(dt('Setting Template Directory to : @dir', array('@dir' => $dir)), 'debug');
     $this->template_dir = $dir;
   }
 
@@ -91,6 +93,25 @@ class ScaffolderBase implements ScaffolderInterface {
    */
   public function getTemplateDir() {
     return $this->template_dir;
+  }
+
+  /**
+   * Gets all directories from which the templates could be picked up.
+   */
+  public function setExtendedTemplateDirs($weight, $dir) {
+    Logger::log(dt('Adding Extended Template Directory : @dir', array('@dir' => $dir)), 'debug');
+    $this->extended_template_dirs[$weight] = $dir;
+    uksort($this->extended_template_dirs, function ($a, $b) {
+      return $a < $b ? -1 : 1;
+    });
+    return $this->extended_template_dirs;
+  }
+
+  /**
+   * Gets all directories from which the templates could be picked up.
+   */
+  public function getExtendedTemplateDirs() {
+    return $this->extended_template_dirs;
   }
 
   /**
@@ -132,7 +153,7 @@ class ScaffolderBase implements ScaffolderInterface {
    * Helper function to perform text replacement.
    */
   function render($template, $replacements) {
-    return Utils::render($this->getTemplateDir(), $template, $replacements);
+    return Utils::renderExtended($this->getExtendedTemplateDirs(), $template, $replacements);
   }
 
   /**

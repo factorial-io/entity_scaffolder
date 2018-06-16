@@ -58,6 +58,8 @@ class Scaffolder extends ScaffolderBase {
   public function __construct() {
     parent::__construct();
     $this->setTemplateDir(__DIR__ . '/templates');
+    $this->setExtendedTemplateDirs(0, __DIR__ . '/templates');
+    // @todo add more user specific template directories.
     $this->plugins['image_style'] = new ESImageStyle($this);
     $this->plugins['breakpoint_groups'] = new ESBreakPointGroup($this);
     $this->plugins['picture'] = new ESPicture($this);
