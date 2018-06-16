@@ -9,7 +9,11 @@ use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
-  const VERSION = '7.1.1';
+  const VERSION = '7.1.2';
+
+  const TEMPLATE_DEFAULT = 'DEFAULT';
+  const TEMPLATE_EXTEND = 'EXTEND';
+  const TEMPLATE_FALLBACK = 'FALLBACK';
 
   protected $plugins;
 
@@ -57,7 +61,10 @@ class Scaffolder extends ScaffolderBase {
 
   public function __construct() {
     parent::__construct();
-    $this->setTemplateDir(__DIR__ . '/templates');
+    if (empty($this->getTemplateDir())) {
+      $this->setTemplateDir(__DIR__ . '/templates');
+      $this->setExtendedTemplateDirs(0, __DIR__ . '/templates');
+    }
     $this->plugins['image_style'] = new ESImageStyle($this);
     $this->plugins['breakpoint_groups'] = new ESBreakPointGroup($this);
     $this->plugins['picture'] = new ESPicture($this);
@@ -79,6 +86,50 @@ class Scaffolder extends ScaffolderBase {
         $this->plugins[$entity_type]->scaffold();
       }
     }
+  }
+
+  /**
+   *
+   */
+  protected function loadConfig() {
+    $config = parent::loadConfig();
+    $fallback_templates = [];
+    $extend_templates = [];
+    if (!empty($config['templates'])) {
+      foreach ($config['templates'] as $key => $value) {
+        $dir = getcwd() . '/' . $this->getConfigDir() . $value['dir'];
+        switch ($value['type']) {
+          case $this::TEMPLATE_DEFAULT:
+            $this->setTemplateDir($dir . '/templates');
+            $this->setExtendedTemplateDirs(0, $dir . '/templates');
+            break;
+
+          case $this::TEMPLATE_EXTEND:
+            $extend_templates[] = $dir;
+            break;
+
+          case $this::TEMPLATE_FALLBACK:
+            $fallback_templates[] = $dir;
+            break;
+        }
+      }
+
+      if ($extend_templates) {
+        $weight = count($extend_templates);
+        foreach ($extend_templates as $key => $value) {
+          $weight--;
+          $this->setExtendedTemplateDirs(-($weight), $dir . '/templates');
+        }
+      }
+      if ($fallback_templates) {
+        $weight = 0;
+        foreach ($fallback_templates as $key => $value) {
+          $weight++;
+          $this->setExtendedTemplateDirs($weight, $dir . '/templates');
+        }
+      }
+    }
+    return $config;
   }
 
   /**

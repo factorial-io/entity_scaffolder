@@ -131,6 +131,33 @@ class Utils {
   /**
    * Helper function to render using Twig.
    */
+  function renderExtended($dirs, $template, $replacements) {
+    foreach ($dirs as $weight => $dir) {
+      $extention = pathinfo($template, PATHINFO_EXTENSION);
+      switch ($extention) {
+        case '_twig':
+        case 'twig':
+          break;
+
+        default:
+          $template .= '.twig';
+          break;
+      }
+      if (file_exists($dir . $template)) {
+        break;
+      }
+    }
+    $loader = new \Twig_Loader_Filesystem($dir);
+    $twig = new \Twig_Environment($loader, array(
+      'debug' => TRUE,
+    ));
+    $twig->addExtension(new \Twig_Extension_Debug());
+    return $twig->render($template, $replacements);
+  }
+
+  /**
+   * Helper function to render using Twig.
+   */
   function render($dir, $template, $replacements) {
     $loader = new \Twig_Loader_Filesystem($dir);
     $twig = new \Twig_Environment($loader, array(
