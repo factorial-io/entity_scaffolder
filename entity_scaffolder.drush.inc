@@ -98,7 +98,7 @@ function drush_entity_scaffolder() {
     if (!($config_dir = drush_get_option('config-dir'))) {
       $config_dir = '.tools/es';
     }
-    Logger::log("Make sure `" . $config_dir . "/config.yaml` exists and has version specified. Eg. `version : d7_1`", 'warning');
+    Logger::log("Make sure `" . $config_dir . "/config.yaml` exists", 'warning');
     Logger::log("Scaffolder quits without scaffolding.", 'error');
     return;
   }
@@ -163,25 +163,8 @@ function drush_entity_scaffolder_boilerplate() {
  * Helper function to load the correct scaffolder based on context.
  */
 function drush_entity_scaffolder_get_scaffolder() {
-  $scaffolder_base = new ScaffolderBase();
-  $config = $scaffolder_base->getConfig();
-  $version = isset($config['version']) ? $config['version'] : '';
-  Logger::log("Scaffolder version " . $version, 'status');
-  if ($v = drush_get_option('version')) {
-    $version = $v;
-  }
-  switch ($version) {
-    case 'd7':
-      Logger::log("Support for d7 version discontinued. Please port the project.", 'error');
-      return NULL;
-
-    case 'd7_1':
-      return new Scaffolder_d7_1();
-
-    default:
-      Logger::log("Couldin't detect scaffolder version.", 'error');
-      return NULL;
-  }
+  // We dropped support for multiple scaffolder versions start 7.1.2 for D7.
+  return new Scaffolder_d7_1();
 }
 
 /**
