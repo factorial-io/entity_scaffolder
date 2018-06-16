@@ -37,7 +37,7 @@
         }, 
         {
             "location": "/configurations/config/", 
-            "text": "config.yaml\n\n\nProject specific configuration file.\n\n\nAll global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via \nconfig-dir\n option for \ndrush es\n.\n\n\nThe default location if no \nconfig-dir\n is supplied would be \n.tools/es/config.yaml\n.\n\n\nExample\n\n\nproject_short_code : bif\ntemplates:\n  factorial:\n    # Can be FALLBACK, EXTEND, OVERRIDE\n    type: OVERRIDE\n    dir: /.entity_scaffolder/factorial\n\n# Pass the project specific directory locations.\ndirectories :\n  theme : sites/all/themes/custom/bif_frontend\n  templates : sites/all/themes/custom/bif_frontend/templates\n  patternlab : sites/all/themes/custom/bif_frontend/source", 
+            "text": "config.yaml\n\n\nProject specific configuration file.\n\n\nAll global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via \nconfig-dir\n option for \ndrush es\n.\n\n\nThe default location if no \nconfig-dir\n is supplied would be \n.tools/es/config.yaml\n.\n\n\nExample\n\n\nproject_short_code : mic\ntemplates:\n  factorial:\n    # Can be FALLBACK, EXTEND, OVERRIDE\n    type: OVERRIDE\n    dir: /.entity_scaffolder/factorial\n\n# Pass the project specific directory locations.\ndirectories :\n  theme : sites/all/themes/custom/my_custom_theme\n  templates : sites/all/themes/custom/my_custom_theme/templates\n  patternlab : sites/all/themes/custom/my_custom_theme/source\n\n\n\n\nKey/value pairs\n\n\nThe following key/value pairs provide meta-data about your scaffolder configuration and define some of the basic functionality.\n\n\n\n\nproject_short_code (required)\n\n\ntemplates (optional)\n\n\ndirectories (required)\n\n\n\n\nproject_short_code (required)\n\n\nProject short code. Used for various prefixes like module names, theme names, etc. Suggested to use 2 or 3 alphabets.\n\n\nproject_short_code : mic\n\n\n\n\ntemplates (optional)\n\n\nA list of custom template definitions for scaffolding.\n\n\nSupports 3 strategies,\n\n\n\n\nOVERRIDE\n - Replace the template definitions provided by Entity Scaffolder, and sets itself as \ndefault\n.\n\n\nFALLBACK\n - Use these templates only if they are missing in \ndefault\n\n\nEXTEND\n - Use \ndefault\n template only if they are missing in these templates.\n\n\n\n\nSo in short, EXTEND \n \ndefault\n \n FALLBACK.\n\n\ntemplates:\n  factorial:\n    # Can be FALLBACK, EXTEND or OVERRIDE.\n    type: OVERRIDE\n    # path relative to `config-dir` with a leading slash.\n    dir: /.entity_scaffolder/factorial\n\n\n\n\ndirectories (required)\n\n\nEntity Scaffolder requires location of some directories to write generated files.\nThese can be supplied as such.\n\n\n# Pass the project specific directory locations.\ndirectories :\n  # Location of custom theme\n  theme : sites/all/themes/custom/my_custom_theme\n  # Location of template directory within the custom theme\n  templates : sites/all/themes/custom/my_custom_theme/templates\n  # Location of patternlab source folder.\n  patternlab : sites/all/themes/custom/my_custom_theme/source", 
             "title": "config.yaml"
         }, 
         {
@@ -47,8 +47,28 @@
         }, 
         {
             "location": "/configurations/config/#example", 
-            "text": "project_short_code : bif\ntemplates:\n  factorial:\n    # Can be FALLBACK, EXTEND, OVERRIDE\n    type: OVERRIDE\n    dir: /.entity_scaffolder/factorial\n\n# Pass the project specific directory locations.\ndirectories :\n  theme : sites/all/themes/custom/bif_frontend\n  templates : sites/all/themes/custom/bif_frontend/templates\n  patternlab : sites/all/themes/custom/bif_frontend/source", 
+            "text": "project_short_code : mic\ntemplates:\n  factorial:\n    # Can be FALLBACK, EXTEND, OVERRIDE\n    type: OVERRIDE\n    dir: /.entity_scaffolder/factorial\n\n# Pass the project specific directory locations.\ndirectories :\n  theme : sites/all/themes/custom/my_custom_theme\n  templates : sites/all/themes/custom/my_custom_theme/templates\n  patternlab : sites/all/themes/custom/my_custom_theme/source", 
             "title": "Example"
+        }, 
+        {
+            "location": "/configurations/config/#keyvalue-pairs", 
+            "text": "The following key/value pairs provide meta-data about your scaffolder configuration and define some of the basic functionality.   project_short_code (required)  templates (optional)  directories (required)", 
+            "title": "Key/value pairs"
+        }, 
+        {
+            "location": "/configurations/config/#project_short_code-required", 
+            "text": "Project short code. Used for various prefixes like module names, theme names, etc. Suggested to use 2 or 3 alphabets.  project_short_code : mic", 
+            "title": "project_short_code (required)"
+        }, 
+        {
+            "location": "/configurations/config/#templates-optional", 
+            "text": "A list of custom template definitions for scaffolding.  Supports 3 strategies,   OVERRIDE  - Replace the template definitions provided by Entity Scaffolder, and sets itself as  default .  FALLBACK  - Use these templates only if they are missing in  default  EXTEND  - Use  default  template only if they are missing in these templates.   So in short, EXTEND    default    FALLBACK.  templates:\n  factorial:\n    # Can be FALLBACK, EXTEND or OVERRIDE.\n    type: OVERRIDE\n    # path relative to `config-dir` with a leading slash.\n    dir: /.entity_scaffolder/factorial", 
+            "title": "templates (optional)"
+        }, 
+        {
+            "location": "/configurations/config/#directories-required", 
+            "text": "Entity Scaffolder requires location of some directories to write generated files.\nThese can be supplied as such.  # Pass the project specific directory locations.\ndirectories :\n  # Location of custom theme\n  theme : sites/all/themes/custom/my_custom_theme\n  # Location of template directory within the custom theme\n  templates : sites/all/themes/custom/my_custom_theme/templates\n  # Location of patternlab source folder.\n  patternlab : sites/all/themes/custom/my_custom_theme/source", 
+            "title": "directories (required)"
         }, 
         {
             "location": "/configurations/entities/", 

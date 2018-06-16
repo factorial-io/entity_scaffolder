@@ -73,6 +73,10 @@
         
             <li><a class="toctree-l4" href="#example">Example</a></li>
         
+            <li><a class="toctree-l4" href="#keyvalue-pairs">Key/value pairs</a></li>
+        
+            <li><a class="toctree-l4" href="#templates-optional">templates (optional)</a></li>
+        
         </ul>
     
 
@@ -179,7 +183,7 @@
 <p>All global settings required for the EntityScaffolder will be stored in this file. This file should be located in the directory supplied via <code>config-dir</code> option for <code>drush es</code>.</p>
 <p>The default location if no <code>config-dir</code> is supplied would be <code>.tools/es/config.yaml</code>.</p>
 <h3 id="example">Example</h3>
-<pre><code class="yaml">project_short_code : bif
+<pre><code class="yaml">project_short_code : mic
 templates:
   factorial:
     # Can be FALLBACK, EXTEND, OVERRIDE
@@ -188,9 +192,51 @@ templates:
 
 # Pass the project specific directory locations.
 directories :
-  theme : sites/all/themes/custom/bif_frontend
-  templates : sites/all/themes/custom/bif_frontend/templates
-  patternlab : sites/all/themes/custom/bif_frontend/source
+  theme : sites/all/themes/custom/my_custom_theme
+  templates : sites/all/themes/custom/my_custom_theme/templates
+  patternlab : sites/all/themes/custom/my_custom_theme/source
+</code></pre>
+
+<h3 id="keyvalue-pairs">Key/value pairs</h3>
+<p>The following key/value pairs provide meta-data about your scaffolder configuration and define some of the basic functionality.</p>
+<ul>
+<li>project_short_code (required)</li>
+<li>templates (optional)</li>
+<li>directories (required)</li>
+</ul>
+<h4 id="project_short_code-required">project_short_code (required)</h4>
+<p>Project short code. Used for various prefixes like module names, theme names, etc. Suggested to use 2 or 3 alphabets.</p>
+<pre><code class="yaml">project_short_code : mic
+</code></pre>
+
+<h3 id="templates-optional">templates (optional)</h3>
+<p>A list of custom template definitions for scaffolding.</p>
+<p>Supports 3 strategies,</p>
+<ul>
+<li><strong>OVERRIDE</strong> - Replace the template definitions provided by Entity Scaffolder, and sets itself as <code>default</code>.</li>
+<li><strong>FALLBACK</strong> - Use these templates only if they are missing in <code>default</code></li>
+<li><strong>EXTEND</strong> - Use <code>default</code> template only if they are missing in these templates.</li>
+</ul>
+<p>So in short, EXTEND &gt; <code>default</code> &gt; FALLBACK.</p>
+<pre><code class="yaml">templates:
+  factorial:
+    # Can be FALLBACK, EXTEND or OVERRIDE.
+    type: OVERRIDE
+    # path relative to `config-dir` with a leading slash.
+    dir: /.entity_scaffolder/factorial
+</code></pre>
+
+<h4 id="directories-required">directories (required)</h4>
+<p>Entity Scaffolder requires location of some directories to write generated files.
+These can be supplied as such.</p>
+<pre><code class="yaml"># Pass the project specific directory locations.
+directories :
+  # Location of custom theme
+  theme : sites/all/themes/custom/my_custom_theme
+  # Location of template directory within the custom theme
+  templates : sites/all/themes/custom/my_custom_theme/templates
+  # Location of patternlab source folder.
+  patternlab : sites/all/themes/custom/my_custom_theme/source
 </code></pre>
               
             </div>
