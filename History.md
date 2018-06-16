@@ -1,3 +1,11 @@
+7.1.2 / 2018-06-17
+==================
+
+  * Add History.md
+  * Add AUTHORS
+  * Add support for locally overriding template per project
+  * Removed support for 7.1.0
+
 7.1.1 / 2018-06-16
 ==================
 
