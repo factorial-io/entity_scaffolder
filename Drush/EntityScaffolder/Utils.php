@@ -147,7 +147,6 @@ class Utils {
         break;
       }
     }
-    Logger::log(dt('Template : @template', array('@template' => $dir . $template)), 'debug');
     $loader = new \Twig_Loader_Filesystem($dir);
     $twig = new \Twig_Environment($loader, array(
       'debug' => TRUE,

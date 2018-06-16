@@ -99,7 +99,7 @@ class ScaffolderBase implements ScaffolderInterface {
    * Gets all directories from which the templates could be picked up.
    */
   public function setExtendedTemplateDirs($weight, $dir) {
-    Logger::log(dt('Adding Extended Template Directory : @dir', array('@dir' => $dir)), 'debug');
+    Logger::log(dt('Registering template directory : @dir', array('@dir' => $dir)), 'debug');
     $this->extended_template_dirs[$weight] = $dir;
     uksort($this->extended_template_dirs, function ($a, $b) {
       return $a < $b ? -1 : 1;
