@@ -15,12 +15,10 @@ class ScaffolderBase extends TemplateManager implements ScaffolderInterface {
   const CONTENT = '_50_';
   const FOOTER = '_99_';
 
-  protected $config_dir;
   protected $entity_types;
   protected $template_dir;
   protected $extended_template_dirs;
   protected $code;
-  protected $config;
 
   /**
    * ScaffolderBase constructor.
@@ -72,20 +70,6 @@ class ScaffolderBase extends TemplateManager implements ScaffolderInterface {
   }
 
   /**
-   * Sets the directory from which the scaffold data will be picked up.
-   */
-  public function setConfigDir($dir) {
-    $this->config_dir = $dir;
-  }
-
-  /**
-   * Gets the directory from which the scaffold data will be picked up.
-   */
-  public function getConfigDir() {
-    return $this->config_dir;
-  }
-
-  /**
    * Add to $code.
    */
   public function setCode($module, $filename, $block, $key, $code) {
@@ -100,24 +84,10 @@ class ScaffolderBase extends TemplateManager implements ScaffolderInterface {
   }
 
   /**
-   * Add to $config.
-   */
-  public function setConfig($config) {
-    $this->config = $config;
-  }
-
-  /**
-   * Gets the $config.
-   */
-  public function getConfig() {
-    return $this->config;
-  }
-
-  /**
    * Start scaffolding.
    */
   public function scaffold() {
-    return ;
+    return;
   }
 
   /**

@@ -13,6 +13,7 @@ class TemplateManager {
   protected $extendedTemplateDirs;
   protected $nameSpace;
   protected $configDir;
+  protected $config;
 
   /**
    * TemplateManager Constructor.
@@ -97,7 +98,6 @@ class TemplateManager {
     $extend_templates = [];
     if (!empty($config['templates'])) {
       foreach ($config['templates'] as $key => $value) {
-        // @TODO Codesmell. Function getConfigDir is not present in this class.
         $dir = getcwd() . '/' . $this->getConfigDir() . $value['dir'];
         switch ($value['type']) {
           case $this::TEMPLATE_DEFAULT:
@@ -134,6 +134,34 @@ class TemplateManager {
         }
       }
     }
+  }
+
+  /**
+   * Add to $config.
+   */
+  public function setConfig($config) {
+    $this->config = $config;
+  }
+
+  /**
+   * Gets the $config.
+   */
+  public function getConfig() {
+    return $this->config;
+  }
+
+  /**
+   * Sets the directory from which the scaffold data will be picked up.
+   */
+  public function setConfigDir($dir) {
+    $this->configDir = $dir;
+  }
+
+  /**
+   * Gets the directory from which the scaffold data will be picked up.
+   */
+  public function getConfigDir() {
+    return $this->configDir;
   }
 
 }

@@ -11,10 +11,8 @@ class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
   const VERSION = '7.1.2';
 
-  const TEMPLATE_DEFAULT = 'DEFAULT';
-  const TEMPLATE_EXTEND = 'EXTEND';
-  const TEMPLATE_FALLBACK = 'FALLBACK';
   const DEFAULT_TEMPLATE_DIR = __DIR__ . '/templates';
+  const TEMPLATE_NAMESPACE = 'd7_1';
 
   protected $plugins;
 
@@ -61,7 +59,7 @@ class Scaffolder extends ScaffolderBase {
   }
 
   public function __construct() {
-    parent::__construct('d7_1');
+    parent::__construct(self::TEMPLATE_NAMESPACE);
     if (empty($this->getTemplateDir())) {
       $this->setTemplateDir(self::DEFAULT_TEMPLATE_DIR, $skipNamespaceAddition = TRUE);
       $this->setExtendedTemplateDirs(0, self::DEFAULT_TEMPLATE_DIR, $skipNamespaceAddition = TRUE);
