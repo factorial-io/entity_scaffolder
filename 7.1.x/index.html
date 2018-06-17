@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Entity Scaffolder Documentation">
+  <meta name="author" content="Factorial GmbH, Hamburg">
+  <link rel="shortcut icon" href="./img/favicon.ico">
+  <title>What is EntityScaffolder - Entity Scaffolder</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="./css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="./css/highlight.css">
+  <link href="./css/version-select.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "What is EntityScaffolder";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = "/";
+  </script>
+  
+  <script src="./js/jquery-2.1.1.min.js"></script>
+  <script src="./js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="./js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Entity Scaffolder</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href=".">What is EntityScaffolder</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#what-is-entityscaffolder">What is EntityScaffolder</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#installation">Installation</a></li>
+        
+            <li><a class="toctree-l3" href="#scaffold-file-layout">Scaffold File Layout</a></li>
+        
+            <li><a class="toctree-l3" href="#running-entityscaffolder">Running EntityScaffolder</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="available-tasks/">Available tasks</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Configurations</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="configurations/config/">config.yaml</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Fieldable entities</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="configurations/entities/">Entities</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="configurations/fields/">Fields</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="configurations/text_filters/">Features</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pictures</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="configurations/breakpoint_groups/">Breakpoint Groups</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="configurations/image_styles/">Image styles</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="configurations/pictures/">Pictures</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Contribution Guide</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="contribute/entity-scaffolder/">EntityScaffolder</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="contribute/documentation/">Documentation</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Entity Scaffolder</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>What is EntityScaffolder</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/factorial-io/entity_scaffolder/edit/master/docs/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="what-is-entityscaffolder">What is EntityScaffolder</h1>
+<p>EntityScaffolder is a scaffolding tool. It is used to create Entities and Fields quickly and conviniently for a Drupal project.</p>
+<p>The EntityScaffolder makes use of the Drush and other third party components which allows you to automatically generate much of code required to create some entities and fields. In addition, EntityScaffolder also provides some helper functions to support theming integration with patternlab based frontend.</p>
+<p>Some common tasks are:</p>
+<ul>
+<li>Create Entities<ul>
+<li>Fieldable Panels Pane</li>
+<li>Paragraphs</li>
+</ul>
+</li>
+<li>Attach fields to created entities<ul>
+<li>Text</li>
+<li>Long Text</li>
+<li>File</li>
+<li>Image</li>
+<li>Picture</li>
+<li>Paragraph</li>
+</ul>
+</li>
+<li>Create image-styles, breakpoints and picture configurations</li>
+<li>Create placeholder Drupal Templates</li>
+<li>Add some preprocessing to the templates to provide sensible defaults to work with</li>
+</ul>
+<h2 id="installation">Installation</h2>
+<p>Entity Scaffolder depends on drush (the <strong>DRU</strong>pal <strong>SH</strong>ell). To use entity_scaffodler, you have to first download and install drush from <a href="http://drupal.org/project/drush">drush</a>. Install instructions can be found at Drush's <a href="http://drupalcode.org/project/drush.git/blob/HEAD:/README.txt">README.txt</a>. It contains
+a section about installing other commands like drush_make.</p>
+<p>Here is the relevant section.</p>
+<pre><code class="plain">You can put this folder in a number of places:
+
+- In a .drush folder in your HOME folder. Note, that you have to make the
+  .drush folder yourself (so you end up with ~/.drush/entity_scaffodler/README.md).
+- In a folder specified with the include option (see above).
+- In /path/to/drush/commands (not a Smart Thing, but it would work).
+</code></pre>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>After checking out the repo, please run <code>composer install</code> inside the entity_scaffodler directory.</p>
+</div>
+<h2 id="scaffold-file-layout">Scaffold File Layout</h2>
+<p>Your scaffolder source files should be written as regular yaml files, and placed in a directory somewhere in your project. Normally this directory will be named under <code>.tools/es</code> and will exist at the top level of your project.</p>
+<p>The typical project you can create will look something like this:</p>
+<pre><code>.tools/es/
+    config.yaml
+    fpp/
+        gallery.yaml
+        copy.yaml
+        intro.yaml
+        video.yaml
+        multimedia.yaml
+    paragraphs/
+        video.yaml
+        text.yaml
+        headline.yaml
+    breakpoint_groups/
+        Frontend.yaml
+    image_style/
+        article_image_portrait.yaml
+        article_image.yaml
+        card-related.yaml
+    picture/
+        article-image-portrait.yaml
+        article-image.yaml
+        card-related.yaml
+</code></pre>
+
+<h2 id="running-entityscaffolder">Running EntityScaffolder</h2>
+<p>Use EntityScaffolder as drush plugin</p>
+<pre><code class="shell">$ cd &lt;your-drupal-root-folder&gt;
+$ drush es
+</code></pre>
+
+<p>This will read cofniguration files from <code>.tool/es</code> directory under <code>your-drupal-root-folder</code>.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="available-tasks/" class="btn btn-neutral float-right" title="Available tasks">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>© 2018 Factorial GmbH, Hamburg</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/factorial-io/entity_scaffolder/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+        <span style="margin-left: 15px"><a href="available-tasks/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="./js/theme.js"></script>
+      <script src="./js/version-select.js"></script>
+      <script src="./search/require.js"></script>
+      <script src="./search/search.js"></script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 0.17.3
+Build Date UTC : 2018-06-17 18:43:25
+-->
