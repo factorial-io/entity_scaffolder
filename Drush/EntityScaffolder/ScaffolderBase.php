@@ -6,7 +6,7 @@ use Drush\EntityScaffolder\Utils;
 use Drush\EntityScaffolder\Logger;
 use Symfony\Component\Yaml\Yaml;
 
-class ScaffolderBase implements ScaffolderInterface {
+class ScaffolderBase extends TemplateManager implements ScaffolderInterface {
   // @see http://php.net/version_compare.
   const VERSION = '0';
   const LOG_FILENAME = '.es.log.yaml';
@@ -22,10 +22,15 @@ class ScaffolderBase implements ScaffolderInterface {
   protected $code;
   protected $config;
 
-  public function __construct() {
+  /**
+   * ScaffolderBase constructor.
+   */
+  public function __construct($nameSpace) {
+    parent::__construct($nameSpace);
     $this->setConfigDir($this->findConfigDir());
     $this->setConfig($this->loadConfig());
     $this->setEntityTypes($this->findEntityTypes());
+    $this->loadTemplateDirs();
   }
 
   protected function loadConfig() {
@@ -78,40 +83,6 @@ class ScaffolderBase implements ScaffolderInterface {
    */
   public function getConfigDir() {
     return $this->config_dir;
-  }
-
-  /**
-   * Sets the directory from which the templates has to be picked up.
-   */
-  public function setTemplateDir($dir) {
-    Logger::log(dt('Setting Template Directory to : @dir', array('@dir' => $dir)), 'debug');
-    $this->template_dir = $dir;
-  }
-
-  /**
-   * Gets the directory from which the templates will be picked up.
-   */
-  public function getTemplateDir() {
-    return $this->template_dir;
-  }
-
-  /**
-   * Gets all directories from which the templates could be picked up.
-   */
-  public function setExtendedTemplateDirs($weight, $dir) {
-    Logger::log(dt('Registering template directory : @dir', array('@dir' => $dir)), 'debug');
-    $this->extended_template_dirs[$weight] = $dir;
-    uksort($this->extended_template_dirs, function ($a, $b) {
-      return $a < $b ? -1 : 1;
-    });
-    return $this->extended_template_dirs;
-  }
-
-  /**
-   * Gets all directories from which the templates could be picked up.
-   */
-  public function getExtendedTemplateDirs() {
-    return $this->extended_template_dirs;
   }
 
   /**
