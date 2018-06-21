@@ -145,3 +145,33 @@ function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $re
     }
   }
 }
+
+/**
+ * Get Audio url for a brightcove field.
+ */
+function es_helper_get_brightcove_audio_file($field) {
+  if (empty($field['brightcove_id'])) {
+    return FALSE;
+  }
+  $bid = $field['brightcove_id'];
+  $bcid = $field['bcid'];
+  $client = brightcove_client_load_or_default($bcid);
+  list($cms,) = brightcove_create_classes($client);
+  $sources = $cms->getVideoSources($bid);
+  $out = FALSE;
+  foreach ($sources as $source) {
+    if (empty($source->getScr())) {
+      continue;
+    }
+    $out = [
+      'Id' => $source->getId(),
+      'Duration' => $source->getDuration(),
+      'Src' => $source->getSrc(),
+      'StreamName' => $source->getStreamName(),
+      'AppName' => $source->getAppName(),
+      'Codec' => $source->getCodec(),
+      'Container' => $source->getContainer(),
+    ];
+  }
+  return $out;
+}
