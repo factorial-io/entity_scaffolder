@@ -151,7 +151,7 @@ hosts:
     port: 22
     branch: int
     host: int-{{ project_bi_code }}.bi-customerhub.com
-    user: {{ project_bi_code }}d
+    user: {{ project_bi_code|lower }}d
     type: stage
     ignoreSubmodules: true
     supportsInstalls: false
