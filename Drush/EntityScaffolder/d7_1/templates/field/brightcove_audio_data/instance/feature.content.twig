@@ -11,8 +11,12 @@
         'label' => 'hidden',
         'module' => 'brightcove',
         'settings' => array(
-{% if settings.height %}          'height' => {{ settings.height }},{% endif %}
-{% if settings.width %}          'width' => {{ settings.width }},{% endif %}
+{% if settings.height %}
+          'height' => {{ settings.height }},
+{% endif %}
+{% if settings.width %}
+          'width' => {{ settings.width }},
+{% endif %}
         ),
         'type' => 'brightcove_default',
         'weight' => 2,
