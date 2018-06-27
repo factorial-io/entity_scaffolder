@@ -40,9 +40,8 @@ function entity_scaffolder_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'options' => array(
       'config-dir' => 'Directory to read the config file/s from.',
-      'fire-bazooka' => '@todo: Deletes all previous entries and force rebuild.',
       'debug' => 'Runs entity_scaffolder in debug mode.',
-      'version' => 'Use a specific version of Entity Scaffolder',
+      'info' => 'Interactive information system about supported plugins.',
     ),
     'examples' => array(
       'drush es --config-dir=".tools/es"' => 'Looks for config file/s in .tools/es and runs scaffolding job.',
@@ -59,30 +58,11 @@ function entity_scaffolder_drush_command() {
     ),
     'options' => array(
       'debug' => 'Runs entity_scaffolder in debug mode.',
-      'version' => 'Use a specific version of Entity Scaffolder',
     ),
     'examples' => array(
       'drush esb --debug' => 'This will provide an extensive details about boilderplate that would be generated.',
     ),
     'aliases' => array('esb'),
-  );
-
-  $items['entity-scaffold-helper'] = array(
-    'description' => '@todo: Helper command to interact with entity-scaffolder to know more.',
-    'callback' => 'drush_entity_scaffolder_helper',
-    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'arguments' => array(
-      'type' => 'entity or field',
-      'name' => 'Name of the Entity or field. Eg. fpp, text, list, etc...',
-    ),
-    'options' => array(
-      'debug' => 'Runs entity_scaffolder in debug mode.',
-      'version' => 'Use a specific version of Entity Scaffolder',
-    ),
-    'examples' => array(
-      'drush esh --debug' => 'This will provide an extensive details about entity that could be scaffolded.',
-    ),
-    'aliases' => array('esh'),
   );
 
   return $items;
@@ -134,19 +114,17 @@ function drush_entity_scaffolder() {
       }
     }
   }
-  $scaffolder->scaffold();
-  $scaffolder->exportCode();
-  $scaffolder->logScaffolderInfo();
-  Logger::log("Scaffolding finished.", 'success');
-}
-
-/**
- * Run entity scaffolder.
- */
-function drush_entity_scaffolder_helper() {
-  spl_autoload_register('drush_entity_scaffolder_autoload');
-  list($type, $name) = func_get_args();
-  drush_entity_scaffolder_get_scaffolder()->help($type, $name);
+  // @todo process help here instead of scaffolding.
+  if (drush_get_option('info')) {
+    list($type, $name) = func_get_args();
+    $scaffolder->help($type, $name);
+  }
+  else {
+    $scaffolder->scaffold();
+    $scaffolder->exportCode();
+    $scaffolder->logScaffolderInfo();
+    Logger::log("Scaffolding finished.", 'success');
+  }
 }
 
 /**
