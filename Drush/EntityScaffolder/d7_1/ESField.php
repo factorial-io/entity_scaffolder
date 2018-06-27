@@ -25,6 +25,10 @@ class ESField extends ESBase {
    * Helper function to generate machine name for fields.
    */
   public function getFieldName($config, $field_key) {
+    // When displaying just info, Field name would not be provided.
+    if (drush_get_option('info')) {
+      return '';
+    }
     $original_field_key = $field_key;
     $field_key = strtolower($field_key);
     $field_key = str_replace(' ', '_', $field_key);
