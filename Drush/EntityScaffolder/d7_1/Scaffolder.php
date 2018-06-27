@@ -17,45 +17,26 @@ class Scaffolder extends ScaffolderBase {
   protected $plugins;
 
   public function help($type, $name) {
-    switch ($type) {
-      case 'entity':
-        if ($name && !empty($this->plugins[$name])) {
-          if (method_exists($this->plugins[$name], 'help')) {
-            $this->plugins[$name]->help();
-          }
-        }
-        else {
-          Logger::log('Please provide one of the supported entities to display more details.', 'warning');
-          $headers = array('Key', 'Example usage', 'Description');
-          $data = [];
-          $data[] = ['fpp', 'drush esb entity fpp' ,'Fieldable Panels Pane'];
-          $data[] = ['paragraphs', 'drush esb entity paragraphs' ,'Paragraphs Item'];
-          Logger::table($headers, $data, 'status');
-        }
-        break;
+    // Register more plugins for help.
+    $this->plugins['field'] = new ESFieldBase($this);
 
-      case 'field':
-        $plugins = [];
-        $plugins['field_base'] = new ESFieldBase($this);
-        $plugins['field_instance'] = new ESFieldInstance($this);
-        $plugins['preprocess'] = new ESFieldPreprocess($this);
-        $plugins['patternlab_template_manager'] = new ESPatternLabField($this);
-        foreach ($plugins as $plugin) {
-          if (method_exists($plugin, 'help')) {
-            $plugin->help($name);
-          }
+    if (empty($type)) {
+      // @todo get types.
+      $options = [
+        'field' => dt('Field'),
+        'image_style' => dt('Image Style'),
+        'picture' => dt('Picture'),
+        'fpp' => dt('Fieldable Panels Pane'),
+        'breakpoint_groups' => dt('Breakpoint Groups'),
+      ];
+      $type = drush_choice($options);
+      if ($type && !empty($this->plugins[$type])) {
+        if (method_exists($this->plugins[$type], 'help')) {
+          $this->plugins[$type]->help($name);
         }
-        break;
-
-      default:
-        Logger::log('Please provide more options to show details.', 'warning');
-        $headers = array('Key', 'Example usage', 'Description');
-        $data = [];
-        $data[] = ['entity', 'drush esb entity fpp' ,'Shows more details about Fieldable Panels Pane'];
-        $data[] = ['field', 'drush esb field text' ,'Shows more detail about text field'];
-        Logger::table($headers, $data, 'status');
-        break;
+      }
     }
+    return;
   }
 
   public function __construct() {

@@ -34,4 +34,20 @@ class ESField extends ESBase {
     return $config['field_prefix'] . '_' . $field_key;
   }
 
+  /**
+   * Get list of supported field types.
+   */
+  protected function findFieldTypes() {
+    $fields = [];
+    $config_dirs = $this->scaffolder->getExtendedTemplateDirs();
+    foreach ($config_dirs as $dir) {
+      $field_dir = $dir . '/field/';
+      $list = Utils::getFolders($field_dir);
+      foreach ($list as $folder_name) {
+        $fields[$folder_name] = $folder_name;
+      }
+    }
+    return $fields;
+  }
+
 }
