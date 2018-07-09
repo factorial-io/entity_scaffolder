@@ -160,18 +160,18 @@ function es_helper_get_brightcove_audio_file($field) {
   $sources = $cms->getVideoSources($bid);
   $out = FALSE;
   foreach ($sources as $source) {
-    if (empty($source->getScr())) {
-      continue;
+    if ($source->getSrc()) {
+      $out = [
+        'Id' => $source->getId(),
+        'Duration' => $source->getDuration(),
+        'Src' => $source->getSrc(),
+        'StreamName' => $source->getStreamName(),
+        'AppName' => $source->getAppName(),
+        'Codec' => $source->getCodec(),
+        'Container' => $source->getContainer(),
+      ];
+      break;
     }
-    $out = [
-      'Id' => $source->getId(),
-      'Duration' => $source->getDuration(),
-      'Src' => $source->getSrc(),
-      'StreamName' => $source->getStreamName(),
-      'AppName' => $source->getAppName(),
-      'Codec' => $source->getCodec(),
-      'Container' => $source->getContainer(),
-    ];
   }
   return $out;
 }
