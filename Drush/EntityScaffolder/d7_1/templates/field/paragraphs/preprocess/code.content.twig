@@ -9,10 +9,13 @@
     $items[] = $vars['content']['{{ field_name }}'][$key];
     unset($vars['content']['{{ field_name }}'][$key]);
   }
+  $weight = 0;
   foreach ($items as $item) {
     $v = $vars['content']['{{ field_name }}'];
     $v['#label_display'] = 'hidden';
     $v['0'] = $item;
+    $v['#weight'] = $weight;
     $vars['{{ map }}'][] = $v;
+    $weight++;
   }
 {% endif %}
