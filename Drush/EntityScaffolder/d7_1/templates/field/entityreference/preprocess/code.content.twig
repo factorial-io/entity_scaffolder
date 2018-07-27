@@ -1,7 +1,10 @@
 {% if cardinality == 1 %}
   // Preprocess {{ field_name }}.
-  $vars['{{ map }}'] = $vars['content']['{{ field_name }}'];
-  $vars['{{ map }}']['#label_display'] = 'hidden';
+  $vars['{{ map }}'] = NULL;
+  if (!empty($vars['content']['{{ field_name }}'])) {
+    $vars['{{ map }}'] = $vars['content']['{{ field_name }}'];
+    $vars['{{ map }}']['#label_display'] = 'hidden';
+  }
 {% else %}
   // Preprocess {{ field_name }}.
   $vars['{{ map }}'] = $items = array();
