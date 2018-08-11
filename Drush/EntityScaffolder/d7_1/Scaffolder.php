@@ -96,7 +96,13 @@ class Scaffolder extends ScaffolderBase {
     $files = array();
     foreach ($code as $module_name => $module_data) {
       foreach ($module_data as $filename => $file_data) {
-        $file_path = $this->getDirectory($module_name) . "/{$filename}";
+        $file_path = NULL;
+        $module_dir = $this->getDirectory($module_name);
+        $file_path = "$module_dir/{$filename}";
+        if (empty($module_dir)) {
+          Logger::log(dt('Missing directory configuration for module : @module', array('@module' => $module_name)), 'warning');
+          continue;
+        }
         $blocks = array();
         ksort($file_data);
         $code = '';
@@ -117,7 +123,7 @@ class Scaffolder extends ScaffolderBase {
    * Helper function to retrieve module path.
    */
   public function getDirectory($module_name) {
-    return isset($this->getConfig()['directories'][$module_name]) ? $this->getConfig()['directories'][$module_name] : NULL;
+    return !empty($this->getConfig()['directories'][$module_name]) ? $this->getConfig()['directories'][$module_name] : NULL;
   }
 
   /**
