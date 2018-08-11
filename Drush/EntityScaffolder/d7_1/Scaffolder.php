@@ -48,6 +48,7 @@ class Scaffolder extends ScaffolderBase {
     $this->plugins['image_style'] = new ESImageStyle($this);
     $this->plugins['breakpoint_groups'] = new ESBreakPointGroup($this);
     $this->plugins['picture'] = new ESPicture($this);
+    $this->plugins['picture_image_data'] = new ESPatternLabImageData($this);
     $this->plugins['fpp'] = new ESEntityFPP($this);
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
   }
@@ -64,8 +65,12 @@ class Scaffolder extends ScaffolderBase {
     foreach ($this->getEntityTypes() as $entity_type) {
       if (isset($this->plugins[$entity_type])) {
         $this->plugins[$entity_type]->scaffold();
+        if ($entity_type == 'picture') {
+          $this->plugins['picture_image_data']->scaffold();
+        }
       }
     }
+
   }
 
   /**
