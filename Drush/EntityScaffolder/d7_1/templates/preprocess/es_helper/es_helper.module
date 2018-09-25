@@ -175,3 +175,152 @@ function es_helper_get_brightcove_audio_file($field) {
   }
   return $out;
 }
+
+/**
+ * DTM integration for brightcove fields
+ */
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function es_helper_entity_view_mode_alter(&$view_mode, $context) {
+  list(, , $bundle) = entity_extract_ids($context['entity_type'], $context['entity']);
+  $fields_info = field_info_instances($context['entity_type'], $bundle);
+
+  if ($context['entity_type'] == 'fieldable_panels_pane' && $bundle == 'image') {
+    // @see view_mode_selector_entity_view_mode_alter().
+    if ($view_mode == 'full') {
+      // Set view mode to 'Default', this is for entites without
+      // a view mode selector field.
+      $view_mode = 'default';
+
+      // Find a view mode selector field and change the view mode.
+      foreach ($fields_info as $field_name => $value) {
+        $field_info = field_info_field($field_name);
+
+        if ($field_info['type'] == 'view_mode_selector') {
+          $items = field_get_items($context['entity_type'], $context['entity'], $field_info['field_name']);
+
+          if ($items) {
+            $value = $items[0]['value'];
+
+            if ($value) {
+              $view_mode = $value;
+
+              // It would not make sense to have multiple view mode selector
+              // fields so stop after the first was found.
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Add required variables to the datalayer.
+ */
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function es_helper_preprocess_field(&$vars) {
+  $field_type = $vars['element']['#field_type'];
+
+  switch ($field_type) {
+    case 'brightcove_field':
+      _es_helper_process_brightcove_field($vars);
+      break;
+
+    default:
+      break;
+  }
+}
+
+/**
+ * Helper to extract and attach rich video snippets to brightcove fields.
+ */
+function _es_helper_process_brightcove_field(&$vars) {
+  if (!empty($vars['items'])) {
+    foreach ($vars['items'] as &$item) {
+      $item['#prefix'] = isset($item['#prefix']) ? $item['#prefix'] : '';
+      $bcid = $item['#element']['bcid'];
+      $brightcove_id = $item['#element']['brightcove_id'];
+      $script_tag = es_helper_get_jsonld_for_brightcove_video($bcid, $brightcove_id);
+      $item['#prefix'] = $script_tag . $item['#prefix'];
+    }
+  }
+}
+
+/**
+ * Helper function to get jsonld script tag for given brightcove video.
+ */
+function es_helper_get_jsonld_for_brightcove_video($bcid, $brightcove_id) {
+  $client = brightcove_client_load_or_default($bcid);
+  $video = brightcove_load_video($brightcove_id, $client);
+  if (!is_object($video)) {
+    return;
+  }
+  $info = array(
+    '@context' => 'https://schema.org',
+    '@type' => 'VideoObject',
+    'name' => $video->getName(),
+    'keywords' => implode(', ', $video->getTags()),
+    'description' => !empty($video->getDescription()) ? $video->getDescription() : $video->getName(),
+    'text' => $video->getLongDescription(),
+    'thumbnailUrl' => !empty($video->getImages()['thumbnail']) ? $video->getImages()['thumbnail']->getSrc() : '',
+    'uploadDate' => $video->getCreatedAt(),
+    'publisher' => array(
+      '@type' => 'Organization',
+      'name' => variable_get('site_name', 'es-video'),
+      'logo' => array(
+        '@type' => 'ImageObject',
+        'url' => url(path_to_theme() . '/source/favicons/apple-icon-180x180.png', array('absolute' => TRUE)),
+        'width' => '180',
+        'height' => '180',
+      ),
+    ),
+  );
+  drupal_alter('es_helper_jsonld_brightcove_video_data', $info);
+  $script_tag = '<script type="application/ld+json">' . drupal_json_encode($info) . '</script>';
+  return $script_tag;
+}
+
+/**
+ * Get unique video id.
+ */
+function es_helper_get_unique_video_id($id) {
+  return 'v' . $id . '_bi_html5_api';
+}
+
+/**
+ * This function is used to inject variables for brightcove into the template.
+ *
+ * @param array $vars
+ *   This function processes all the details about brightcove video being loaded
+ *   and store in tenmplate variables, which can be easily accesed by javascript
+ *   event tracking logic to gather all the important.
+ */
+function es_helper_preprocess_brightcove_field_embed(array &$vars) {
+    // Loading video object which contain all the detail about the
+    // video id being sent.
+    $bcid = $vars['brightcove_id'];
+
+    // Getting the default client credentials which are set as default currently.
+    $client = brightcove_client_load_or_default();
+    $video = brightcove_load_video($bcid, $client);
+
+    if (!is_object($video)) {
+      return;
+    }
+    // Getting brightcove video id.
+    $video_id = $video->getId();
+    $video_name = $video->getName();
+
+    // Creating the variables which we need in brightcove player template
+    // for tracking purpose.
+    $vars['brightcove_video_id'] = $video_id;
+    $vars['video_name'] = $video_id . ':' . $video_name;
+    $vars['id'] = es_helper_get_unique_video_id($video_id);
+}
