@@ -27,13 +27,21 @@
     ),
     'widget' => array(
       'active' => 1,
-      'module' => 'entityreference',
+{% if widget_type is empty %}{% set widget_type = 'entityreference_autocomplete' %}{% endif %}      
+{% if widget_type == 'options_select' %}'module' => 'options',
+      'settings' => array(
+        'use_select2' => FALSE,
+      ),
+      'type' => 'options_select',
+{% endif %}
+{% if widget_type == 'entityreference_autocomplete' %}'module' => 'entityreference',
       'settings' => array(
         'match_operator' => 'CONTAINS',
         'path' => '',
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => {{ weight }},
+{% endif %}
+      'weight' => 41,
     ),
   );
