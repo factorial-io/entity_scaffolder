@@ -51,6 +51,7 @@ class Scaffolder extends ScaffolderBase {
     $this->plugins['picture_image_data'] = new ESPatternLabImageData($this);
     $this->plugins['fpp'] = new ESEntityFPP($this);
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
+    $this->plugins['list_predefined_options'] = new ESListPredefinedOptions($this);
   }
 
   /**
@@ -70,6 +71,7 @@ class Scaffolder extends ScaffolderBase {
         }
       }
     }
+    $this->plugins['list_predefined_options']->scaffold();
 
   }
 

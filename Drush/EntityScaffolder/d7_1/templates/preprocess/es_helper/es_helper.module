@@ -8,6 +8,7 @@
  */
 
 include_once 'es_helper.preprocess.inc';
+include_once 'es_helper.list_predefined_options.inc';
 
 /**
  * Implements hook_preprocess_entity().
