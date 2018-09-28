@@ -15,7 +15,7 @@
           'view_mode' => '{{ view_mode }}',
         ),
         'type' => 'entityreference_entity_view',
-        'weight' => 4,
+        'weight' => {{ weight }},
       ),
     ),
     'entity_type' => '{{ entity_type }}',
@@ -28,13 +28,15 @@
     'widget' => array(
       'active' => 1,
 {% if widget_type is empty %}{% set widget_type = 'entityreference_autocomplete' %}{% endif %}      
-{% if widget_type == 'options_select' %}'module' => 'options',
+{% if widget_type == 'options_select' %}
+      'module' => 'options',
       'settings' => array(
         'use_select2' => FALSE,
       ),
       'type' => 'options_select',
 {% endif %}
-{% if widget_type == 'entityreference_autocomplete' %}'module' => 'entityreference',
+{% if widget_type == 'entityreference_autocomplete' %}
+      'module' => 'entityreference',
       'settings' => array(
         'match_operator' => 'CONTAINS',
         'path' => '',
@@ -42,6 +44,6 @@
       ),
       'type' => 'entityreference_autocomplete',
 {% endif %}
-      'weight' => 41,
+      'weight' => {{ weight }},
     ),
   );
