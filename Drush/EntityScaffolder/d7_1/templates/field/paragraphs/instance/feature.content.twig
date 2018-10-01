@@ -30,7 +30,7 @@
       ),
       'bundle_weights' => array(
       ),
-      'default_edit_mode' => 'closed',
+      'default_edit_mode' => {% if default_edit_mode is empty %}'closed'{% else %}{{ default_edit_mode }}{% endif %},
       'title' => '{{ label }}',
       'title_multiple' => '{{ label }}s',
       'user_register_form' => FALSE,
