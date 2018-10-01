@@ -39,20 +39,20 @@ class ESListPredefinedOptions extends ESBase implements ESBaseInterface {
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     // Add Code block : Function.
-    $block = Scaffolder::CONTENT . ':' . Scaffolder::CONTENT;
-    $key = $info['list_options_function'] . ' : ' . Scaffolder::HEADER . ' : ' . $info['machine_name'];
+    $block = Scaffolder::CONTENT . ':' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
+    $key = $info['list_options_function'] . ' : ' . Scaffolder::HEADER;
     $template = '/list_predefined_options/code.header';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-    $block = Scaffolder::CONTENT . ':' . Scaffolder::CONTENT;
-    $key = $info['list_options_function'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
+    $block = Scaffolder::CONTENT . ':' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
+    $key = $info['list_options_function'] . ' : ' . Scaffolder::CONTENT;
     $template = '/list_predefined_options/code.content';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
-    $block = Scaffolder::CONTENT . ':' . Scaffolder::CONTENT;
-    $key = $info['list_options_function'] . ' : ' . Scaffolder::FOOTER . ' : ' . $info['machine_name'];
+    $block = Scaffolder::CONTENT . ':' . Scaffolder::CONTENT . ' : ' . $info['machine_name'];
+    $key = $info['list_options_function'] . ' : ' . Scaffolder::FOOTER;
     $template = '/list_predefined_options/code.footer';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
