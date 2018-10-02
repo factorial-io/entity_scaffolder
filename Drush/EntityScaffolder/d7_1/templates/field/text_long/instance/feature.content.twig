@@ -23,6 +23,12 @@
     'label' => '{{ label }}',
     'required' => {{ required }},
     'settings' => array(
+{% if widget.maxlength is not empty %}
+      'maxlength_js' => {{ widget.maxlength }},
+      'maxlength_js_enforce' => 0,
+      'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+      'maxlength_js_truncate_html' => 0,
+{% endif %}
       'better_formats' => array(
         'allowed_formats' => array(
 {% for format in allowed_formats %}
@@ -48,7 +54,7 @@
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 4,
+        'rows' => {% if widget.rows is not empty %}{{ widget.rows }}{% else %}4{% endif %},
       ),
       'type' => 'text_textarea',
       'weight' => {{ weight }},
