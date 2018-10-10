@@ -34,11 +34,11 @@ class ESPatternLabImageData extends ESPicture {
           continue;
         }
         if (empty($w)) {
-          $comments[] = 'Autocalcualted width for ' . $multiplier;
+          $comments[] = 'Auto-calculated width for ' . $multiplier;
           $w = (int) ($h * ESPatternLabImageData::ASPECT_RATIO);
         }
         if (empty($h)) {
-          $comments[] = 'Autocalcualted height for ' . $multiplier;
+          $comments[] = 'Auto-calculated height for ' . $multiplier;
           $h = (int) ($w / ESPatternLabImageData::ASPECT_RATIO);
         }
         if ($multiplier == '1x') {
