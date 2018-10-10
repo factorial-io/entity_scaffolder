@@ -13,7 +13,12 @@ class ESPatternLabImageData extends ESPicture {
   const ASPECT_RATIO = 4/3;
 
   public function generateCode($info) {
+    $scaffolder_config = $this->scaffolder->getConfig();
     $style_name = str_replace('_', '-', $info['machine_name']);
+    $component_name = 'image';
+    if (!empty($scaffolder_config['patternlab']['components']['image'])) {
+      $component_name = $scaffolder_config['patternlab']['components']['image'];
+    }
     $data = [
       'width' => $width,
       'height' => $height,
@@ -65,7 +70,7 @@ class ESPatternLabImageData extends ESPicture {
     $data['height'] = $height;
     $data['src'] = "http://via.placeholder.com/{$width}x{$height}";
     $module = 'patternlab_image_data';
-    $filename = 'image~' . $style_name . '.json';
+    $filename = $component_name . '~' . $style_name . '.json';
     $block = Scaffolder::CONTENT;
     $key = 'data';
     $code = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
