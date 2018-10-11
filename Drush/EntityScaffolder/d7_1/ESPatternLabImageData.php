@@ -28,8 +28,8 @@ class ESPatternLabImageData extends ESPicture {
     $width = 120;
     $height = 80;
     $sources = $info['sources'];
+    $comments = [];
     foreach ($sources as $breakpoint => $images) {
-      $comments = [];
       $srcset = [];
       $width = NULL;
       $height = NULL;
@@ -40,18 +40,18 @@ class ESPatternLabImageData extends ESPicture {
           continue;
         }
         if (empty($w)) {
-          $comments[] = 'Auto-calculated width for ' . $multiplier;
+          $comments[] = 'Auto-calculated width for : breakpoint' . $breakpoint . ' and multiplier ' . $multiplier;
           $w = (int) ($h * ESPatternLabImageData::ASPECT_RATIO);
         }
         if (empty($h)) {
-          $comments[] = 'Auto-calculated height for ' . $multiplier;
+          $comments[] = 'Auto-calculated height for : breakpoint' . $breakpoint . ' and multiplier ' . $multiplier;
           $h = (int) ($w / ESPatternLabImageData::ASPECT_RATIO);
         }
         if ($multiplier == '1x') {
           $width = $w;
           $height = $h;
         }
-        $srcset[] = "http://via.placeholder.com/{$w}x{$h} $multiplier";
+        $srcset[$multiplier] = "http://via.placeholder.com/{$w}x{$h} $multiplier";
       }
       $srcset = implode(', ', $srcset);
       $media = $info['breakpoint_group'][$breakpoint]['media'];
@@ -61,21 +61,24 @@ class ESPatternLabImageData extends ESPicture {
         "srcset" => $srcset,
         "media" => $media,
       ];
-      if ($comments) {
-        $d['comments'] = $comments;
-      }
-      $data['sources'][] = $d;
+      $data['sources'][$breakpoint] = $d;
     }
+
     // Update data with the last breakpoint image data (for 1x).
     $data['width'] = $width;
     $data['height'] = $height;
     $data['src'] = "http://via.placeholder.com/{$width}x{$height}";
+    $param = [
+      'data' => Yaml::dump($data),
+      'comments' => $comments,
+    ];
     $module = 'patternlab_image_data';
     $filename = $component_name . '~' . $style_name . '.yaml';
     $block = Scaffolder::CONTENT;
     $key = 'data';
-    $code = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    $code = Yaml::dump($data);
+    $template = '/patternlab_image_data/code.image_data.file';
+    $code = $this->scaffolder->render($template, $param);
+
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
   }
 
