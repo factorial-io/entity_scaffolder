@@ -3,6 +3,7 @@
 namespace Drush\EntityScaffolder\d7_1;
 
 use Drush\EntityScaffolder\Utils;
+use Symfony\Component\Yaml\Yaml;
 use Drush\EntityScaffolder\d7_1\ESBaseInterface;
 use Drush\EntityScaffolder\d7_1\ESEntity;
 use Drush\EntityScaffolder\d7_1\ESPicture;
@@ -70,10 +71,11 @@ class ESPatternLabImageData extends ESPicture {
     $data['height'] = $height;
     $data['src'] = "http://via.placeholder.com/{$width}x{$height}";
     $module = 'patternlab_image_data';
-    $filename = $component_name . '~' . $style_name . '.json';
+    $filename = $component_name . '~' . $style_name . '.yaml';
     $block = Scaffolder::CONTENT;
     $key = 'data';
     $code = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    $code = Yaml::dump($data);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
   }
 
