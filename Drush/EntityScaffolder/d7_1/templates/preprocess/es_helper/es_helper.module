@@ -94,6 +94,7 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
   // Hide extra unused configurations from FPP forms.
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'fieldable_panels_pane') {
     $form['title']['#access'] = FALSE;
+    $form['language']['#access'] = FALSE;
     $form['link']['#access'] = FALSE;
     $form['admin']['#access'] = FALSE;
     $form['additional_settings']['#access'] = FALSE;
