@@ -325,3 +325,22 @@ function es_helper_preprocess_brightcove_field_embed(array &$vars) {
     $vars['video_name'] = $video_id . ':' . $video_name;
     $vars['id'] = es_helper_get_unique_video_id($video_id);
 }
+
+/**
+ * Helper function to list all file permissions for debugging purposes.
+ */
+function es_helper_show_file_permissions($dir) {
+  $files = scandir($dir);
+  foreach($files as $file) {
+    $full = $dir . '/' . $file;
+    if ($file[0] === '.') {
+      continue;
+    }
+    $perms = substr(sprintf('%o', fileperms($full)), -4);
+    print($perms . ' ' . $full. "\n");
+    if (is_dir($full)) {
+      es_helper_show_file_permissions($full);
+    }
+  }
+}
+
