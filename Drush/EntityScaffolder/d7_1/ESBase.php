@@ -52,7 +52,8 @@ class ESBase {
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $key = 'paragraphs_info : ' . Scaffolder::FOOTER;
-    $code = "\n  );\n\n  return \$items;\n}";
+    $template = '/entity/paragraphs/feature.footer.twig';
+    $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $module = 'fe_es';
