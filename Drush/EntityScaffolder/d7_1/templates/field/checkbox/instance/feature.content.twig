@@ -2,18 +2,20 @@
   // Exported field_instance: '{{ entity_type }}-{{ bundle }}-{{ field_name }}'.
   $field_instances['{{ entity_type }}-{{ bundle }}-{{ field_name }}'] = array(
     'bundle' => '{{ bundle }}',
+    'default_value' => array(
+      0 => array(
+        'value' => {% if default_value is not empty %}{{ default_value }}{% else %}0{% endif %},
+      ),
+    ),
     'deleted' => 0,
     'description' => '{{ description }}',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'brightcove',
-        'settings' => array(
-          'height' => 350,
-          'width' => 425,
-        ),
-        'type' => 'brightcove_default',
-        'weight' => 0,
+        'module' => 'list',
+        'settings' => array(),
+        'type' => 'list_default',
+        'weight' => 1,
       ),
     ),
     'entity_type' => '{{ entity_type }}',
@@ -24,10 +26,12 @@
       'user_register_form' => FALSE,
     ),
     'widget' => array(
-      'active' => 0,
-      'module' => 'brightcove',
-      'settings' => array(),
-      'type' => 'brightcove_field_playlist_browser',
-      'weight' => 1,
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'display_label' => 1,
+      ),
+      'type' => 'options_onoff',
+      'weight' => {{ weight }},
     ),
   );
