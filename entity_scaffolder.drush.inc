@@ -96,7 +96,18 @@ function drush_entity_scaffolder() {
   if (isset($log['version'])) {
     $version_compare = version_compare($scaffolder::VERSION, $log['version']);
     if ($version_compare < 0) {
-      Logger::log("Entity Scaffolder found in your syste is outdated. Scaffolding will exit.", 'error');
+      Logger::log("Entity Scaffolder found in your system is outdated. Scaffolding will exit.", 'error');
+      Logger::log("
+        You can upgrade the Entity Scaffolder version by going to the folder where
+        it is installed and pulling the latest version from git.  You may also have
+        to run composer install to install any new dependencies if needed.
+        Eg.
+
+        >> cd ~/.drush/entity_scaffolder/
+        >> git pull
+        >> composer install
+        ", 'status');
+      Logger::log("If you choose to upgrade Entity Scaffolder, the code generated henceforth could be different. Exercise caution while committing scaffolded code.", 'warning');
       return;
     }
     elseif ($version_compare > 0) {

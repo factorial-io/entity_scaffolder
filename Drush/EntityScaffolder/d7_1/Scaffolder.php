@@ -9,7 +9,7 @@ use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
-  const VERSION = '7.1.3';
+  const VERSION = '7.1.4';
 
   const DEFAULT_TEMPLATE_DIR = __DIR__ . '/templates';
   const TEMPLATE_NAMESPACE = 'd7_1';
