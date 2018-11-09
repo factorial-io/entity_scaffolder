@@ -51,6 +51,10 @@
       'module' => 'text',
       'settings' => array(
         'size' => 60,
+{% if max_length is not empty %}
+        'maxlength_js' => 1,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+{% endif %}
       ),
       'type' => 'text_textfield',
       'weight' => {{ weight }},

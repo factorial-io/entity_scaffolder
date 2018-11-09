@@ -48,8 +48,8 @@
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-{% if widget.maxlength is not empty %}
-        'maxlength_js' => {{ widget.maxlength }},
+{% if max_length is not empty %}
+        'maxlength_js' => {{ max_length }},
         'maxlength_js_enforce' => 0,
         'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
         'maxlength_js_truncate_html' => 0,
