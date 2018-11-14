@@ -24,8 +24,14 @@ class ESFieldPreprocess extends ESField {
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $block = Scaffolder::CONTENT;
-    $key = $info['preprocess_hook'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['field_name'];
+    $key = $info['preprocess_hook'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['field_name'] . ' : 1';
     $template = '/field/' . $info['type'] . '/preprocess/code.content';
+    $code = $this->scaffolder->render($template, $info);
+    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
+    $block = Scaffolder::CONTENT;
+    $key = $info['preprocess_hook'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['field_name'] . ' : 2';
+    $template = '/field/preprocess__code.content.empty';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 

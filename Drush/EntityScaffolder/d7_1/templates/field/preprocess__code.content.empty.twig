@@ -1,0 +1,5 @@
+
+  // Preprocess for empty {{ field_name }}.
+  if(empty($vars['{{ field_name }}'])) {
+    $vars['{{ map }}'] = {% if cardinality == 1 %}FALSE{% else %}[]{% endif %};
+  }
