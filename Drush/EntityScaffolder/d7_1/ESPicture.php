@@ -103,9 +103,6 @@ class ESPicture extends ESBase implements ESBaseInterface {
       }
       $config_data['mapping'] = $mapping;
     }
-    else {
-      Logger::log('No breakpoint mapping found in Picture configuration for : ' . $config_data['machine_name'], 'warning');
-    }
     return $this->processConfigData($config_data);
   }
 }
