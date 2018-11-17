@@ -54,4 +54,25 @@ class ESField extends ESBase {
     return $fields;
   }
 
+  /**
+   * Helper function to get template file name respecting extention.
+   */
+  public function getTemplateFile($pattern) {
+    $info = $this->getInfo();
+    $file = str_replace('__type__', $info['type'], $pattern);
+    if (!$this->checkIfTemplateFileExists($file)) {
+      if ($parent = $this->getParent()) {
+        $file = $parent->getTemplateFile($pattern, $info);
+      }
+    }
+    return $file;
+  }
+
+  /**
+   * Helper function to check if a given template file exists.
+   */
+  public function checkIfTemplateFileExists($template_file) {
+    $file = $this->scaffolder->getTemplatedir() . $template_file . '.twig';
+    return Utils::fileNotEmpty($file);
+  }
 }
