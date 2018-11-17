@@ -96,12 +96,15 @@ class ESPicture extends ESBase implements ESBaseInterface {
   public function getConfig(...$params) {
     list($file) = $params;
     $config_data = parent::getConfig($file);
-    if ($config_data) {
+    if (!empty($config_data['mapping'])) {
       $mapping = [];
       foreach ($config_data['mapping'] as $key => $m) {
         $mapping['breakpoints.theme.' . $config_data['breakpoint_group'] . '.' . $key] = $m;
       }
       $config_data['mapping'] = $mapping;
+    }
+    else {
+      Logger::log('No breakpoint mapping found in Picture configuration for : ' . $config_data['machine_name'], 'warning');
     }
     return $this->processConfigData($config_data);
   }
