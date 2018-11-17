@@ -109,7 +109,7 @@ class ESPatternLabImageData extends ESPicture {
     list($file) = $params;
     $image_styles = $this->getImageStylesConfig();
     $config_data = Utils::getConfig($file);
-    // Expand Breakpoing Group configuration.
+    // Expand Breakpoint Group configuration.
     $config_data['breakpoint_group'] = $this->getBreakPointConfig($config_data['breakpoint_group']);
     // Load Image styles data.
     foreach ($config_data['mapping'] as $breakpoint => $images) {
