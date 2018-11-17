@@ -114,8 +114,6 @@ class ESPatternLabImageData extends ESPicture {
     // Load Image styles data.
     foreach ($config_data['mapping'] as $breakpoint => $images) {
       foreach ($images as $multiplier => $image_style) {
-        $suffix = "_{$multiplier}";
-        $style_name = preg_replace('/' . $suffix . '$/', '', $image_style);
         $config_data['sources'][$breakpoint][$multiplier] = $image_styles[$image_style];
       }
     }
