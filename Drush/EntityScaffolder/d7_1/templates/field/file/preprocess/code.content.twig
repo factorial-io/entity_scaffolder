@@ -1,19 +1,19 @@
 {% if cardinality == 1 %}
-  // Preprocess {{ field_name }}.
-  $file = NULL;
-  if (!empty($vars['{{ field_name }}'])) {
-    foreach ($vars['{{ field_name }}'] as $file) {
-      $file = es_helper_get_file_data($file);
+    // Preprocess {{ field_name }}.
+    $file = NULL;
+    if (!empty($vars['{{ field_name }}'])) {
+      foreach ($vars['{{ field_name }}'] as $file) {
+        $file = es_helper_get_file_data($file);
+      }
     }
-  }
-  $vars['{{ map }}'] = $file;
+    $vars['{{ map }}'] = $file;
 {% else %}
-  // Preprocess {{ field_name }}.
-  $files = NULL;
-  if (!empty($vars['{{ field_name }}'])) {
-    foreach ($vars['{{ field_name }}'] as $file) {
-      $files[] = es_helper_get_file_data($file);
+    // Preprocess {{ field_name }}.
+    $files = NULL;
+    if (!empty($vars['{{ field_name }}'])) {
+      foreach ($vars['{{ field_name }}'] as $file) {
+        $files[] = es_helper_get_file_data($file);
+      }
     }
-  }
-  $vars['{{ map }}'] = $files;
+    $vars['{{ map }}'] = $files;
 {% endif %}
