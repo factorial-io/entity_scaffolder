@@ -35,6 +35,13 @@
       ),
       'type' => 'options_select',
 {% endif %}
+{% if widget_type == 'options_buttons' %}
+      'module' => 'options',
+      'settings' => array(
+        'use_select2' => FALSE,
+      ),
+      'type' => 'options_buttons',
+{% endif %}
 {% if widget_type == 'inline_entity_form' %}
       'module' => 'inline_entity_form',
       'settings' => array(),
