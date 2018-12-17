@@ -1,0 +1,18 @@
+
+    // Preprocess {{ field_name }}.
+    // Field type     : {{ original_field_type }}
+    // Template       : {{ _self.getTemplateName() }}
+    $cta_data = es_helper_preprocess_default_extract_cta_value($vars, '{{ field_name }}', '{{ cardinality }}');
+{% if pattern is not empty %}
+    $vars['{{ map }}'] = FALSE;
+{% if cardinality == 1 %}
+    $cta = $cta_data;
+    $vars['{{ map }}'] = pattern('{{ pattern.category }}', '{{ pattern.component }}', $cta);
+{% else %}
+    foreach ($cta_data as $cta) {
+      $vars['{{ map }}'][] = pattern('{{ pattern.category }}', '{{ pattern.component }}', $cta);
+    }
+{% endif %}
+{% else %}
+    $vars['{{ map }}'] = $cta_data;
+{% endif %}
