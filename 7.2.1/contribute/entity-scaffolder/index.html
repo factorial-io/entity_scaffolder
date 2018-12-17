@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Factorial GmbH, Hamburg">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>EntityScaffolder - Entity Scaffolder</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  <link href="../../css/version-select.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "EntityScaffolder";
+    var mkdocs_page_input_path = "contribute/entity-scaffolder.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Entity Scaffolder</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">What is EntityScaffolder</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../available-tasks/">Available tasks</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Configurations</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../configurations/config/">config.yaml</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Fieldable entities</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../configurations/entities/">Entities</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../configurations/fields/">Fields</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../configurations/text_filters/">Features</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pictures</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../configurations/breakpoint_groups/">Breakpoint Groups</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../configurations/image_styles/">Image styles</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../configurations/pictures/">Pictures</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Contribution Guide</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">EntityScaffolder</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#plugin-enhancement">Plugin enhancement</a></li>
+    
+
+    <li class="toctree-l3"><a href="#contributing-field-templates">Contributing Field templates</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#field-base">Field Base</a></li>
+        
+            <li><a class="toctree-l4" href="#field-instance">Field Instance</a></li>
+        
+            <li><a class="toctree-l4" href="#field-preprocess">Field Preprocess</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../documentation/">Documentation</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Entity Scaffolder</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Contribution Guide &raquo;</li>
+        
+      
+    
+    <li>EntityScaffolder</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/factorial-io/entity_scaffolder/edit/master/docs/contribute/entity-scaffolder.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>If you get stuck at any point, please create a <a href="https://github.com/factorial-io/entity_scaffolder/issues">ticket on GitHub</a>.</p>
+<h2 id="plugin-enhancement">Plugin enhancement</h2>
+<p>Contribution to plugin itself requires a good understanding of PHP, Drupal and features.
+The Scaffolder for D7 tries to create files, which features would have created from configurations stored in the database.</p>
+<p>If you want to help in creating more plugins or enhance existing ones, please contact the maintainers of the project via GitHub issue queue.</p>
+<h2 id="contributing-field-templates">Contributing Field templates</h2>
+<p>Entity Scaffolder is very opinionated. The definitions created by Entity Scaffolder follows a certain pattern. It uses templates with very restricted support of configurations. Thus, it creates very similar definitions (like field base, field instance, field preprocessing ...) across the whole project.</p>
+<p>Following path placeholders would be used in the examples that follows,</p>
+<ul>
+<li><code>%template_dir%</code> : The template directory for scaffolder plugins for the given version. Eg, <code>/Drush/EntityScaffolder/d7_1/templates/</code></li>
+<li><code>%field_name%</code> : Name of the field that would be used as field type in input yaml files.</li>
+</ul>
+<p>Field base, Field Instance and Field Preprocess definitions are all created under <code>%template_dir%/%field_name%</code></p>
+<h3 id="field-base">Field Base</h3>
+<p>The templates and configurations required to create a field_base definition. Each new field definitions are added in <strong>field_base</strong> directory under <code>%template_dir%/%field_name%/</code>.</p>
+<p>Eg. for <strong>file</strong> field,</p>
+<pre><code>%template_dir%/file/field_base
+    config.yaml
+    feature.content.twig
+</code></pre>
+
+<p><code>config.yaml</code> supports following options</p>
+<table>
+<thead>
+<tr>
+<th>Options</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dependencies</td>
+<td>Used to declare the field dependency with Drupal modules.</td>
+</tr>
+<tr>
+<td>variables</td>
+<td>An array of variables that is used to create the fields. The key is the name of the variable.</td>
+</tr>
+<tr>
+<td>variables.%key%.required</td>
+<td>Boolean indicating if the variable is mandatory or not.</td>
+</tr>
+<tr>
+<td>variables.%key%.default</td>
+<td>Value that is assigned to the variable if user doesn't provide it in the configuration.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Sample config.yaml</em></p>
+<pre><code class="yaml"># Declare the field dependency with Drupal files and media.
+dependencies :
+  - file
+  - media
+variables :
+  cardinality :
+    type : numeric
+    placeholder : 1
+    # Make the field as non mandatory, i.e. no need to be supplied in yaml configuration.
+    required : false
+    # Use default value 1, when cardinality is not provided.
+    default : 1
+</code></pre>
+
+<p><em>Sample feature.content.twig</em></p>
+<pre><code class="php">
+
+  // Exported field_base: '{{ field_name }}'.
+  $field_bases['{{ field_name }}'] = array(
+    'active' =&gt; 1,
+    'cardinality' =&gt; {{ cardinality }},
+    'deleted' =&gt; 0,
+    'entity_types' =&gt; array(),
+    'field_name' =&gt; '{{ field_name }}',
+    'indexes' =&gt; array(
+      'fid' =&gt; array(
+        0 =&gt; 'fid',
+      ),
+    ),
+    'locked' =&gt; 0,
+    'module' =&gt; 'file',
+    'settings' =&gt; array(
+      'display_default' =&gt; 0,
+      'display_field' =&gt; 0,
+      'uri_scheme' =&gt; 'public',
+    ),
+    'translatable' =&gt; 0,
+    'type' =&gt; 'file',
+  );
+</code></pre>
+
+<p>The content of <code>feature.content.twig</code> is the snippet required to create the feature export for field_base.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To generate above code,</p>
+<ul>
+<li>Create a dummy field using Drupal's Field UI.</li>
+<li>Export the dummy field using feature</li>
+<li>Copy the base definition to feature.content.twig</li>
+<li>Replace the relevant part with placeholders. Eg. field_name and cardinality as seen above.</li>
+</ul>
+</div>
+<h3 id="field-instance">Field Instance</h3>
+<p>Field Instance definition generation is almost same as field base definition.</p>
+<pre><code>%template_dir%/file/field_instance
+    config.yaml
+    feature.content.twig
+</code></pre>
+
+<p>Instead of field_base, you would put the templates in field_instance.
+Replace the content in feature.content.twig with field instance output from exported dummy feature.</p>
+<h3 id="field-preprocess">Field Preprocess</h3>
+<pre><code>%template_dir%/file/preprocess
+    config.yaml
+    code.content.twig
+    pattern.twig
+</code></pre>
+
+<ul>
+<li>config.yaml follows more or less same convention as for field_base and field_instance's config.yaml</li>
+<li>code.content.twig would contain the variables preprocessing template for theme.</li>
+<li>pattern.twig will hold template for helper comment in twig template, showing details of variable and its mapping.</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../documentation/" class="btn btn-neutral float-right" title="Documentation">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../configurations/pictures/" class="btn btn-neutral" title="Pictures"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>© 2018 Factorial GmbH, Hamburg</p>
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/factorial-io/entity_scaffolder/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../../configurations/pictures/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../documentation/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../js/version-select.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
