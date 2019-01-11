@@ -13,11 +13,19 @@ dockerKeyFile: ./ssh-keys/docker-root-key
 dockerAuthorizedKeyFile: <PLEASE-REPLACE-WITH-A-KEYS.FACTORIAL.IO-URL>
 dockerKnownHostsFile: ./ssh-keys/known_hosts
 
+modulesEnabledIgnore:
+ - hub_drush_tools
+ - bi_spbth_git_manager
+
+modulesDisabledIgnore:
+  - devel
+  - views_ui
 
 repository: https://shuber@bitbucket.bi-scrum.com/scm/{{ project_bi_code }}/site-code.git
 
 inheritsFrom:
   - https://config.factorial.io/docker/2.0/xdebug.yaml
+  - https://config.factorial.io/bi/scripts.yaml
 
 excludeFiles:
   backup:
@@ -39,27 +47,19 @@ scripts:
     - fail_on_error(0)
     - cd %host.gitRootFolder% && bin/behat %arguments.combined%
     - fail_on_error(1)
-  reindex-content:
-    - cd %host.siteFolder% && drush solr-delete-index; drush solr-mark-all; drush solr-index;
   patternlab:
     - cd %host.rootFolder%/sites/all/themes/custom/{{ project_short_code }}_frontend && php core/console --generate
-  setSolrUrlForDev:
-    - "drush vset apachesolr_default_environment solr"
-    - >
-      drush vset apachesolr_environments
-      --format=json
-      '{"solr": {"url": "http://solr:8983/solr/mycore" } }'
 
 common:
   copyDBFromFinished:
     dev:
-      - execute(script, reindex-content)
+      - execute(script, reindexContent)
     stage:
-      - execute(script, reindex-content)
+      - execute(script, reindexContent)
     test:
-      - execute(script, reindex-content)
+      - execute(script, reindexContent)
     prod:
-      - execute(script, reindex-content)
+      - execute(script, reindexContent)
 
   reset:
     dev:
@@ -92,16 +92,6 @@ common:
       - execute(script, patternlab)
 
 dockerHosts:
-  default:
-    tasks:
-      start:
-        - docker start %name%
-      stop:
-        - docker stop %name%
-      logs:
-        - docker logs %name%
-      ps:
-        - docker ps
   mbb:
     environment:
       COMPOSE_FILE: "docker-compose.yml:docker-compose-mbb.yml"
@@ -134,6 +124,7 @@ hosts:
       name: {{ project_short_name_stripped }}_web_1
       configuration: mbb
       projectFolder: {{ project_bi_code }}-{{ project_short_name_safe_value }}
+      service: web
     database:
       name: {{ project_short_name_stripped }}
       user: root
@@ -141,7 +132,7 @@ hosts:
       host: mysql
     reset:
       - "drush vset -y error_level 2"
-      - "drush vset -y error_level 0"
+      - "drush dis shield -y"
       - "execute(script, copyHtAccess)"
     xdebug:
       php_version: 5
@@ -155,7 +146,6 @@ hosts:
     type: stage
     ignoreSubmodules: true
     supportsInstalls: false
-    supportsCopyFrom: false
     rootFolder: /home/{{ project_bi_code|lower }}d/public_html
     gitRootFolder: /home/{{ project_bi_code|lower }}d/public_html
     siteFolder: /sites/default
