@@ -161,11 +161,13 @@ function es_helper_get_brightcove_audio_file($field) {
   $client = brightcove_client_load_or_default($bcid);
   list($cms,) = brightcove_create_classes($client);
   $sources = $cms->getVideoSources($bid);
-  $out = FALSE;
+  $out = [
+    'id' => $bid,
+    'bcid' => $bcid,
+  ];
   foreach ($sources as $source) {
     if ($source->getSrc()) {
-      $out = [
-        'Id' => $source->getId(),
+      $out += [
         'Duration' => $source->getDuration(),
         'Src' => $source->getSrc(),
         'StreamName' => $source->getStreamName(),
@@ -180,7 +182,7 @@ function es_helper_get_brightcove_audio_file($field) {
 }
 
 /**
- * DTM integration for brightcove fields
+ * DTM integration for brightcove fields.
  */
 
 /**
@@ -306,26 +308,26 @@ function es_helper_get_unique_video_id($id) {
  *   event tracking logic to gather all the important.
  */
 function es_helper_preprocess_brightcove_field_embed(array &$vars) {
-    // Loading video object which contain all the detail about the
-    // video id being sent.
-    $bcid = $vars['brightcove_id'];
+  // Loading video object which contain all the detail about the
+  // video id being sent.
+  $bcid = $vars['brightcove_id'];
 
-    // Getting the default client credentials which are set as default currently.
-    $client = brightcove_client_load_or_default();
-    $video = brightcove_load_video($bcid, $client);
+  // Getting the default client credentials which are set as default currently.
+  $client = brightcove_client_load_or_default();
+  $video = brightcove_load_video($bcid, $client);
 
-    if (!is_object($video)) {
-      return;
-    }
-    // Getting brightcove video id.
-    $video_id = $video->getId();
-    $video_name = $video->getName();
+  if (!is_object($video)) {
+    return;
+  }
+  // Getting brightcove video id.
+  $video_id = $video->getId();
+  $video_name = $video->getName();
 
-    // Creating the variables which we need in brightcove player template
-    // for tracking purpose.
-    $vars['brightcove_video_id'] = $video_id;
-    $vars['video_name'] = $video_id . ':' . $video_name;
-    $vars['id'] = es_helper_get_unique_video_id($video_id);
+  // Creating the variables which we need in brightcove player template
+  // for tracking purpose.
+  $vars['brightcove_video_id'] = $video_id;
+  $vars['video_name'] = $video_id . ':' . $video_name;
+  $vars['id'] = es_helper_get_unique_video_id($video_id);
 }
 
 /**
@@ -333,13 +335,13 @@ function es_helper_preprocess_brightcove_field_embed(array &$vars) {
  */
 function es_helper_show_file_permissions($dir) {
   $files = scandir($dir);
-  foreach($files as $file) {
+  foreach ($files as $file) {
     $full = $dir . '/' . $file;
     if ($file[0] === '.') {
       continue;
     }
     $perms = substr(sprintf('%o', fileperms($full)), -4);
-    print($perms . ' ' . $full. "\n");
+    print($perms . ' ' . $full . "\n");
     if (is_dir($full)) {
       es_helper_show_file_permissions($full);
     }
