@@ -175,6 +175,11 @@ function es_helper_get_brightcove_audio_file($field) {
         'Codec' => $source->getCodec(),
         'Container' => $source->getContainer(),
       ];
+      $out['source'] = $source->getSrc();
+      // Rewrite prefix based on conection being served.
+      if(isset($_SERVER['HTTPS'])) {
+        $out['source'] = str_replace('http://', 'https://', $out['source']);
+      }
       break;
     }
   }
@@ -363,4 +368,3 @@ function es_helper_patternlab_path() {
   global $theme;
   return base_path() . drupal_get_path('theme', $theme) . '/source';
 }
-
