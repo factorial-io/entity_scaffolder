@@ -166,20 +166,22 @@ function es_helper_get_brightcove_audio_file($field) {
     'bcid' => $bcid,
   ];
   foreach ($sources as $source) {
-    if ($source->getSrc()) {
+    $src = $source->getSrc();
+    if ($src && $source->getContainer() == 'MP4') {
+      if (drupal_is_https()) {
+        if (!(substr($src, 0, strlen('https://')) === 'https://')) {
+          continue;
+        }
+      }
       $out += [
         'Duration' => $source->getDuration(),
-        'Src' => $source->getSrc(),
+        'source' => $src,
+        'Src' => $src,
         'StreamName' => $source->getStreamName(),
         'AppName' => $source->getAppName(),
         'Codec' => $source->getCodec(),
         'Container' => $source->getContainer(),
       ];
-      $out['source'] = $source->getSrc();
-      // Rewrite prefix based on conection being served.
-      if(isset($_SERVER['HTTPS'])) {
-        $out['source'] = str_replace('http://', 'https://', $out['source']);
-      }
       break;
     }
   }
