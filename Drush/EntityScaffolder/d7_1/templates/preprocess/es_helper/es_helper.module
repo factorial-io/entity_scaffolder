@@ -153,37 +153,46 @@ function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $re
  * Get Audio url for a brightcove field.
  */
 function es_helper_get_brightcove_audio_file($field) {
-  if (empty($field['brightcove_id'])) {
-    return FALSE;
-  }
-  $bid = $field['brightcove_id'];
-  $bcid = $field['bcid'];
-  $client = brightcove_client_load_or_default($bcid);
-  list($cms,) = brightcove_create_classes($client);
-  $sources = $cms->getVideoSources($bid);
-  $out = [
-    'id' => $bid,
-    'bcid' => $bcid,
-  ];
-  foreach ($sources as $source) {
-    $src = $source->getSrc();
-    if ($src && $source->getContainer() == 'MP4') {
-      if (drupal_is_https()) {
-        if (!(substr($src, 0, strlen('https://')) === 'https://')) {
-          continue;
-        }
-      }
-      $out += [
-        'Duration' => $source->getDuration(),
-        'source' => $src,
-        'Src' => $src,
-        'StreamName' => $source->getStreamName(),
-        'AppName' => $source->getAppName(),
-        'Codec' => $source->getCodec(),
-        'Container' => $source->getContainer(),
-      ];
-      break;
+  $out = FALSE;
+  try {
+    if (empty($field['brightcove_id'])) {
+      return FALSE;
     }
+    $bid = $field['brightcove_id'];
+    $bcid = $field['bcid'];
+    $client = brightcove_client_load_or_default($bcid);
+    list($cms,) = brightcove_create_classes($client);
+    $sources = $cms->getVideoSources($bid);
+    $out = [
+      'id' => $bid,
+      'bcid' => $bcid,
+    ];
+    foreach ($sources as $source) {
+      $src = $source->getSrc();
+      if ($src && $source->getContainer() == 'MP4') {
+        if (drupal_is_https()) {
+          if (!(substr($src, 0, strlen('https://')) === 'https://')) {
+            continue;
+          }
+        }
+        $out += [
+          'Duration' => $source->getDuration(),
+          'source' => $src,
+          'Src' => $src,
+          'StreamName' => $source->getStreamName(),
+          'AppName' => $source->getAppName(),
+          'Codec' => $source->getCodec(),
+          'Container' => $source->getContainer(),
+        ];
+        break;
+      }
+    }
+  }
+  catch (\Exception $e) {
+    $vars = [
+      'bid' => $bid,
+    ];
+    watchdog('es_helper', 'Could not retrieve data from brightcove for "@bid"', $vars);
   }
   return $out;
 }
