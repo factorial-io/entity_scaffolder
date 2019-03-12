@@ -1,3 +1,11 @@
+7.2.2 / 2019-03-12
+==================
+
+  * Brigtcove audio field enhancements and bugfixes when serving through https
+  * Refactored CTA to use Patterns
+  * Added patternlab_path twig function to es_helper module (stmh)
+  * Add default_value field to text_long instances
+
 
 7.2.1 / 2018-12-26
 ==================
