@@ -379,3 +379,56 @@ function es_helper_patternlab_path() {
   global $theme;
   return base_path() . drupal_get_path('theme', $theme) . '/source';
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function es_helper_preprocess_field_multiple_value_form(&$variables) {
+  $element = &$variables['element'];
+
+  if ($element['#cardinality'] > 1 || $element['#cardinality'] == FIELD_CARDINALITY_UNLIMITED) {
+    foreach (element_children($element) as $key) {
+      if (is_numeric($key)) {
+        $element[$key]['value']['#post_render'][] = 'es_helper_multivalue_fields_post_render';
+      }
+    }
+  }
+}
+
+/**
+ * Post process render to give token.
+ */
+function es_helper_multivalue_fields_post_render($html, $element) {
+  $html = '[es_helper_numbered_multivalue_fields]' . $html;
+  return $html;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function es_helper_preprocess_table(&$variables) {
+  $numbered = FALSE;
+  $rows = &$variables['rows'];
+
+  foreach ($rows as $key => &$values) {
+    if (isset($values['data'])) {
+      $found = FALSE;
+      foreach ($values['data'] as &$cells) {
+        if (is_string($cells) && preg_match('/\[es_helper_numbered_multivalue_fields\]/', $cells)) {
+          $cells = str_replace('[es_helper_numbered_multivalue_fields]', '', $cells);
+          $found = TRUE;
+          $numbered = TRUE;
+          break;
+        }
+      }
+      if ($found) {
+        $new_cell  = array('data' => ($key + 1), 'class' => array('row-number'));
+        array_splice($values['data'], 1, 0, array($new_cell));
+      }
+    }
+  }
+
+  if ($numbered) {
+    $variables['header'][0]['colspan']++;
+  }
+}
