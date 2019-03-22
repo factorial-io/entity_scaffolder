@@ -22,7 +22,7 @@ class ESPatternLab extends ESField {
         if (isset($pattern['code'])) {
           $code = $pattern['code'];
         }
-        elseif(isset($pattern['template'])) {
+        elseif (isset($pattern['template'])) {
           $template = $pattern['template'];
           $code = $this->scaffolder->render($template, $config);
         }
