@@ -384,6 +384,11 @@ function es_helper_patternlab_path() {
  * Implements hook_preprocess_HOOK().
  */
 function es_helper_preprocess_field_multiple_value_form(&$variables) {
+  // Check if should show the numbers.
+  if (!variable_get('es_helper_show_numbers_multivalued_form', FALSE)) {
+    return;
+  }
+
   $element = &$variables['element'];
 
   if ($element['#cardinality'] > 1 || $element['#cardinality'] == FIELD_CARDINALITY_UNLIMITED) {
@@ -407,6 +412,11 @@ function es_helper_multivalue_fields_post_render($html, $element) {
  * Implements hook_preprocess_HOOK().
  */
 function es_helper_preprocess_table(&$variables) {
+  // Check if should show the numbers.
+  if (!variable_get('es_helper_show_numbers_multivalued_form', FALSE)) {
+    return;
+  }
+
   $numbered = FALSE;
   $rows = &$variables['rows'];
 
