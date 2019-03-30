@@ -10,6 +10,7 @@
 include_once 'es_helper.preprocess.inc';
 include_once 'es_helper.preprocess.default.inc';
 include_once 'es_helper.list_predefined_options.inc';
+include_once 'es_helper.patternlab.inc';
 
 /**
  * Implements hook_preprocess_entity().
@@ -362,22 +363,6 @@ function es_helper_show_file_permissions($dir) {
       es_helper_show_file_permissions($full);
     }
   }
-}
-
-/**
- * Implements hook_twig_function().
- */
-function es_helper_twig_function($functions) {
-  $functions['patternlab_path'] = new Twig_SimpleFunction('patternlab_path', 'es_helper_patternlab_path');
-  return $functions;
-}
-
-/**
- * Return path to patternlab instance.
- */
-function es_helper_patternlab_path() {
-  global $theme;
-  return base_path() . drupal_get_path('theme', $theme) . '/source';
 }
 
 /**

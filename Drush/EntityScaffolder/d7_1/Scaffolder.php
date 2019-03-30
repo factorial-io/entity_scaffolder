@@ -53,6 +53,7 @@ class Scaffolder extends ScaffolderBase {
     $this->plugins['node'] = new ESEntityNode($this);
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
     $this->plugins['list_predefined_options'] = new ESListPredefinedOptions($this);
+    $this->plugins['config'] = new ESConfig($this);
   }
 
   /**
@@ -73,7 +74,7 @@ class Scaffolder extends ScaffolderBase {
       }
     }
     $this->plugins['list_predefined_options']->scaffold();
-
+    $this->plugins['config']->scaffold();
   }
 
   /**
