@@ -44,18 +44,23 @@ function es_helper_preprocess_fieldable_panels_pane(&$vars) {
     $fn($vars);
   }
 
-  // Allow theme to preprocess variables after this module.
-  global $theme;
-  $fn = $theme . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
-  if (function_exists($fn)) {
-    $fn($vars);
-  }
-  // If the function doesn't exist in theme try preprocess in parent theme.
-  elseif (isset($GLOBALS['base_theme_info'][0]->name)) {
-    $fn = $GLOBALS['base_theme_info'][0]->name . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
+  // Allow theme and parent themes to preprocess variables after this module.
+  global $theme, $base_theme_info;
+
+  // Base theme info allways order the themes from top level to bottom.
+  // @see drupal_theme_initialize().
+  foreach ($base_theme_info as $parent_theme) {
+    $fn = $parent_theme->name . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
     if (function_exists($fn)) {
       $fn($vars);
     }
+  }
+
+  // Once parent themes had the chance to execute preprocess, try to execute on
+  // active theme.
+  $fn = $theme . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
+  if (function_exists($fn)) {
+    $fn($vars);
   }
 
   $view_mode = $vars['elements']['#view_mode'];
