@@ -25,7 +25,6 @@ class ESConfig extends ESBase implements ESBaseInterface {
   }
 
   public function generateCode($info) {
-    Utils::debug($info);
     $module = 'es_helper';
     $filename = 'es_helper.patternlab.inc';
     // Add File header.
