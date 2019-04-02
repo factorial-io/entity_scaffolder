@@ -105,8 +105,8 @@ function drush_entity_scaffolder() {
         Eg.
 
         >> cd ~/.drush/entity_scaffolder/
-        >> composer install
         >> git pull
+        >> composer install
         ", 'status');
       Logger::log("If you choose to upgrade Entity Scaffolder, the code generated henceforth could be different. Exercise caution while committing scaffolded code.", 'warning');
       return;
