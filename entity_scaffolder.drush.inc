@@ -42,6 +42,7 @@ function entity_scaffolder_drush_command() {
       'config-dir' => 'Directory to read the config file/s from.',
       'debug' => 'Runs entity_scaffolder in debug mode.',
       'info' => 'Interactive information system about supported plugins.',
+      'force' => 'Do not ask questions, scaffold it',
     ),
     'examples' => array(
       'drush es --config-dir=".tools/es"' => 'Looks for config file/s in .tools/es and runs scaffolding job.',
@@ -104,24 +105,26 @@ function drush_entity_scaffolder() {
         Eg.
 
         >> cd ~/.drush/entity_scaffolder/
-        >> git pull
         >> composer install
+        >> git pull
         ", 'status');
       Logger::log("If you choose to upgrade Entity Scaffolder, the code generated henceforth could be different. Exercise caution while committing scaffolded code.", 'warning');
       return;
     }
     elseif ($version_compare > 0) {
       Logger::log("Entity Scaffolder found in your system is of newer version than the one that was used to scaffold earlier.", 'warning');
-      $response = drush_prompt("Do you wish to continue? (y/n)", "n", TRUE);
-      $response = strtolower($response);
-      switch ($response) {
-        case 'y':
-        case 'yes':
-          break;
+      if (drush_get_option('force', FALSE) !== TRUE) {
+        $response = drush_prompt("Do you wish to continue? (y/n)", "n", TRUE);
+        $response = strtolower($response);
+        switch ($response) {
+          case 'y':
+          case 'yes':
+            break;
 
-        default:
-          Logger::log("Scaffolding aborted.", 'error');
-          return;
+          default:
+            Logger::log("Scaffolding aborted.", 'error');
+            return;
+        }
       }
     }
   }
