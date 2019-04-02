@@ -49,8 +49,6 @@ class ESConfig extends ESBase implements ESBaseInterface {
    * The main scaffolding action.
    */
   public function scaffold() {
-    Utils::debug('to be or not to be >>>>>>d>>>>>>>>>>>>>>>>>.');
-
     $file = $this->loadScaffoldSourceConfigurations();
     $config = $this->getConfig($file);
     $this->generateCode($config);
