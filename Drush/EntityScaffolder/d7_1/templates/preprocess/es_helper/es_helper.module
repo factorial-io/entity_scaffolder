@@ -121,6 +121,15 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Helper function to reset panels region contents while feature import.
  *
+ * For page manager pages, this allows them to partially exported. Allowing
+ * some part of the region to be treated as data and not to be overriden by
+ * feature revert.
+ *
+ * When a page is exported to feature, it will export all the panes in a region.
+ * So when the feature is being reverted, what we do is, alter the feature
+ * export config coming from code for a region and replace it with the config
+ * in database.
+ *
  * @see hook_default_page_manager_pages_alter()
  */
 function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $regions = array()) {
@@ -130,29 +139,28 @@ function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $re
   $db = features_get_normal($component, $module_name, FALSE);
 
   foreach ($exports as $page_export_key => &$page_export) {
+    $db_page_export = NULL;
     if (isset($db[$page_export_key])) {
       $db_page_export = &$db[$page_export_key];
     }
     foreach ($page_export->default_handlers as $page_default_handler_key => &$page_default_handler) {
+      $db_page_default_handler = NULL;
       if (isset($db_page_export->default_handlers[$page_default_handler_key])) {
         $db_page_default_handler = &$db_page_export->default_handlers[$page_default_handler_key];
       }
-      foreach ($page_default_handler->conf['display']->panels as $region => &$panels) {
-        if (isset($db_page_default_handler->conf['display']->panels[$region])) {
-          $db_panels = &$db_page_default_handler->conf['display']->panels[$region];
-        }
-        // Check region to ignore.
-        if (in_array($region, $regions)) {
-          $panels = array();
-          if (isset($db[$page_export_key]->default_handlers[$page_default_handler_key]->conf['display']->panels[$region])) {
-            // If no panels attached to the region, then remove all from code.
-            $panels = isset($db_panels) ? $db_panels : array();
-            foreach ($panels as $panel_id) {
-              if (isset($db_page_default_handler->conf['display']->content[$panel_id])) {
-                $page_default_handler->conf['display']->content[$panel_id] = $db_page_default_handler->conf['display']->content[$panel_id];
-              }
-              else {
-                unset($page_default_handler->conf['display']->content[$panel_id]);
+      if (!empty($db_page_default_handler)) {
+        $code_content = &$page_default_handler->conf['display']->content;
+        $db_content = &$db_page_default_handler->conf['display']->content;
+        $db_panels = &$db_page_default_handler->conf['display']->panels;
+        foreach ($regions as $region) {
+          if (!empty($db_panels[$region])) {
+            $regional_panels = $db_panels[$region];
+            // Copy the panels in region.
+            $page_default_handler->conf['display']->panels[$region] = $regional_panels;
+            // Copy the panels to global list.
+            foreach ($regional_panels as $panel_id) {
+              if (!empty($db_content[$panel_id])) {
+                $code_content[$panel_id] = $db_content[$panel_id];
               }
             }
           }
