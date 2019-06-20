@@ -12,6 +12,8 @@ include_once 'es_helper.preprocess.default.inc';
 include_once 'es_helper.list_predefined_options.inc';
 include_once 'es_helper.patternlab.inc';
 
+define('ES_HELPER_PERMISSION_MANAGE_ALL_FPPS', 'es helper manage all fieldable_panel_panes');
+
 /**
  * Implements hook_preprocess_entity().
  */
@@ -28,6 +30,19 @@ function es_helper_preprocess_entity(&$variables) {
       $fn($variables);
     }
   }
+}
+
+/**
+ * Implements hook_permission().
+ */
+function es_helper_permission() {
+  $permissions = [
+    ES_HELPER_PERMISSION_MANAGE_ALL_FPPS => [
+      'title' => t('Manage All Fieldable Panel Panes'),
+      'description' => t('Create/Update/Delete all fieldable panel panes'),
+    ],
+  ];
+  return $permissions;
 }
 
 /**
@@ -437,7 +452,7 @@ function es_helper_preprocess_table(&$variables) {
         }
       }
       if ($found) {
-        $new_cell  = array('data' => ($key + 1), 'class' => array('row-number'));
+        $new_cell = array('data' => ($key + 1), 'class' => array('row-number'));
         array_splice($values['data'], 1, 0, array($new_cell));
       }
     }
@@ -446,4 +461,12 @@ function es_helper_preprocess_table(&$variables) {
   if ($numbered) {
     $variables['header'][0]['colspan']++;
   }
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function es_helper_entity_info_alter(&$entity_info) {
+  // @see https://www.webomelette.com/custom-access-control-drupal-7-entities.
+  $entity_info['fieldable_panels_pane']['controller class'] = 'EsHelperPanelsPaneController';
 }
