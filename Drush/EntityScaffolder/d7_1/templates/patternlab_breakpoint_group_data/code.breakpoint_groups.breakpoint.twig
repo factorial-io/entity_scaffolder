@@ -1,0 +1,6 @@
+  {{ machine_name }} : 
+    media: '{{ media }}'
+    multiplier:
+{% for item in multiplier %}
+      - {{ item }}
+{% endfor %}

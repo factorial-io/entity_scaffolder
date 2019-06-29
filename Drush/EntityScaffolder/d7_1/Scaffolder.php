@@ -9,7 +9,7 @@ use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
-  const VERSION = '7.2.9';
+  const VERSION = '7.2.10';
 
   const DEFAULT_TEMPLATE_DIR = __DIR__ . '/templates';
   const TEMPLATE_NAMESPACE = 'd7_1';
@@ -47,6 +47,7 @@ class Scaffolder extends ScaffolderBase {
     }
     $this->plugins['image_style'] = new ESImageStyle($this);
     $this->plugins['breakpoint_groups'] = new ESBreakPointGroup($this);
+    $this->plugins['pl_breakpoint_groups'] = new ESPatternLabBreakpointGroupData($this);
     $this->plugins['picture'] = new ESPicture($this);
     $this->plugins['picture_image_data'] = new ESPatternLabImageData($this);
     $this->plugins['fpp'] = new ESEntityFPP($this);
@@ -70,6 +71,9 @@ class Scaffolder extends ScaffolderBase {
         $this->plugins[$entity_type]->scaffold();
         if ($entity_type == 'picture') {
           $this->plugins['picture_image_data']->scaffold();
+        }
+        if ($entity_type == 'breakpoint_groups') {
+          $this->plugins['pl_breakpoint_groups']->scaffold();
         }
       }
     }
