@@ -2,13 +2,6 @@
 
 namespace Drush\EntityScaffolder\d7_1;
 
-use Drush\EntityScaffolder\Utils;
-use Symfony\Component\Yaml\Yaml;
-use Drush\EntityScaffolder\d7_1\ESBaseInterface;
-use Drush\EntityScaffolder\d7_1\ESEntity;
-use Drush\EntityScaffolder\d7_1\ESPicture;
-use Drush\EntityScaffolder\Logger;
-
 class ESPatternLabBreakpointGroupData extends ESBreakPointGroup {
   public function generateCode($info) {
     // Associate breakpoint with a group.
@@ -16,7 +9,8 @@ class ESPatternLabBreakpointGroupData extends ESBreakPointGroup {
     $filename = 'breakpoints.yaml';
 
     $block = Scaffolder::CONTENT;
-    $key = 'breakpoint_groups:' . Scaffolder::CONTENT . Scaffolder::HEADER . $info['machine_name'];
+    $key = 'breakpoint_groups:' . Scaffolder::CONTENT . $info['group_name'] . Scaffolder::CONTENT . $info['machine_name'];
+
     $template = '/patternlab_breakpoint_group_data/code.breakpoint_groups.group_item';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
@@ -52,7 +46,7 @@ class ESPatternLabBreakpointGroupData extends ESBreakPointGroup {
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
     $block = Scaffolder::CONTENT;
-    $key = 'breakpoint_groups:' . Scaffolder::CONTENT;
+    $key = 'breakpoint_groups:' . Scaffolder::CONTENT . $info['machine_name'] . Scaffolder::HEADER;
     $template = '/patternlab_breakpoint_group_data/code.breakpoint_groups.group';
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
