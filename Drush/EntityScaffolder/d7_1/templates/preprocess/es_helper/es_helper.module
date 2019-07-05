@@ -8,6 +8,11 @@
  */
 
 include_once 'es_helper.preprocess.inc';
+include_once 'es_helper.preprocess.default.inc';
+include_once 'es_helper.list_predefined_options.inc';
+include_once 'es_helper.patternlab.inc';
+
+define('ES_HELPER_PERMISSION_MANAGE_ALL_FPPS', 'es helper manage all fieldable_panel_panes');
 
 /**
  * Implements hook_preprocess_entity().
@@ -28,6 +33,19 @@ function es_helper_preprocess_entity(&$variables) {
 }
 
 /**
+ * Implements hook_permission().
+ */
+function es_helper_permission() {
+  $permissions = [
+    ES_HELPER_PERMISSION_MANAGE_ALL_FPPS => [
+      'title' => t('Manage All Fieldable Panel Panes'),
+      'description' => t('Create/Update/Delete all fieldable panel panes'),
+    ],
+  ];
+  return $permissions;
+}
+
+/**
  * Implements hook_preprocess_fieldable_panels_pane().
  */
 function es_helper_preprocess_fieldable_panels_pane(&$vars) {
@@ -42,8 +60,20 @@ function es_helper_preprocess_fieldable_panels_pane(&$vars) {
     $fn($vars);
   }
 
-  // Allow theme to preprocess variables after this module.
-  global $theme;
+  // Allow theme and parent themes to preprocess variables after this module.
+  global $theme, $base_theme_info;
+
+  // Base theme info allways order the themes from top level to bottom.
+  // @see drupal_theme_initialize().
+  foreach ($base_theme_info as $parent_theme) {
+    $fn = $parent_theme->name . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
+    if (function_exists($fn)) {
+      $fn($vars);
+    }
+  }
+
+  // Once parent themes had the chance to execute preprocess, try to execute on
+  // active theme.
   $fn = $theme . '_preprocess_fieldable_panels_pane_' . $vars['elements']['#bundle'];
   if (function_exists($fn)) {
     $fn($vars);
@@ -93,6 +123,7 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
   // Hide extra unused configurations from FPP forms.
   if (isset($form['#entity_type']) && $form['#entity_type'] == 'fieldable_panels_pane') {
     $form['title']['#access'] = FALSE;
+    $form['language']['#access'] = FALSE;
     $form['link']['#access'] = FALSE;
     $form['admin']['#access'] = FALSE;
     $form['additional_settings']['#access'] = FALSE;
@@ -105,6 +136,15 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
 /**
  * Helper function to reset panels region contents while feature import.
  *
+ * For page manager pages, this allows them to partially exported. Allowing
+ * some part of the region to be treated as data and not to be overriden by
+ * feature revert.
+ *
+ * When a page is exported to feature, it will export all the panes in a region.
+ * So when the feature is being reverted, what we do is, alter the feature
+ * export config coming from code for a region and replace it with the config
+ * in database.
+ *
  * @see hook_default_page_manager_pages_alter()
  */
 function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $regions = array()) {
@@ -114,29 +154,28 @@ function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $re
   $db = features_get_normal($component, $module_name, FALSE);
 
   foreach ($exports as $page_export_key => &$page_export) {
+    $db_page_export = NULL;
     if (isset($db[$page_export_key])) {
       $db_page_export = &$db[$page_export_key];
     }
     foreach ($page_export->default_handlers as $page_default_handler_key => &$page_default_handler) {
+      $db_page_default_handler = NULL;
       if (isset($db_page_export->default_handlers[$page_default_handler_key])) {
         $db_page_default_handler = &$db_page_export->default_handlers[$page_default_handler_key];
       }
-      foreach ($page_default_handler->conf['display']->panels as $region => &$panels) {
-        if (isset($db_page_default_handler->conf['display']->panels[$region])) {
-          $db_panels = &$db_page_default_handler->conf['display']->panels[$region];
-        }
-        // Check region to ignore.
-        if (in_array($region, $regions)) {
-          $panels = array();
-          if (isset($db[$page_export_key]->default_handlers[$page_default_handler_key]->conf['display']->panels[$region])) {
-            // If no panels attached to the region, then remove all from code.
-            $panels = isset($db_panels) ? $db_panels : array();
-            foreach ($panels as $panel_id) {
-              if (isset($db_page_default_handler->conf['display']->content[$panel_id])) {
-                $page_default_handler->conf['display']->content[$panel_id] = $db_page_default_handler->conf['display']->content[$panel_id];
-              }
-              else {
-                unset($page_default_handler->conf['display']->content[$panel_id]);
+      if (!empty($db_page_default_handler)) {
+        $code_content = &$page_default_handler->conf['display']->content;
+        $db_content = &$db_page_default_handler->conf['display']->content;
+        $db_panels = &$db_page_default_handler->conf['display']->panels;
+        foreach ($regions as $region) {
+          if (!empty($db_panels[$region])) {
+            $regional_panels = $db_panels[$region];
+            // Copy the panels in region.
+            $page_default_handler->conf['display']->panels[$region] = $regional_panels;
+            // Copy the panels to global list.
+            foreach ($regional_panels as $panel_id) {
+              if (!empty($db_content[$panel_id])) {
+                $code_content[$panel_id] = $db_content[$panel_id];
               }
             }
           }
@@ -144,4 +183,290 @@ function es_helper_page_manager_pages_reset_regions(&$exports, $module_name, $re
       }
     }
   }
+}
+
+/**
+ * Get Audio url for a brightcove field.
+ */
+function es_helper_get_brightcove_audio_file($field) {
+  $out = FALSE;
+  try {
+    if (empty($field['brightcove_id'])) {
+      return FALSE;
+    }
+    $bid = $field['brightcove_id'];
+    $bcid = $field['bcid'];
+    $client = brightcove_client_load_or_default($bcid);
+    list($cms,) = brightcove_create_classes($client);
+    $sources = $cms->getVideoSources($bid);
+    $out = [
+      'id' => $bid,
+      'bcid' => $bcid,
+    ];
+    foreach ($sources as $source) {
+      $src = $source->getSrc();
+      if ($src && $source->getContainer() == 'MP4') {
+        if (drupal_is_https()) {
+          if (!(substr($src, 0, strlen('https://')) === 'https://')) {
+            continue;
+          }
+        }
+        $out += [
+          'Duration' => $source->getDuration(),
+          'source' => $src,
+          'Src' => $src,
+          'StreamName' => $source->getStreamName(),
+          'AppName' => $source->getAppName(),
+          'Codec' => $source->getCodec(),
+          'Container' => $source->getContainer(),
+        ];
+        break;
+      }
+    }
+  }
+  catch (\Exception $e) {
+    $vars = [
+      'bid' => $bid,
+    ];
+    watchdog('es_helper', 'Could not retrieve data from brightcove for "@bid"', $vars);
+  }
+  return $out;
+}
+
+/**
+ * DTM integration for brightcove fields.
+ */
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function es_helper_entity_view_mode_alter(&$view_mode, $context) {
+  list(, , $bundle) = entity_extract_ids($context['entity_type'], $context['entity']);
+  $fields_info = field_info_instances($context['entity_type'], $bundle);
+
+  if ($context['entity_type'] == 'fieldable_panels_pane' && $bundle == 'image') {
+    // @see view_mode_selector_entity_view_mode_alter().
+    if ($view_mode == 'full') {
+      // Set view mode to 'Default', this is for entites without
+      // a view mode selector field.
+      $view_mode = 'default';
+
+      // Find a view mode selector field and change the view mode.
+      foreach ($fields_info as $field_name => $value) {
+        $field_info = field_info_field($field_name);
+
+        if ($field_info['type'] == 'view_mode_selector') {
+          $items = field_get_items($context['entity_type'], $context['entity'], $field_info['field_name']);
+
+          if ($items) {
+            $value = $items[0]['value'];
+
+            if ($value) {
+              $view_mode = $value;
+
+              // It would not make sense to have multiple view mode selector
+              // fields so stop after the first was found.
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Add required variables to the datalayer.
+ */
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function es_helper_preprocess_field(&$vars) {
+  $field_type = $vars['element']['#field_type'];
+
+  switch ($field_type) {
+    case 'brightcove_field':
+      _es_helper_process_brightcove_field($vars);
+      break;
+
+    default:
+      break;
+  }
+}
+
+/**
+ * Helper to extract and attach rich video snippets to brightcove fields.
+ */
+function _es_helper_process_brightcove_field(&$vars) {
+  if (!empty($vars['items'])) {
+    foreach ($vars['items'] as &$item) {
+      $item['#prefix'] = isset($item['#prefix']) ? $item['#prefix'] : '';
+      $bcid = $item['#element']['bcid'];
+      $brightcove_id = $item['#element']['brightcove_id'];
+      $script_tag = es_helper_get_jsonld_for_brightcove_video($bcid, $brightcove_id);
+      $item['#prefix'] = $script_tag . $item['#prefix'];
+    }
+  }
+}
+
+/**
+ * Helper function to get jsonld script tag for given brightcove video.
+ */
+function es_helper_get_jsonld_for_brightcove_video($bcid, $brightcove_id) {
+  $client = brightcove_client_load_or_default($bcid);
+  $video = brightcove_load_video($brightcove_id, $client);
+  if (!is_object($video)) {
+    return;
+  }
+  $info = array(
+    '@context' => 'https://schema.org',
+    '@type' => 'VideoObject',
+    'name' => $video->getName(),
+    'keywords' => implode(', ', $video->getTags()),
+    'description' => !empty($video->getDescription()) ? $video->getDescription() : $video->getName(),
+    'text' => $video->getLongDescription(),
+    'thumbnailUrl' => !empty($video->getImages()['thumbnail']) ? $video->getImages()['thumbnail']->getSrc() : '',
+    'uploadDate' => $video->getCreatedAt(),
+    'publisher' => array(
+      '@type' => 'Organization',
+      'name' => variable_get('site_name', 'es-video'),
+      'logo' => array(
+        '@type' => 'ImageObject',
+        'url' => url(path_to_theme() . '/source/favicons/apple-icon-180x180.png', array('absolute' => TRUE)),
+        'width' => '180',
+        'height' => '180',
+      ),
+    ),
+  );
+  drupal_alter('es_helper_jsonld_brightcove_video_data', $info);
+  $script_tag = '<script type="application/ld+json">' . drupal_json_encode($info) . '</script>';
+  return $script_tag;
+}
+
+/**
+ * Get unique video id.
+ */
+function es_helper_get_unique_video_id($id) {
+  return 'v' . $id . '_bi_html5_api';
+}
+
+/**
+ * This function is used to inject variables for brightcove into the template.
+ *
+ * @param array $vars
+ *   This function processes all the details about brightcove video being loaded
+ *   and store in tenmplate variables, which can be easily accesed by javascript
+ *   event tracking logic to gather all the important.
+ */
+function es_helper_preprocess_brightcove_field_embed(array &$vars) {
+  // Loading video object which contain all the detail about the
+  // video id being sent.
+  $bcid = $vars['brightcove_id'];
+
+  // Getting the default client credentials which are set as default currently.
+  $client = brightcove_client_load_or_default();
+  $video = brightcove_load_video($bcid, $client);
+
+  if (!is_object($video)) {
+    return;
+  }
+  // Getting brightcove video id.
+  $video_id = $video->getId();
+  $video_name = $video->getName();
+
+  // Creating the variables which we need in brightcove player template
+  // for tracking purpose.
+  $vars['brightcove_video_id'] = $video_id;
+  $vars['video_name'] = $video_id . ':' . $video_name;
+  $vars['id'] = es_helper_get_unique_video_id($video_id);
+}
+
+/**
+ * Helper function to list all file permissions for debugging purposes.
+ */
+function es_helper_show_file_permissions($dir) {
+  $files = scandir($dir);
+  foreach ($files as $file) {
+    $full = $dir . '/' . $file;
+    if ($file[0] === '.') {
+      continue;
+    }
+    $perms = substr(sprintf('%o', fileperms($full)), -4);
+    print($perms . ' ' . $full . "\n");
+    if (is_dir($full)) {
+      es_helper_show_file_permissions($full);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function es_helper_preprocess_field_multiple_value_form(&$variables) {
+  // Check if should show the numbers.
+  if (!variable_get('es_helper_show_numbers_multivalued_form', FALSE)) {
+    return;
+  }
+
+  $element = &$variables['element'];
+
+  if ($element['#cardinality'] > 1 || $element['#cardinality'] == FIELD_CARDINALITY_UNLIMITED) {
+    foreach (element_children($element) as $key) {
+      if (is_numeric($key)) {
+        $element[$key]['value']['#post_render'][] = 'es_helper_multivalue_fields_post_render';
+      }
+    }
+  }
+}
+
+/**
+ * Post process render to give token.
+ */
+function es_helper_multivalue_fields_post_render($html, $element) {
+  $html = '[es_helper_numbered_multivalue_fields]' . $html;
+  return $html;
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function es_helper_preprocess_table(&$variables) {
+  // Check if should show the numbers.
+  if (!variable_get('es_helper_show_numbers_multivalued_form', FALSE)) {
+    return;
+  }
+
+  $numbered = FALSE;
+  $rows = &$variables['rows'];
+
+  foreach ($rows as $key => &$values) {
+    if (isset($values['data'])) {
+      $found = FALSE;
+      foreach ($values['data'] as &$cells) {
+        if (is_string($cells) && preg_match('/\[es_helper_numbered_multivalue_fields\]/', $cells)) {
+          $cells = str_replace('[es_helper_numbered_multivalue_fields]', '', $cells);
+          $found = TRUE;
+          $numbered = TRUE;
+          break;
+        }
+      }
+      if ($found) {
+        $new_cell = array('data' => ($key + 1), 'class' => array('row-number'));
+        array_splice($values['data'], 1, 0, array($new_cell));
+      }
+    }
+  }
+
+  if ($numbered) {
+    $variables['header'][0]['colspan']++;
+  }
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ */
+function es_helper_entity_info_alter(&$entity_info) {
+  // @see https://www.webomelette.com/custom-access-control-drupal-7-entities.
+  $entity_info['fieldable_panels_pane']['controller class'] = 'EsHelperPanelsPaneController';
 }

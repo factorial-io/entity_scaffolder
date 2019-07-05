@@ -62,8 +62,9 @@ class Utils {
     $files = array();
     foreach (glob($source . '/*.*') as $file) {
       $file_name = basename($file);
-      if (copy($file, $destination . '/' . $file_name)) {
-        Logger::log(dt('Copied file : @file_name', array('@file_name' => $file_name)), 'success');
+      $destination_file_name = $destination . '/' . $file_name;
+      if (copy($file, $destination_file_name)) {
+        Logger::log(dt('Copied file  : @file_name', array('@file_name' => $destination_file_name)), 'success');
       }
       else {
         Logger::log(dt('Erorr while copying file : @file_name', array('@file_name' => $file_name)), 'error');
@@ -124,7 +125,7 @@ class Utils {
       Logger::log(dt('Error while writing to file @file', array('@file' => $filepath)), 'error');
     }
     else {
-      Logger::log(dt('Updated @file', array('@file' => $filepath)), 'success');
+      Logger::log(dt('Updated file : @file', array('@file' => $filepath)), 'success');
     }
   }
 

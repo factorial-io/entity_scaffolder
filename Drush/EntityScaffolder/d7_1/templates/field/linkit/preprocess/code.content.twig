@@ -1,0 +1,36 @@
+{% if cardinality == 1 %}
+    // Preprocess {{ field_name }}.
+    // Linkit stores the url in urlencoded format.
+    if (!empty($vars['{{ field_name }}'][0])) {
+      $value = &$vars['{{ field_name }}'][0];
+      $value['url'] = urldecode($value['url']);
+      $value['url'] = urldecode($value['url']);
+    }
+    $vars['{{ map }}'] = array(
+      'label' => !empty($vars['{{ field_name }}'][0]['title']) ? $vars['{{ field_name }}'][0]['title'] : '',
+      'url' => !empty($vars['{{ field_name }}'][0]['url']) ? url($vars['{{ field_name }}'][0]['url'], array('absolute' => TRUE) + $vars['{{ field_name }}'][0]['attributes']) : '',
+    );
+    if (empty($vars['{{ map }}']['label'])) {
+      $vars['{{ map }}'] = [];
+    }
+{% else %}
+    // Preprocess {{ field_name }}.
+    $vars['{{ map }}'] = array();
+    if (!empty($vars['{{ field_name }}'])) {
+      foreach($vars['{{ field_name }}'] as $value) {
+        if (empty($value['title'])) {
+          $vars['{{ map }}'][] = [];
+          continue;
+        }
+        // Linkit stores the url in urlencoded format.
+        if (!empty($value['url'])) {
+          $value['url'] = urldecode($value['url']);
+          $value['url'] = urldecode($value['url']);
+        }
+        $vars['{{ map }}'][] = array(
+          'label' => $value['title'],
+          'url' => $value['url'],
+        );
+      }
+    }
+{% endif %}

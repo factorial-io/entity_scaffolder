@@ -3,3 +3,6 @@
     type            : text_long
     cardinality     : {{ cardinality }}
     variable type   : text
+{% if max_length is not empty %}
+    character limit : {{ max_length }}
+{% endif %}

@@ -24,7 +24,7 @@
         ),
         'sort' => array(
           'direction' => 'ASC',
-          'property' => 'title',
+          'property' => {% if target_sort_by_property is empty %}'title'{% else %}{{ target_sort_by_property }}{% endif %},
           'type' => 'property',
         ),
         'target_bundles' => array(

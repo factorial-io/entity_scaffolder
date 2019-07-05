@@ -4,7 +4,7 @@
     'bundle' => '{{ bundle }}',
     'default_value' => array(
       0 => array(
-        'value' => 0,
+        'value' => {% if default_value is not empty %}{{ default_value }}{% else %}0{% endif %},
       ),
     ),
     'deleted' => 0,

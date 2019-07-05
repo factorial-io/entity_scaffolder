@@ -48,7 +48,13 @@
       'active' => 1,
       'module' => 'text',
       'settings' => array(
-        'rows' => 4,
+{% if max_length is not empty %}
+        'maxlength_js' => {{ max_length }},
+        'maxlength_js_enforce' => 0,
+        'maxlength_js_label' => 'Content limited to @limit characters, remaining: <strong>@remaining</strong>',
+        'maxlength_js_truncate_html' => 0,
+{% endif %}
+        'rows' => {% if widget.rows is not empty %}{{ widget.rows }}{% else %}4{% endif %},
       ),
       'type' => 'text_textarea',
       'weight' => {{ weight }},

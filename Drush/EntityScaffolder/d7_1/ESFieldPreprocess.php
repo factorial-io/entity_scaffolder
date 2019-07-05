@@ -3,6 +3,7 @@
 namespace Drush\EntityScaffolder\d7_1;
 
 use Drush\EntityScaffolder\Utils;
+use Drush\EntityScaffolder\Logger;
 
 class ESFieldPreprocess extends ESField {
 
@@ -23,11 +24,47 @@ class ESFieldPreprocess extends ESField {
     $code = $this->scaffolder->render($template, $info);
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
 
+
     $block = Scaffolder::CONTENT;
     $key = $info['preprocess_hook'] . ' : ' . Scaffolder::CONTENT . ' : ' . $info['field_name'];
-    $template = '/field/' . $info['type'] . '/preprocess/code.content';
-    $code = $this->scaffolder->render($template, $info);
+    $code = '';
+
+    $preprocessor_info = $info;
+    $original_field_type = $info['type'];
+    $processed_templates_list = [];
+    $parent = $this;
+    do {
+      try {
+        $processed_templates_list[] = $preprocessor_info['type'];
+        $preprocessor_info['original_field_type'] = $original_field_type;
+        $template = '/field/' . $preprocessor_info['type'] . '/preprocess/code.content';
+        $code = $this->scaffolder->render($template, $preprocessor_info);
+        $template = '/field/preprocess__code.content.empty';
+        $preprocessor_info['_code'] = $code;
+        $code = $this->scaffolder->render($template, $preprocessor_info);
+      }
+      catch (\Twig_Error_Loader $e) {
+        // If parent is defined, try to render using parent template.
+        if ($parent = $parent->getParent()) {
+          $preprocessor_info = $parent->getInfo();
+        }
+        // If parent is not defined, then render using __default.
+        else {
+          $preprocessor_info = $info;
+          $preprocessor_info['type'] = '__default';
+        }
+        // Check for circular dependency.
+        if (in_array($preprocessor_info['type'], $processed_templates_list)) {
+          Logger::log('Cannot process field template for : ' . $original_field_type, 'error');
+          break;
+        }
+        continue;
+      }
+      break;
+    }while(TRUE);
+
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+
 
     $block = Scaffolder::CONTENT;
     $key = $info['preprocess_hook'] . ' : ' . Scaffolder::FOOTER;
@@ -71,13 +108,15 @@ class ESFieldPreprocess extends ESField {
 
     $field_config_file = $this->scaffolder->getTemplatedir() . '/field/' . $info['type'] . '/config.yaml';
     $field_config = Utils::getConfig($field_config_file);
-
     // Set parent if applicable.
     if (!empty($field_config['parent']) && $field_config['parent'] !== $field_info['type']) {
       $field_info['type'] = $field_config['parent'];
       $parent = new ESFieldPreprocess($this->scaffolder);
       $parent->getConfig($config, $field_key, $field_info);
       $this->setParent($parent);
+    }
+    else {
+      $this->setParent(NULL);
     }
     $info = $this->processConfigData($info);
     $this->setInfo($info);

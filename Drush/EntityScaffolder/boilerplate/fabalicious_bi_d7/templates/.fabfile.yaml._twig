@@ -151,16 +151,16 @@ hosts:
     port: 22
     branch: int
     host: int-{{ project_bi_code }}.bi-customerhub.com
-    user: {{ project_bi_code }}d
+    user: {{ project_bi_code|lower }}d
     type: stage
     ignoreSubmodules: true
     supportsInstalls: false
     supportsCopyFrom: false
-    rootFolder: /home/{{ project_bi_code }}d/public_html
-    gitRootFolder: /home/{{ project_bi_code }}d/public_html
+    rootFolder: /home/{{ project_bi_code|lower }}d/public_html
+    gitRootFolder: /home/{{ project_bi_code|lower }}d/public_html
     siteFolder: /sites/default
     filesFolder: /sites/default/files
-    backupFolder: /home/{{ project_bi_code }}d/backups
+    backupFolder: /home/{{ project_bi_code|lower }}d/backups
     gitOptions:
       pull: []
     needs:

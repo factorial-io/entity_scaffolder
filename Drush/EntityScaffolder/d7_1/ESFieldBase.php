@@ -7,7 +7,18 @@ use Drush\EntityScaffolder\Logger;
 
 class ESFieldBase extends ESField {
 
+  /**
+   * Help.
+   */
   public function help($name) {
+    if (empty($name)) {
+      // @todo get types.
+      $options = $this->findFieldTypes();
+      $name = drush_choice($options);
+      if (empty($name)) {
+        return;
+      }
+    }
     $config = $this->getConfig([], [], ['type' => $name]);
     Logger::log('[field_base] : ' . $name, 'status');
     Logger::log('Following are the values supported in configuration');
@@ -25,8 +36,21 @@ class ESFieldBase extends ESField {
     }
     Logger::table($headers, $data, 'status');
     Logger::log('NOTE: A asterisk "*" in first column means the field is required.');
+
+    $plugins = [];
+    $plugins['field_instance'] = new ESFieldInstance($this->scaffolder);
+    $plugins['preprocess'] = new ESFieldPreprocess($this->scaffolder);
+    $plugins['patternlab_template_manager'] = new ESPatternLabField($this->scaffolder);
+    foreach ($plugins as $plugin) {
+      if (method_exists($plugin, 'help')) {
+        $plugin->help($name);
+      }
+    }
   }
 
+  /**
+   * Generate code.
+   */
   public function generateCode($info) {
     $module = 'fe_es';
     $filename = 'fe_es.features.field_base.inc';
@@ -93,25 +117,4 @@ class ESFieldBase extends ESField {
     return $this->getInfo();
   }
 
-  /**
-   * Helper function to get template file name respecting extention.
-   */
-  public function getTemplateFile($pattern) {
-    $info = $this->getInfo();
-    $file = str_replace('__type__', $info['type'], $pattern);
-    if(!$this->checkIfTemplateFileExists($file)) {
-      if ($parent = $this->getParent()) {
-        $file = $parent->getTemplateFile($pattern, $info);
-      }
-    }
-    return $file;
-  }
-
-  /**
-   * Helper function to check if a given template file exists.
-   */
-  public function checkIfTemplateFileExists($template_file) {
-    $file = $this->scaffolder->getTemplatedir() . $template_file . '.twig';
-    return Utils::fileNotEmpty($file);
-  }
 }

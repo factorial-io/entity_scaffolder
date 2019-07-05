@@ -1,0 +1,17 @@
+{% if cardinality == 1 %}
+    // Preprocess {{ field_name }}.
+    $vars['{{ map }}'] = '@TODO inject value';
+{% else %}
+    // Preprocess {{ field_name }}.
+    $vars['{{ map }}'] = $items = array();
+    foreach (element_children($vars['content']['{{ field_name }}']) as $key) {
+      $items[] = $vars['content']['{{ field_name }}'][$key];
+      unset($vars['content']['{{ field_name }}'][$key]);
+    }
+    foreach ($items as $key => $item) {
+      $v = $vars['content']['{{ field_name }}'];
+      $v['#label_display'] = 'hidden';
+      $v['0'] = $item;
+      $vars['{{ map }}'][] = '@TODO inject actual value' . $key;
+    }
+{% endif %}

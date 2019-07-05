@@ -10,6 +10,7 @@ spl_autoload_register('drush_entity_scaffolder_autoload');
 
 use Drush\EntityScaffolder\ScaffolderBase;
 use Drush\EntityScaffolder\BoilerPlate;
+use Drush\EntityScaffolder\TranslationExtractor;
 use Drush\EntityScaffolder\d7_1\Scaffolder as Scaffolder_d7_1;
 use Drush\EntityScaffolder\Logger;
 
@@ -40,9 +41,9 @@ function entity_scaffolder_drush_command() {
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'options' => array(
       'config-dir' => 'Directory to read the config file/s from.',
-      'fire-bazooka' => '@todo: Deletes all previous entries and force rebuild.',
       'debug' => 'Runs entity_scaffolder in debug mode.',
-      'version' => 'Use a specific version of Entity Scaffolder',
+      'info' => 'Interactive information system about supported plugins.',
+      'force' => 'Do not ask questions, scaffold it',
     ),
     'examples' => array(
       'drush es --config-dir=".tools/es"' => 'Looks for config file/s in .tools/es and runs scaffolding job.',
@@ -59,7 +60,6 @@ function entity_scaffolder_drush_command() {
     ),
     'options' => array(
       'debug' => 'Runs entity_scaffolder in debug mode.',
-      'version' => 'Use a specific version of Entity Scaffolder',
     ),
     'examples' => array(
       'drush esb --debug' => 'This will provide an extensive details about boilderplate that would be generated.',
@@ -67,23 +67,19 @@ function entity_scaffolder_drush_command() {
     'aliases' => array('esb'),
   );
 
-  $items['entity-scaffold-helper'] = array(
-    'description' => '@todo: Helper command to interact with entity-scaffolder to know more.',
-    'callback' => 'drush_entity_scaffolder_helper',
+  $items['entity-scaffold-translation-extractor'] = [
+    'description' => 'Extract translation.',
+    'callback' => 'drush_entity_scaffolder_translation_extractor',
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'arguments' => array(
-      'type' => 'entity or field',
-      'name' => 'Name of the Entity or field. Eg. fpp, text, list, etc...',
-    ),
-    'options' => array(
+    'arguments' => [],
+    'options' => [
       'debug' => 'Runs entity_scaffolder in debug mode.',
-      'version' => 'Use a specific version of Entity Scaffolder',
-    ),
-    'examples' => array(
-      'drush esh --debug' => 'This will provide an extensive details about entity that could be scaffolded.',
-    ),
-    'aliases' => array('esh'),
-  );
+    ],
+    'examples' => [
+      'drush este --debug' => 'This will provide an extensive details about translation extraction that would be done.',
+    ],
+    'aliases' => ['este'],
+  ];
 
   return $items;
 }
@@ -116,37 +112,48 @@ function drush_entity_scaffolder() {
   if (isset($log['version'])) {
     $version_compare = version_compare($scaffolder::VERSION, $log['version']);
     if ($version_compare < 0) {
-      Logger::log("Entity Scaffolder found in your syste is outdated. Scaffolding will exit.", 'error');
+      Logger::log("Entity Scaffolder found in your system is outdated. Scaffolding will exit.", 'error');
+      Logger::log("
+        You can upgrade the Entity Scaffolder version by going to the folder where
+        it is installed and pulling the latest version from git.  You may also have
+        to run composer install to install any new dependencies if needed.
+        Eg.
+
+        >> cd ~/.drush/entity_scaffolder/
+        >> git pull
+        >> composer install
+        ", 'status');
+      Logger::log("If you choose to upgrade Entity Scaffolder, the code generated henceforth could be different. Exercise caution while committing scaffolded code.", 'warning');
       return;
     }
     elseif ($version_compare > 0) {
       Logger::log("Entity Scaffolder found in your system is of newer version than the one that was used to scaffold earlier.", 'warning');
-      $response = drush_prompt("Do you wish to continue? (y/n)", "n", TRUE);
-      $response = strtolower($response);
-      switch ($response) {
-        case 'y':
-        case 'yes':
-          break;
+      if (drush_get_option('force', FALSE) !== TRUE) {
+        $response = drush_prompt("Do you wish to continue? (y/n)", "n", TRUE);
+        $response = strtolower($response);
+        switch ($response) {
+          case 'y':
+          case 'yes':
+            break;
 
-        default:
-          Logger::log("Scaffolding aborted.", 'error');
-          return;
+          default:
+            Logger::log("Scaffolding aborted.", 'error');
+            return;
+        }
       }
     }
   }
-  $scaffolder->scaffold();
-  $scaffolder->exportCode();
-  $scaffolder->logScaffolderInfo();
-  Logger::log("Scaffolding finished.", 'success');
-}
-
-/**
- * Run entity scaffolder.
- */
-function drush_entity_scaffolder_helper() {
-  spl_autoload_register('drush_entity_scaffolder_autoload');
-  list($type, $name) = func_get_args();
-  drush_entity_scaffolder_get_scaffolder()->help($type, $name);
+  // @todo process help here instead of scaffolding.
+  if (drush_get_option('info')) {
+    list($type, $name) = func_get_args();
+    $scaffolder->help($type, $name);
+  }
+  else {
+    $scaffolder->scaffold();
+    $scaffolder->exportCode();
+    $scaffolder->logScaffolderInfo();
+    Logger::log("Scaffolding finished.", 'success');
+  }
 }
 
 /**
@@ -157,6 +164,15 @@ function drush_entity_scaffolder_boilerplate() {
   list($type) = func_get_args();
   $boilerPlate = new BoilerPlate();
   $boilerPlate->generate($type);
+}
+
+/**
+ * Extract Translation.
+ */
+function drush_entity_scaffolder_translation_extractor() {
+  spl_autoload_register('drush_entity_scaffolder_autoload');
+  $translation_extractor = new TranslationExtractor();
+  $translation_extractor->extract();
 }
 
 /**

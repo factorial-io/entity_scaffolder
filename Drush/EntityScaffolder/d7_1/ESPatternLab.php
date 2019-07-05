@@ -12,6 +12,9 @@ class ESPatternLab extends ESField {
       foreach ($comments as $pattern) {
         $module = 'templates';
         $filename = $this->getDrupalTemplateName($config);
+        if (empty($filename)) {
+          continue;
+        }
         $block = $pattern['block'];
         $key = $pattern['key'];
 
@@ -19,7 +22,7 @@ class ESPatternLab extends ESField {
         if (isset($pattern['code'])) {
           $code = $pattern['code'];
         }
-        elseif(isset($pattern['template'])) {
+        elseif (isset($pattern['template'])) {
           $template = $pattern['template'];
           $code = $this->scaffolder->render($template, $config);
         }
@@ -46,6 +49,11 @@ class ESPatternLab extends ESField {
 
       case 'paragraphs_item':
         $filename = 'paragraphs-item/paragraphs-item--' . str_replace('_', '-', $config['bundle']) . '.tpl.twig';
+        break;
+
+      case 'node':
+        // Don't Generate template for nodes.
+        $filename = FALSE;
         break;
 
     }

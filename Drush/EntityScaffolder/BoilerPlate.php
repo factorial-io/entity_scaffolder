@@ -2,17 +2,15 @@
 
 namespace Drush\EntityScaffolder;
 
-use Drush\EntityScaffolder\ScaffolderInterface;
-use Drush\EntityScaffolder\Utils;
-use Drush\EntityScaffolder\ScaffolderBase;
-use Drush\EntityScaffolder\Logger;
+class BoilerPlate extends TemplateManager {
 
-class BoilerPlate {
-
-  protected $templateDir;
+  const DEFAULT_TEMPLATE_DIR = __DIR__ . '/boilerplate';
+  const TEMPLATE_NAMESPACE = 'boilerplate';
 
   public function __construct() {
-    $this->setTemplateDir(__DIR__ . '/boilerplate');
+    parent::__construct(self::TEMPLATE_NAMESPACE);
+    $this->setTemplateDir(self::DEFAULT_TEMPLATE_DIR, $skipNamespaceAddition = TRUE);
+    $this->setExtendedTemplateDirs(0, self::DEFAULT_TEMPLATE_DIR, $skipNamespaceAddition = TRUE);
   }
 
   /**
@@ -140,20 +138,6 @@ class BoilerPlate {
     );
     $config = array_replace_recursive($defaults, $config);
     return $config;
-  }
-
-  /**
-   * Sets the directory from which the templates has to be picked up.
-   */
-  public function setTemplateDir($dir) {
-    $this->templateDir = $dir;
-  }
-
-  /**
-   * Gets the directory from which the templates will be picked up.
-   */
-  public function getTemplateDir() {
-    return $this->templateDir;
   }
 
 }

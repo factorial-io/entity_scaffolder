@@ -1,0 +1,10 @@
+{% if cardinality == 1 %}
+    // Preprocess {{ field_name }}.
+    $vars['{{ map }}'] = es_helper_get_brightcove_audio_file($vars['{{ field_name }}'][0]);
+{% else %}
+    // Preprocess {{ field_name }}.
+    $vars['{{ map }}'] = array();
+    foreach ($vars['{{ field_name }}'] as $field) {
+      $vars['{{ map }}'][] = es_helper_get_brightcove_audio_file($field);
+    }
+{% endif %}

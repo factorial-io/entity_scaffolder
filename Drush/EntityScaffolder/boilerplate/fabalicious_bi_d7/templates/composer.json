@@ -9,6 +9,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/factorial-io/patternlab_picture.git"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/factorial-io/instatag.git"
     }
   ],
   "require": {
@@ -124,7 +128,8 @@
     "drupal/field_tools": "^1.0@alpha",
     "drupal/field_group_table": "^1.6",
     "drupal/apachesolr_realtime": "^1.4",
-    "drupal/clean_maintenance": "^1.6"
+    "drupal/clean_maintenance": "^1.6",
+    "factorial-io/instatag": "dev-master",
   },
   "config": {
     "vendor-dir": "vendor"

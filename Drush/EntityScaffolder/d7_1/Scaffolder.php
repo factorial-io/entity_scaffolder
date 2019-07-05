@@ -9,67 +9,52 @@ use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
-  const VERSION = '7.1.2';
+  const VERSION = '7.2.11';
 
-  const TEMPLATE_DEFAULT = 'DEFAULT';
-  const TEMPLATE_EXTEND = 'EXTEND';
-  const TEMPLATE_FALLBACK = 'FALLBACK';
+  const DEFAULT_TEMPLATE_DIR = __DIR__ . '/templates';
+  const TEMPLATE_NAMESPACE = 'd7_1';
 
   protected $plugins;
 
   public function help($type, $name) {
-    switch ($type) {
-      case 'entity':
-        if ($name && !empty($this->plugins[$name])) {
-          if (method_exists($this->plugins[$name], 'help')) {
-            $this->plugins[$name]->help();
-          }
-        }
-        else {
-          Logger::log('Please provide one of the supported entities to display more details.', 'warning');
-          $headers = array('Key', 'Example usage', 'Description');
-          $data = [];
-          $data[] = ['fpp', 'drush esb entity fpp' ,'Fieldable Panels Pane'];
-          $data[] = ['paragraphs', 'drush esb entity paragraphs' ,'Paragraphs Item'];
-          Logger::table($headers, $data, 'status');
-        }
-        break;
+    // Register more plugins for help.
+    $this->plugins['field'] = new ESFieldBase($this);
 
-      case 'field':
-        $plugins = [];
-        $plugins['field_base'] = new ESFieldBase($this);
-        $plugins['field_instance'] = new ESFieldInstance($this);
-        $plugins['preprocess'] = new ESFieldPreprocess($this);
-        $plugins['patternlab_template_manager'] = new ESPatternLabField($this);
-        foreach ($plugins as $plugin) {
-          if (method_exists($plugin, 'help')) {
-            $plugin->help($name);
-          }
+    if (empty($type)) {
+      // @todo get types.
+      $options = [
+        'field' => dt('Field'),
+        'image_style' => dt('Image Style'),
+        'picture' => dt('Picture'),
+        'fpp' => dt('Fieldable Panels Pane'),
+        'breakpoint_groups' => dt('Breakpoint Groups'),
+      ];
+      $type = drush_choice($options);
+      if ($type && !empty($this->plugins[$type])) {
+        if (method_exists($this->plugins[$type], 'help')) {
+          $this->plugins[$type]->help($name);
         }
-        break;
-
-      default:
-        Logger::log('Please provide more options to show details.', 'warning');
-        $headers = array('Key', 'Example usage', 'Description');
-        $data = [];
-        $data[] = ['entity', 'drush esb entity fpp' ,'Shows more details about Fieldable Panels Pane'];
-        $data[] = ['field', 'drush esb field text' ,'Shows more detail about text field'];
-        Logger::table($headers, $data, 'status');
-        break;
+      }
     }
+    return;
   }
 
   public function __construct() {
-    parent::__construct();
+    parent::__construct(self::TEMPLATE_NAMESPACE);
     if (empty($this->getTemplateDir())) {
-      $this->setTemplateDir(__DIR__ . '/templates');
-      $this->setExtendedTemplateDirs(0, __DIR__ . '/templates');
+      $this->setTemplateDir(self::DEFAULT_TEMPLATE_DIR, $skipNamespaceAddition = TRUE);
+      $this->setExtendedTemplateDirs(0, self::DEFAULT_TEMPLATE_DIR, $skipNamespaceAddition = TRUE);
     }
     $this->plugins['image_style'] = new ESImageStyle($this);
     $this->plugins['breakpoint_groups'] = new ESBreakPointGroup($this);
+    $this->plugins['pl_breakpoint_groups'] = new ESPatternLabBreakpointGroupData($this);
     $this->plugins['picture'] = new ESPicture($this);
+    $this->plugins['picture_image_data'] = new ESPatternLabImageData($this);
     $this->plugins['fpp'] = new ESEntityFPP($this);
+    $this->plugins['node'] = new ESEntityNode($this);
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
+    $this->plugins['list_predefined_options'] = new ESListPredefinedOptions($this);
+    $this->plugins['config'] = new ESConfig($this);
   }
 
   /**
@@ -84,56 +69,20 @@ class Scaffolder extends ScaffolderBase {
     foreach ($this->getEntityTypes() as $entity_type) {
       if (isset($this->plugins[$entity_type])) {
         $this->plugins[$entity_type]->scaffold();
-      }
-    }
-  }
-
-  /**
-   *
-   */
-  protected function loadConfig() {
-    $config = parent::loadConfig();
-    $fallback_templates = [];
-    $extend_templates = [];
-    if (!empty($config['templates'])) {
-      foreach ($config['templates'] as $key => $value) {
-        $dir = getcwd() . '/' . $this->getConfigDir() . $value['dir'];
-        switch ($value['type']) {
-          case $this::TEMPLATE_DEFAULT:
-            $this->setTemplateDir($dir . '/templates');
-            $this->setExtendedTemplateDirs(0, $dir . '/templates');
-            break;
-
-          case $this::TEMPLATE_EXTEND:
-            $extend_templates[] = $dir;
-            break;
-
-          case $this::TEMPLATE_FALLBACK:
-            $fallback_templates[] = $dir;
-            break;
+        if ($entity_type == 'picture') {
+          $this->plugins['picture_image_data']->scaffold();
         }
-      }
-
-      if ($extend_templates) {
-        $weight = count($extend_templates);
-        foreach ($extend_templates as $key => $value) {
-          $weight--;
-          $this->setExtendedTemplateDirs(-($weight), $dir . '/templates');
-        }
-      }
-      if ($fallback_templates) {
-        $weight = 0;
-        foreach ($fallback_templates as $key => $value) {
-          $weight++;
-          $this->setExtendedTemplateDirs($weight, $dir . '/templates');
+        if ($entity_type == 'breakpoint_groups') {
+          $this->plugins['pl_breakpoint_groups']->scaffold();
         }
       }
     }
-    return $config;
+    $this->plugins['list_predefined_options']->scaffold();
+    $this->plugins['config']->scaffold();
   }
 
   /**
-   * Prepare files
+   * Prepare files.
    */
   public function processFiles() {
     $code = $this->getCode();
@@ -155,7 +104,13 @@ class Scaffolder extends ScaffolderBase {
     $files = array();
     foreach ($code as $module_name => $module_data) {
       foreach ($module_data as $filename => $file_data) {
-        $file_path = $this->getDirectory($module_name) . "/{$filename}";
+        $file_path = NULL;
+        $module_dir = $this->getDirectory($module_name);
+        $file_path = "$module_dir/{$filename}";
+        if (empty($module_dir)) {
+          Logger::log(dt('Missing directory configuration for module : @module', array('@module' => $module_name)), 'warning');
+          continue;
+        }
         $blocks = array();
         ksort($file_data);
         $code = '';
@@ -176,7 +131,7 @@ class Scaffolder extends ScaffolderBase {
    * Helper function to retrieve module path.
    */
   public function getDirectory($module_name) {
-    return isset($this->getConfig()['directories'][$module_name]) ? $this->getConfig()['directories'][$module_name] : NULL;
+    return !empty($this->getConfig()['directories'][$module_name]) ? $this->getConfig()['directories'][$module_name] : NULL;
   }
 
   /**

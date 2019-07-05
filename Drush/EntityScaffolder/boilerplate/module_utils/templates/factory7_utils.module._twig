@@ -2,21 +2,6 @@
 
 /**
  * @file
- * Drupal needs this empty file.
+ * Utilities functions
  */
 
-/**
- * Implements hook_twig_function().
- */
-function {{ module_utils_machine_name }}_twig_function() {
-  $functions = [];
-  $functions['patternlab_path'] = new Twig_SimpleFunction('patternlab_path', '{{ module_utils_machine_name }}_patternlab_path');
-  return $functions;
-}
-
-/**
- * Twig patternlab_path function callback.
- */
-function {{ module_utils_machine_name }}_patternlab_path() {
-  return base_path() . 'sites/all/themes/custom/{{ project_short_code }}_frontend/source';
-}

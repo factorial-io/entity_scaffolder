@@ -1,0 +1,21 @@
+
+{% if cardinality == 1 %}
+    // Preprocess {{ field_name }}.
+    $pgf = NULL;
+    if (!empty($vars['content']['{{ field_name }}'][0]['entity']['paragraphs_item'])) {
+      $pgf = reset($vars['content']['{{ field_name }}'][0]['entity']['paragraphs_item']);
+      $pgf = $pgf['#entity'];
+    }
+    $vars['{{ map }}'] = {{ data_process_function }}($pgf);
+{% else %}
+    // Preprocess {{ field_name }}.
+    $vars['{{ map }}'] = $items = array();
+    foreach (element_children($vars['content']['{{ field_name }}']) as $key) {
+      $pgf = NULL;
+      if (!empty($vars['content']['{{ field_name }}'][$key]['entity']['paragraphs_item'])) {
+        $pgf = reset($vars['content']['{{ field_name }}'][$key]['entity']['paragraphs_item']);
+        $pgf = $pgf['#entity'];
+      }
+      $vars['{{ map }}'][] = {{ data_process_function }}($pgf);
+    }
+{% endif %}
