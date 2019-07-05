@@ -1517,9 +1517,11 @@ function _potx_save_string($value = NULL, $context = NULL, $file = NULL, $line =
     $check_empty = trim($value);
     if (empty($check_empty)) {
       potx_status('error', t('Empty string attempted to be localized. Please do not leave test code for localization in your source.'), $file, $line);
+    }
+    if (_potx_is_banned_string($value)) {
+      echo $value;
       return;
     }
-
     switch ($string_mode) {
       case POTX_STRING_BOTH:
         // Mark installer strings as duplicates of runtime strings if
@@ -1614,4 +1616,21 @@ if (!function_exists('drupal_parse_info_file')) {
 
     return $info;
   }
+}
+
+
+/**
+ * Helper function to ban incoming strings.
+ */
+function _potx_is_banned_string($value) {
+  $list = _potx_get_banned_strings();
+  return in_array($value, $list);
+}
+
+function _potx_get_banned_strings($filename = NULL) {
+  static $banned_strings = [];
+  if ($filename) {
+    $banned_strings = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+  }
+  return $banned_strings;
 }

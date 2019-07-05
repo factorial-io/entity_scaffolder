@@ -34,7 +34,7 @@ if ($memory_limit != '' && (int)$memory_limit < 16) {
 if (!defined("STDERR")) {
   define('STDERR', fopen('php://stderr', 'w'));
 }
-
+$ignore_strings_csv_file = NULL;
 $files = array();
 $build_mode = POTX_BUILD_SINGLE;
 $argv = $GLOBALS['argv'];
@@ -65,6 +65,11 @@ Possible options:
 END;
       return 1;
       break;
+    case '--ban_list':
+      array_shift($argv);
+      $ignore_strings_csv_file = reset($argv);
+      array_shift($argv);
+      // @HACK, we don't break here, as we assume next param would be files.
     case '--files' :
       array_shift($argv);
       $files = $argv;
@@ -85,6 +90,10 @@ END;
       $files = _potx_explore_dir('', '*', POTX_API_CURRENT, TRUE);
       break;
   }
+}
+
+if (!empty($ignore_strings_csv_file)) {
+  _potx_get_banned_strings($ignore_strings_csv_file);
 }
 
 // Fall back to --auto, if --files are not specified

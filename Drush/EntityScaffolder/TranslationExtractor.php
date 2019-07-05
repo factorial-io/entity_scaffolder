@@ -10,6 +10,7 @@ class TranslationExtractor extends ScaffolderBase {
   protected $include_patterns;
   protected $exclude_patterns;
   protected $output_dir;
+  protected $ignore_csv_file;
 
   /**
    * TranslationExtractor constructor.
@@ -20,6 +21,7 @@ class TranslationExtractor extends ScaffolderBase {
     $this->setExcludePatterns($config['exclude']);
     $this->setIncludePatterns($config['include']);
     $this->setOutputDir($config['output_dir']);
+    $this->setIgnoreCsvFile($config['ban_list']);
   }
 
   /**
@@ -34,12 +36,24 @@ class TranslationExtractor extends ScaffolderBase {
     foreach ($this->getExcludePatterns() as $pattern) {
       $finder->exclude($pattern);
     }
-    $files = [];
-    foreach ($finder as $file) {
-      $files[] = $file;
+
+    $commands_array = [];
+
+    $commands_array[] = 'php';
+    $commands_array[] = __DIR__ . '/potx/potx-cli.php';
+
+    if ($this->getIgnoreCsvFile()) {
+      $commands_array[] = '--ban_list';
+      $commands_array[] = getcwd() . $this->getIgnoreCsvFile();
     }
-    $file_list = implode(' ', $files);
-    $output = exec('php ' . __DIR__ . '/potx/potx-cli.php' . ' --files ' . $file_list);
+
+    $commands_array[] = '--files';
+    foreach ($finder as $file) {
+      $commands_array[] = $file;
+    }
+
+    $output = exec(implode(' ', $commands_array));
+
     rename(getcwd() . '/general.pot', getcwd() . $this->getOutputDir() . '/general.pot');
     rename(getcwd() . '/installer.pot', getcwd() . $this->getOutputDir() . '/installer.pot');
     Logger::log($output);
@@ -93,5 +107,19 @@ class TranslationExtractor extends ScaffolderBase {
    */
   public function getOutputDir() {
     return $this->output_dir;
+  }
+
+  /**
+   * Setter for $ignore_csv_file.
+   */
+  public function setIgnoreCsvFile($filename) {
+    $this->ignore_csv_file = $filename;
+  }
+
+  /**
+   * Getter for $ignore_csv_file.
+   */
+  public function getIgnoreCsvFile() {
+    return $this->ignore_csv_file;
   }
 }
