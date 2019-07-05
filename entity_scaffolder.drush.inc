@@ -10,6 +10,7 @@ spl_autoload_register('drush_entity_scaffolder_autoload');
 
 use Drush\EntityScaffolder\ScaffolderBase;
 use Drush\EntityScaffolder\BoilerPlate;
+use Drush\EntityScaffolder\TranslationExtractor;
 use Drush\EntityScaffolder\d7_1\Scaffolder as Scaffolder_d7_1;
 use Drush\EntityScaffolder\Logger;
 
@@ -65,6 +66,20 @@ function entity_scaffolder_drush_command() {
     ),
     'aliases' => array('esb'),
   );
+
+  $items['entity-scaffold-translation-extractor'] = [
+    'description' => 'Extract translation.',
+    'callback' => 'drush_entity_scaffolder_translation_extractor',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'arguments' => [],
+    'options' => [
+      'debug' => 'Runs entity_scaffolder in debug mode.',
+    ],
+    'examples' => [
+      'drush este --debug' => 'This will provide an extensive details about translation extraction that would be done.',
+    ],
+    'aliases' => ['este'],
+  ];
 
   return $items;
 }
@@ -149,6 +164,15 @@ function drush_entity_scaffolder_boilerplate() {
   list($type) = func_get_args();
   $boilerPlate = new BoilerPlate();
   $boilerPlate->generate($type);
+}
+
+/**
+ * Extract Translation.
+ */
+function drush_entity_scaffolder_translation_extractor() {
+  spl_autoload_register('drush_entity_scaffolder_autoload');
+  $translation_extractor = new TranslationExtractor();
+  $translation_extractor->extract();
 }
 
 /**
