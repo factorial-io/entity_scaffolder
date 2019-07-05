@@ -484,7 +484,8 @@ function _potx_get_header($file, $template_export_langcode = NULL, $api_version 
   $output .= "#\n";
   $output .= '# '. (isset($language) ? $language->name : 'LANGUAGE') .' translation of Drupal ('. $file .")\n";
   $output .= "# Copyright YEAR NAME <EMAIL@ADDRESS>\n";
-  $output .= "# --VERSIONS--\n";
+  // @HACK Hide file list.
+  //  $output .= "# --VERSIONS--\n";
   $output .= "#\n";
   $output .= "#, fuzzy\n";
   $output .= "msgid \"\"\n";
