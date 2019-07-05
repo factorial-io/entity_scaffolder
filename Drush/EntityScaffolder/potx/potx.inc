@@ -309,6 +309,8 @@ function _potx_build_files($string_mode = POTX_STRING_RUNTIME, $build_mode = POT
         $comment = '(duplicate) '. str_replace('(dup)', '', $comment);
       }
       $output = "#: $comment\n";
+      // @HACK Supress un-necessary comments.
+      $output = '';
 
       if ($build_mode == POTX_BUILD_SINGLE) {
         // File name forcing in single mode.
