@@ -290,7 +290,9 @@ function _potx_build_files($string_mode = POTX_STRING_RUNTIME, $build_mode = POT
       $occured = $file_list = array();
       // Look for strings appearing in multiple directories (ie.
       // different subprojects). So we can include them in general.pot.
-      $last_location = dirname(array_shift(array_keys($file_info)));
+      // @HACK supress warning.
+      $temp_array_keys = array_keys($file_info);
+      $last_location = dirname(array_shift($temp_array_keys));
       $multiple_locations = FALSE;
       foreach ($file_info as $file => $lines) {
         $occured[] = "$file:". join(';', $lines);
