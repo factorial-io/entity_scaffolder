@@ -195,11 +195,13 @@ function _potx_process_file($file_path, $strip_prefix = 0, $save_callback = '_po
     _potx_find_t_calls_with_context($file_name, $save_callback);
     _potx_find_t_calls_with_context($file_name, $save_callback, '$t', POTX_STRING_BOTH);
     _potx_find_t_calls_with_context($file_name, $save_callback, 'st', POTX_STRING_INSTALLER);
+    _potx_find_t_calls_with_context($file_name, $save_callback, 'gettext', POTX_STRING_INSTALLER);
   }
   else {
     _potx_find_t_calls($file_name, $save_callback);
     _potx_find_t_calls($file_name, $save_callback, '$t', POTX_STRING_BOTH);
     _potx_find_t_calls($file_name, $save_callback, 'st', POTX_STRING_INSTALLER);
+    _potx_find_t_calls($file_name, $save_callback, 'gettext', POTX_STRING_INSTALLER);
   }
   // This does not support context even in Drupal 7.
   _potx_find_t_calls($file_name, $save_callback, '_locale_import_message', POTX_STRING_BOTH);
@@ -1632,17 +1634,28 @@ function _potx_is_banned_string($value) {
   return in_array($value, $list);
 }
 
-function _potx_get_banned_strings($filename = NULL) {
+function _potx_get_banned_strings($reset = FALSE, $dir = NULL) {
   static $banned_strings = [];
-  if ($filename) {
-    // $banned_strings = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    if (($handle = fopen($filename, "r")) !== FALSE) {
-      while (($data = fgetcsv($handle)) !== FALSE) {
-        $banned_string = reset($data);
-        $banned_strings[] = $banned_string;
+  if ($reset) {
+    // Use all csv files in $dir
+    $files = scandir($dir);
+    if (!empty($files)) {
+      $files = array_diff($files, array('..', '.'));
+      if (!empty($files) && is_array($files)) {
+        foreach ($files as $file) {
+          $filename = $dir . '/' . $file;
+          // $banned_strings = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+          if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle)) !== FALSE) {
+              $banned_string = reset($data);
+              $banned_strings[] = $banned_string;
+            }
+            fclose($handle);
+          }
+        }
       }
-      fclose($handle);
     }
+
   }
   return $banned_strings;
 }
