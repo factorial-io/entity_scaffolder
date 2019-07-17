@@ -195,13 +195,13 @@ function _potx_process_file($file_path, $strip_prefix = 0, $save_callback = '_po
     _potx_find_t_calls_with_context($file_name, $save_callback);
     _potx_find_t_calls_with_context($file_name, $save_callback, '$t', POTX_STRING_BOTH);
     _potx_find_t_calls_with_context($file_name, $save_callback, 'st', POTX_STRING_INSTALLER);
-    _potx_find_t_calls_with_context($file_name, $save_callback, 'gettext', POTX_STRING_INSTALLER);
+    _potx_find_t_calls_with_context($file_name, $save_callback, 'gettext', POTX_STRING_BOTH);
   }
   else {
     _potx_find_t_calls($file_name, $save_callback);
     _potx_find_t_calls($file_name, $save_callback, '$t', POTX_STRING_BOTH);
     _potx_find_t_calls($file_name, $save_callback, 'st', POTX_STRING_INSTALLER);
-    _potx_find_t_calls($file_name, $save_callback, 'gettext', POTX_STRING_INSTALLER);
+    _potx_find_t_calls($file_name, $save_callback, 'gettext', POTX_STRING_BOTH);
   }
   // This does not support context even in Drupal 7.
   _potx_find_t_calls($file_name, $save_callback, '_locale_import_message', POTX_STRING_BOTH);
@@ -226,8 +226,7 @@ function _potx_process_file($file_path, $strip_prefix = 0, $save_callback = '_po
       // _potx_find_perm_hook($file_name, $name_parts['filename'], $save_callback);
     }
     if ($api_version > POTX_API_5) {
-      // @HACK Remove perm hook calls.
-      // _potx_find_menu_hooks($file_name, $name_parts['filename'], $save_callback);
+      _potx_find_menu_hooks($file_name, $name_parts['filename'], $save_callback);
     }
   }
 
