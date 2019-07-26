@@ -34,15 +34,16 @@ class ESConfig extends ESBase implements ESBaseInterface {
     $code = $this->scaffolder->render($template, $info);
 
     $this->scaffolder->setCode($module, $filename, $block, $key, $code);
-
-    $module = 'es_helper';
-    $filename = 'es_helper.translation.inc';
-    $block = Scaffolder::HEADER;
-    $key = 0;
-    $template = '/config/es_helper.potx_exportables.inc';
-    $code = $this->scaffolder->render($template, $info['translation']);
-    Logger::debug($info['translation']['po_dir'], '$info');
-    $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+    if (!empty($info['translation']['po_dir'])) {
+      $module = 'es_helper';
+      $filename = 'es_helper.translation.inc';
+      $block = Scaffolder::HEADER;
+      $key = 0;
+      $template = '/config/es_helper.potx_exportables.inc';
+      $code = $this->scaffolder->render($template, $info['translation']);
+      Logger::debug($info['translation']['po_dir'], '$info');
+      $this->scaffolder->setCode($module, $filename, $block, $key, $code);
+    }
   }
 
 
