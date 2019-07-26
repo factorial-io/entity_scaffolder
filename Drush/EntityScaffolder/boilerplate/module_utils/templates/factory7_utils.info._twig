@@ -1,5 +1,0 @@
-name = {{ project_short_code }} utils
-description = Utils module.
-core = 7.x
-package = {{ project_short_code }}
-

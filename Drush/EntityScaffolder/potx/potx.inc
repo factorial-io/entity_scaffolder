@@ -145,7 +145,8 @@ function _potx_process_file($file_path, $strip_prefix = 0, $save_callback = '_po
 
   // The .info files are not PHP code, no need to tokenize.
   if ($name_parts['extension'] == 'info') {
-    _potx_find_info_file_strings($file_path, $file_name, $save_callback, $api_version);
+    // @HACK Remove info file parsing.
+    // _potx_find_info_file_strings($file_path, $file_name, $save_callback, $api_version);
     return;
   }
   elseif ($name_parts['extension'] == 'js' && $api_version > POTX_API_5) {
@@ -194,18 +195,21 @@ function _potx_process_file($file_path, $strip_prefix = 0, $save_callback = '_po
     _potx_find_t_calls_with_context($file_name, $save_callback);
     _potx_find_t_calls_with_context($file_name, $save_callback, '$t', POTX_STRING_BOTH);
     _potx_find_t_calls_with_context($file_name, $save_callback, 'st', POTX_STRING_INSTALLER);
+    _potx_find_t_calls_with_context($file_name, $save_callback, 'gettext', POTX_STRING_BOTH);
   }
   else {
     _potx_find_t_calls($file_name, $save_callback);
     _potx_find_t_calls($file_name, $save_callback, '$t', POTX_STRING_BOTH);
     _potx_find_t_calls($file_name, $save_callback, 'st', POTX_STRING_INSTALLER);
+    _potx_find_t_calls($file_name, $save_callback, 'gettext', POTX_STRING_BOTH);
   }
   // This does not support context even in Drupal 7.
   _potx_find_t_calls($file_name, $save_callback, '_locale_import_message', POTX_STRING_BOTH);
 
   if ($api_version > POTX_API_5) {
     // Watchdog calls have both of their arguments translated from Drupal 6.x.
-    _potx_find_watchdog_calls($file_name, $save_callback);
+    // @HACK Remove watchdog calls.
+    // _potx_find_watchdog_calls($file_name, $save_callback);
   }
   else {
     // Watchdog calls only have their first argument translated in Drupal 5.x
@@ -218,7 +222,8 @@ function _potx_process_file($file_path, $strip_prefix = 0, $save_callback = '_po
 
   if ($name_parts['extension'] == 'module') {
     if ($api_version < POTX_API_7) {
-      _potx_find_perm_hook($file_name, $name_parts['filename'], $save_callback);
+      // @HACK Remove perm hook calls.
+      // _potx_find_perm_hook($file_name, $name_parts['filename'], $save_callback);
     }
     if ($api_version > POTX_API_5) {
       _potx_find_menu_hooks($file_name, $name_parts['filename'], $save_callback);
@@ -1039,7 +1044,8 @@ function _potx_find_context($tf, $ti, $file, $function_name) {
     // Now we actually might have some definition for a context. The $options
     // argument is coming up, which might have a key for context.
     list($com, $arr, $par) = array($_potx_tokens[$ti], $_potx_tokens[$ti+1], $_potx_tokens[$ti+2]);
-    if ($com == ',' && $arr[1] == 'array' && $par == '(') {
+    // @HACK check $arr[1] is empty or not before accessing it.
+    if ($com == ',' && !empty($arr[1]) && $arr[1] == 'array' && $par == '(') {
       $nesting = 0;
       $ti += 3;
       // Go through to either the end of the array or to the key definition of
@@ -1627,10 +1633,28 @@ function _potx_is_banned_string($value) {
   return in_array($value, $list);
 }
 
-function _potx_get_banned_strings($filename = NULL) {
+function _potx_get_banned_strings($reset = FALSE, $dir = NULL) {
   static $banned_strings = [];
-  if ($filename) {
-    $banned_strings = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+  if ($reset) {
+    // Use all csv files in $dir
+    $files = scandir($dir);
+    if (!empty($files)) {
+      $files = array_diff($files, array('..', '.'));
+      if (!empty($files) && is_array($files)) {
+        foreach ($files as $file) {
+          $filename = $dir . '/' . $file;
+          // $banned_strings = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+          if (($handle = fopen($filename, "r")) !== FALSE) {
+            while (($data = fgetcsv($handle)) !== FALSE) {
+              $banned_string = reset($data);
+              $banned_strings[] = $banned_string;
+            }
+            fclose($handle);
+          }
+        }
+      }
+    }
+
   }
   return $banned_strings;
 }

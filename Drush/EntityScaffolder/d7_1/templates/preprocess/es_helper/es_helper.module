@@ -11,6 +11,7 @@ include_once 'es_helper.preprocess.inc';
 include_once 'es_helper.preprocess.default.inc';
 include_once 'es_helper.list_predefined_options.inc';
 include_once 'es_helper.patternlab.inc';
+include_once 'es_helper.translation.inc';
 
 define('ES_HELPER_PERMISSION_MANAGE_ALL_FPPS', 'es helper manage all fieldable_panel_panes');
 
@@ -130,6 +131,16 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['reusable']['#access'] = FALSE;
     $form['revision']['#access'] = FALSE;
     $form['view_mode']['#access'] = FALSE;
+  }
+
+  if (isset($form['#entity_type']) && $form['#entity_type'] == 'file') {
+    // Make file:image:alt field mandatory.
+    $language = $form['field_file_image_alt_text']['#language'];
+    $form['field_file_image_alt_text'][$language][0]['value']['#required'] = TRUE;
+
+    // Make file:image:title field mandatory.
+    $language = $form['field_file_image_title_text']['#language'];
+    $form['field_file_image_title_text'][$language][0]['value']['#required'] = TRUE;
   }
 }
 
