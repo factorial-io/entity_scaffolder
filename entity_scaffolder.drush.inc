@@ -160,10 +160,7 @@ function drush_entity_scaffolder() {
  * Run entity scaffolder for boilderplate.
  */
 function drush_entity_scaffolder_boilerplate() {
-  spl_autoload_register('drush_entity_scaffolder_autoload');
-  list($type) = func_get_args();
-  $boilerPlate = new BoilerPlate();
-  $boilerPlate->generate($type);
+  Logger::log("Boilerplate generation has moved to phabalicious project.", 'error');
 }
 
 /**
