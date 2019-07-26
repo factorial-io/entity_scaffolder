@@ -132,6 +132,16 @@ function es_helper_form_alter(&$form, &$form_state, $form_id) {
     $form['revision']['#access'] = FALSE;
     $form['view_mode']['#access'] = FALSE;
   }
+
+  if (isset($form['#entity_type']) && $form['#entity_type'] == 'file') {
+    // Make file:image:alt field mandatory.
+    $language = $form['field_file_image_alt_text']['#language'];
+    $form['field_file_image_alt_text'][$language][0]['value']['#required'] = TRUE;
+
+    // Make file:image:title field mandatory.
+    $language = $form['field_file_image_title_text']['#language'];
+    $form['field_file_image_title_text'][$language][0]['value']['#required'] = TRUE;
+  }
 }
 
 /**
