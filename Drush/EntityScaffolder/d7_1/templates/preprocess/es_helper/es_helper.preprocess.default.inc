@@ -12,10 +12,12 @@
   */
  function es_helper_preprocess_default_extract_rendered_value(&$render_array, $field_name, $cardinality = '1') {
    if ($cardinality === '1') {
+     $out = '';
      $render_array[$field_name]['#label_display'] = 'hidden';
      $out = $render_array[$field_name];
    }
    else {
+     $out = [];
      $items = [];
      // Extract each values into $items variable.
      foreach (element_children($render_array[$field_name]) as $key) {
