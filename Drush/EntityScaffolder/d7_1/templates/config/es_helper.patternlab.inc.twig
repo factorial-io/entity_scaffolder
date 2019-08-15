@@ -9,10 +9,37 @@
 
 
 /**
+ * Check if `patternlab_path` is already defined
+ */
+function _es_helper_is_patternlab_path_already_defined() {
+  $hook = 'twig_function';
+  foreach (module_implements($hook) as $module) {
+    if ($module == 'es_helper') {
+      continue;
+    }
+    $fn = $module . '_' . $hook;
+    if (function_exists($fn)) {
+      $result = $fn([]);
+      if (isset($result['patternlab_path'])) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
+}
+
+/**
  * Implements hook_twig_function().
  */
-function es_helper_twig_function($functions) {
-  $functions['patternlab_path'] = new Twig_SimpleFunction('patternlab_path', 'es_helper_patternlab_path');
+function es_helper_twig_function() {
+  $functions = [];
+  if (_es_helper_is_patternlab_path_already_defined()) {
+    drupal_set_message(t('Please check your installation, there is already a patternlab_path defined!'), 'error');
+  }
+  else {
+    $functions['patternlab_path'] = new Twig_SimpleFunction('patternlab_path', 'es_helper_patternlab_path');
+  }
+
   return $functions;
 }
 
