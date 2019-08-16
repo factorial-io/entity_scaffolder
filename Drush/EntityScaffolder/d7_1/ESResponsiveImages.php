@@ -21,13 +21,21 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
 
   public function generateCode($info) {
     $image_style_plugin = new ESImageStyle($this->scaffolder);
-    // @TODO Scaffold image styles.
-    // @TODO Scaffold picture mapping.
+    $picture_plugin = new ESPicture($this->scaffolder);
+
     if (!empty($info['mapping'])) {
+      $multipliers = !empty($info['multipliers']) ? $info['multipliers'] : [1];
+      // Scaffold image styles.
       foreach($info['mapping'] as $key => $map) {
-        $config = $this->generateEsImageStyleData($info, $key, $map);
-        $image_style_plugin->generateCode($config);
+        foreach ($multipliers as $multiplier) {
+          $config = $this->generateEsImageStyleData($info, $key, $map, $multiplier);
+          $image_style_plugin->generateCode($config);
+        }
       }
+
+      // @TODO Scaffold picture mapping.
+      $config = $this->generateEsPictureData($info, $key, $map);
+      $picture_plugin->generateCode($config);
     }
 
   }
@@ -64,12 +72,21 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
   /**
    * Generate image style data as required by ESImageStyle Scaffolder.
    */
-  private function generateEsImageStyleData($info, $key, $data) {
-    $machine_name = $info['machine_name'] . '__' . $key;
+  private function generateEsImageStyleData($info, $key, $data, $multiplier) {
+    $machine_name = $info['machine_name'] . '__' . $key . '__' . $multiplier;
     $effect = 'image_scale';
     if (!empty($data['width']) && !empty($data['height'])) {
       $effect = 'focal_point_scale_and_crop';
     }
+    $scale = trim($multiplier, 'x');
+    if (!empty($data['width'])) {
+      $data['width'] = round($data['width'] * $scale);
+    }
+
+    if (!empty($data['height'])) {
+      $data['height'] = round($data['height'] * $scale);
+    }
+
     $output = [
       'machine_name' => $machine_name,
       'name' => $machine_name,
@@ -85,4 +102,25 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
     return $output;
   }
 
+  /**
+   * Generate image style data as required by ESImageStyle Scaffolder.
+   */
+  private function generateEsPictureData($info) {
+    $machine_name = $info['machine_name'];
+    $output = [
+      'machine_name' => $machine_name,
+      'name' => $machine_name,
+      'breakpoint_group' => $info['breakpoint_group'],
+      'mapping' => [],
+    ];
+    foreach($info['mapping'] as $key => $value) {
+      $map_key = 'breakpoints.theme.' . $info['breakpoint_group'] . '.' . $key;
+      // @TODO get list of multipliers 1x, 2x, 3x, etc.
+      $multipliers = $info['multipliers'];
+      foreach($multipliers as $multiplier) {
+        $output['mapping'][$map_key][$multiplier] = $machine_name . '__' . $key . '__' . $multiplier;
+      }
+    }
+    return $output;
+  }
 }
