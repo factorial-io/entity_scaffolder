@@ -73,7 +73,7 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
    * Generate image style data as required by ESImageStyle Scaffolder.
    */
   private function generateEsImageStyleData($info, $key, $data, $multiplier) {
-    $machine_name = $info['machine_name'] . '__' . $key . '__' . $multiplier;
+    $machine_name = $this->generateImageStyleName($info, $key, $multiplier);
     $effect = 'image_scale';
     if (!empty($data['width']) && !empty($data['height'])) {
       $effect = 'focal_point_scale_and_crop';
@@ -118,9 +118,17 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
       // @TODO get list of multipliers 1x, 2x, 3x, etc.
       $multipliers = $info['multipliers'];
       foreach($multipliers as $multiplier) {
-        $output['mapping'][$map_key][$multiplier] = $machine_name . '__' . $key . '__' . $multiplier;
+        $output['mapping'][$map_key][$multiplier] = $this->generateImageStyleName($info, $key, $multiplier);
       }
     }
     return $output;
+  }
+
+  /**
+   * Generate image style name from various parameters.
+   */
+  private function generateImageStyleName($info, $key, $multiplier) {
+    $machine_name = $info['machine_name'];
+    return $machine_name . '__' . $key . '__' . $multiplier;
   }
 }
