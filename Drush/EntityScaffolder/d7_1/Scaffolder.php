@@ -55,6 +55,7 @@ class Scaffolder extends ScaffolderBase {
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
     $this->plugins['list_predefined_options'] = new ESListPredefinedOptions($this);
     $this->plugins['config'] = new ESConfig($this);
+    $this->plugins['responsive_images'] = new ESResponsiveImages($this);
   }
 
   /**
@@ -79,6 +80,7 @@ class Scaffolder extends ScaffolderBase {
     }
     $this->plugins['list_predefined_options']->scaffold();
     $this->plugins['config']->scaffold();
+    $this->plugins['responsive_images']->scaffold();
   }
 
   /**
