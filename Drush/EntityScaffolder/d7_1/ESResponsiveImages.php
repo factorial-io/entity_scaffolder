@@ -20,8 +20,16 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
   }
 
   public function generateCode($info) {
-    // @TODO.
-    Logger::log('foo');
+    $image_style_plugin = new ESImageStyle($this->scaffolder);
+    // @TODO Scaffold image styles.
+    // @TODO Scaffold picture mapping.
+    if (!empty($info['mapping'])) {
+      foreach($info['mapping'] as $key => $map) {
+        $config = $this->generateEsImageStyleData($info, $key, $map);
+        $image_style_plugin->generateCode($config);
+      }
+    }
+
   }
 
   /**
@@ -52,4 +60,29 @@ class ESResponsiveImages extends ESBase implements ESBaseInterface {
     $config_data = parent::getConfig($file);
     return $this->processConfigData($config_data);
   }
+
+  /**
+   * Generate image style data as required by ESImageStyle Scaffolder.
+   */
+  private function generateEsImageStyleData($info, $key, $data) {
+    $machine_name = $info['machine_name'] . '__' . $key;
+    $effect = 'image_scale';
+    if (!empty($data['width']) && !empty($data['height'])) {
+      $effect = 'focal_point_scale_and_crop';
+    }
+    $output = [
+      'machine_name' => $machine_name,
+      'name' => $machine_name,
+      'effects' => [
+        [
+          'name' => $effect,
+          'data' => $data,
+          'index' => 1,
+          'weight' => 1,
+        ],
+      ],
+    ];
+    return $output;
+  }
+
 }
