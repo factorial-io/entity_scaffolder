@@ -80,7 +80,6 @@ class Scaffolder extends ScaffolderBase {
     }
     $this->plugins['list_predefined_options']->scaffold();
     $this->plugins['config']->scaffold();
-    $this->plugins['responsive_images']->scaffold();
   }
 
   /**
