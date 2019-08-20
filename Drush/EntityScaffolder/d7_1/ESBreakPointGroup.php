@@ -136,6 +136,7 @@ class ESBreakPointGroup extends ESBase implements ESBaseInterface {
   public function getConfig(...$params) {
     list($file) = $params;
     $config_data = parent::getConfig($file);
+    $default_multiplier = !empty($config_data['multiplier']) ? $config_data['multiplier'] : ['1x' => '1x'];
     if ($config_data) {
       if (!empty($config_data['breakpoints'])) {
         foreach ($config_data['breakpoints'] as $ndx => &$config) {
@@ -144,14 +145,14 @@ class ESBreakPointGroup extends ESBase implements ESBaseInterface {
           $config['group_name'] = $config_data['machine_name'];
           $config['weight'] = $ndx;
           if (empty($config['multiplier'])) {
-            $config['multiplier'] = ['1x' => '1x'];
+            $multiplier = $default_multiplier;
           }
           else {
             $multiplier = $config['multiplier'];
-            $config['multiplier'] = [];
-            foreach ($multiplier as $m) {
-              $config['multiplier'][$m] = $m;
-            }
+          }
+          $config['multiplier'] = [];
+          foreach ($multiplier as $m) {
+            $config['multiplier'][$m] = $m;
           }
         }
       }

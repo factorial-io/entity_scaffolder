@@ -1,5 +1,10 @@
 # Image styles
 
+!!! warning
+    **DEPRECATED**
+
+    Most of the time you would need the [Responsive Images](/configurations/responsive_images/) solution. Use this only if you want to create standalone image styles in rare cases.
+
 The folder `image_style` contains a set of yaml-files defining one or more image styles. Each yaml-file contains a set of image styles.
 
 Here's an example:

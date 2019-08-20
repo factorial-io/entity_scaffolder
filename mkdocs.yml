@@ -23,6 +23,7 @@ pages:
       - Breakpoint Groups: configurations/breakpoint_groups.md
       - Image styles: configurations/image_styles.md
       - Pictures: configurations/pictures.md
+      - Responsive Images: configurations/responsive_images.md
 
   - Contribution Guide:
       - EntityScaffolder: contribute/entity-scaffolder.md

@@ -1,5 +1,10 @@
 # Pictures
 
+!!! warning
+    **DEPRECATED**
+
+    Most of the time you would need the [Responsive Images](/configurations/responsive_images/) solution. Use this only if you want to create standalone image styles in rare cases.
+
 The folder `picture` contains a set of yaml-files defining one or more picture-configurations. A picture has a machine name and a mapping of breakpoints, multipliers to image-styles.
 
 The picture-module will render a `<picture>`-element applying the configuration.

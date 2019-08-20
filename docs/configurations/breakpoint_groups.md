@@ -6,48 +6,30 @@ Breakpoint groups should resemble the frontend breakpoint configuration.
 
 Breakpoint groups are defined in one yaml file which is stored in the `.tools/es/breakpoint_groups`-folder.
 
-A grou consists of a list of breakpoints which store a machine-name a media-query and a list of multipliers (for retina-displays)
+A group consists of a list of breakpoints which store a machine-name a media-query and a list of multipliers (eg 2x for retina-displays)
 
-Here's an example:
+
+### Example
+
+_.tools/es/breakpoints/global.yaml_
 
 ```yaml
-name: Frontend breakpoints
-machine_name: frontend
+name: Global
+machine_name: global
+multiplier:
+  - 1x
+  - 2x
 breakpoints:
-  - machine_name: xl-viewport
-    media: '(min-width: 1600px)'
-    multiplier:
-      - 1x
-      - 2x
+  # Mobile (portrait and landscape)
+  - machine_name: mobile
+    media: '@media only screen and (min-device-width : 320px) and (max-device-width : 480px)'
 
-  - machine_name: lg-viewport
-    media: '(min-width: 1280px)'
-    multiplier:
-      - 1x
-      - 2x
+  # Desktop and laptops
+  - machine_name: desktop
+    media: '@media only screen  and (min-width : 1224px)'
 
-  - machine_name: md-viewport
-    media: '(min-width: 1024px) and (max-width: 1279px)'
-    multiplier:
-      - 1x
-      - 2x
-
-  - machine_name: md-lg-viewport
-    media: '(min-width: 1024px)'
-    multiplier:
-      - 1x
-      - 2x
-
-  - machine_name: sm-md-viewport
-    media: '(max-width: 1279px)'
-    multiplier:
-      - 1x
-      - 2x
-
-  - machine_name: sm-viewport
-    media: '(max-width: 1023px)'
-    multiplier:
-      - 1x
-      - 2x
+  # Large screens
+  - machine_name: large
+    media: '@media only screen  and (min-width : 1824px)'
 ```
 

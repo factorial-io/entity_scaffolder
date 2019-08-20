@@ -9,7 +9,7 @@ use Drush\EntityScaffolder\Logger;
 
 class Scaffolder extends ScaffolderBase {
   // @see http://php.net/version_compare.
-  const VERSION = '7.2.16';
+  const VERSION = '7.2.18';
 
   const DEFAULT_TEMPLATE_DIR = __DIR__ . '/templates';
   const TEMPLATE_NAMESPACE = 'd7_1';
@@ -55,6 +55,7 @@ class Scaffolder extends ScaffolderBase {
     $this->plugins['paragraphs'] = new ESEntityParagraphs($this);
     $this->plugins['list_predefined_options'] = new ESListPredefinedOptions($this);
     $this->plugins['config'] = new ESConfig($this);
+    $this->plugins['responsive_images'] = new ESResponsiveImages($this);
   }
 
   /**
