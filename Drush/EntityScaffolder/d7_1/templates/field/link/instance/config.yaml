@@ -1,0 +1,8 @@
+dependencies :
+  - link
+variables :
+  validate_url :
+    type : boolean
+    placeholder : 1
+    required : false
+    default : 1
