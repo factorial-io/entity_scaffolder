@@ -21,6 +21,10 @@ directories :
   theme : sites/all/themes/custom/my_custom_theme
   templates : sites/all/themes/custom/my_custom_theme/templates
   patternlab : sites/all/themes/custom/my_custom_theme/source
+  patternlab_image_data: sites/all/themes/custom/my_custom_theme/source/_patterns/01-atoms/image-picture
+patternlab:
+  components:
+    image: 'image-picture'
 ```
 
 ### Key/value pairs
@@ -74,4 +78,16 @@ directories :
   templates : sites/all/themes/custom/my_custom_theme/templates
   # Location of patternlab source folder.
   patternlab : sites/all/themes/custom/my_custom_theme/source
+  # Location where sample image data (as yaml files) for responsive image will be
+  # generated based on picture mapping.
+  patternlab_image_data: sites/all/themes/custom/my_custom_theme/source/_patterns/01-atoms/image-picture
+```
+
+#### patternlab
+The following configuration along with `directories.patternlab_image_data` is used to generate the image data. `patternlab.components.image` should be the name of the image component.
+
+```yaml
+patternlab:
+  components:
+    image: 'image-picture'
 ```
