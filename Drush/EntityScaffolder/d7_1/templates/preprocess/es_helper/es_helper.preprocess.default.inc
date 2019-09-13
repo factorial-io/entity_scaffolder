@@ -24,6 +24,7 @@
        $items[] = $render_array[$field_name][$key];
        unset($render_array[$field_name][$key]);
      }
+     $weight = 0;
      // At this point `$render_array[$field_name]`
      // is an empty field template.
      foreach ($items as $item) {
@@ -32,7 +33,9 @@
        $v = $render_array[$field_name];
        $v['#label_display'] = 'hidden';
        $v['0'] = $item;
+       $v['#weight'] = $weight;
        $out[] = $v;
+       $weight++;
      }
    }
    return $out;
