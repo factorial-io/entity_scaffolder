@@ -20,9 +20,12 @@
      $out = [];
      $items = [];
      // Extract each values into $items variable.
-     foreach (element_children($render_array[$field_name]) as $key) {
-       $items[] = $render_array[$field_name][$key];
-       unset($render_array[$field_name][$key]);
+     if (isset($render_array[$field_name]) && is_array($render_array[$field_name])) {
+       // Extract each values into $items variable.
+       foreach (element_children($render_array[$field_name]) as $key) {
+         $items[] = $render_array[$field_name][$key];
+         unset($render_array[$field_name][$key]);
+       }
      }
      $weight = 0;
      // At this point `$render_array[$field_name]`
