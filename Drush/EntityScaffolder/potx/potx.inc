@@ -1045,19 +1045,25 @@ function _potx_find_context($tf, $ti, $file, $function_name) {
     // argument is coming up, which might have a key for context.
     list($com, $arr, $par) = array($_potx_tokens[$ti], $_potx_tokens[$ti+1], $_potx_tokens[$ti+2]);
     // @HACK check $arr[1] is empty or not before accessing it.
-    if ($com == ',' && !empty($arr[1]) && $arr[1] == 'array' && $par == '(') {
+    if ($com == ',' && ($forward = _potx_is_beginning_of_array($arr, $par))) {
       $nesting = 0;
-      $ti += 3;
+      $ti += $forward;
       // Go through to either the end of the array or to the key definition of
       // context on the same nesting level.
       while (!((is_array($_potx_tokens[$ti]) && (in_array($_potx_tokens[$ti][1], array('"context"', "'context'"))) && ($_potx_tokens[$ti][0] == T_CONSTANT_ENCAPSED_STRING) && ($nesting == 0)) ||
-               ($_potx_tokens[$ti] == ')' && $nesting == -1))) {
+        (_potx_is_end_of_array($_potx_tokens[$ti]) && $nesting == -1))) {
         $ti++;
         if (!is_array($_potx_tokens[$ti])) {
-          if ($_potx_tokens[$ti] == ')') {
+          // Treat each () and [] pair as going into / out of nesting levels.
+          // There may be function or method calls as well as nested short
+          // arrays within the arguments list. The list may be similar to:
+          // array('langcode' => $obj->someMethod([])[2], 'context' => 'Long month name')
+          // or
+          // ['langcode' => $obj->someMethod(array())[2], 'context' => 'Long month name']
+          if ($_potx_tokens[$ti] == ')' || $_potx_tokens[$ti] == ']') {
             $nesting--;
           }
-          if ($_potx_tokens[$ti] == '(') {
+          if ($_potx_tokens[$ti] == '(' || $_potx_tokens[$ti] == '[') {
             $nesting++;
           }
         }
@@ -1657,4 +1663,37 @@ function _potx_get_banned_strings($reset = FALSE, $dir = NULL) {
 
   }
   return $banned_strings;
+}
+
+/**
+ * Determines if processing an array.
+ *
+ * @param string|string[] $arr
+ * @param string|NULL $par
+ *
+ * @return int|FALSE
+ *   The number to forward the current position forward to start processing the
+ *   array. FALSE if not processing an array.
+ */
+function _potx_is_beginning_of_array($arr, $par) {
+  if ($arr === '[' && is_array($par)) {
+    return 2;
+  }
+  if (is_array($arr) && $arr[1] == 'array' && $par == '(') {
+    return 3;
+  }
+  return FALSE;
+}
+
+/**
+ * Determines if at the end of an array.
+ *
+ * @param string $token
+ *   The token being processed.
+ *
+ * @return bool
+ *   TRUE is  at the end of an array, FALSE if not.
+ */
+function _potx_is_end_of_array($token) {
+  return $token == ')' || $token == ']';
 }
