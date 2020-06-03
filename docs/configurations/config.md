@@ -17,10 +17,14 @@ templates:
     dir: /.entity_scaffolder/factorial
 
 # Pass the project specific directory locations.
-directories :
-  theme : sites/all/themes/custom/my_custom_theme
-  templates : sites/all/themes/custom/my_custom_theme/templates
-  patternlab : sites/all/themes/custom/my_custom_theme/source
+directories:
+  theme: sites/all/themes/custom/my_custom_theme
+  templates: sites/all/themes/custom/my_custom_theme/templates
+  patternlab: sites/all/themes/custom/my_custom_theme/source
+  patternlab_image_data: sites/all/themes/custom/my_custom_theme/source/_patterns/01-atoms/image-picture
+patternlab:
+  components:
+    image: 'image-picture'
 ```
 
 ### Key/value pairs
@@ -67,11 +71,23 @@ These can be supplied as such.
 
 ```yaml
 # Pass the project specific directory locations.
-directories :
+directories:
   # Location of custom theme
-  theme : sites/all/themes/custom/my_custom_theme
+  theme: sites/all/themes/custom/my_custom_theme
   # Location of template directory within the custom theme
-  templates : sites/all/themes/custom/my_custom_theme/templates
+  templates: sites/all/themes/custom/my_custom_theme/templates
   # Location of patternlab source folder.
-  patternlab : sites/all/themes/custom/my_custom_theme/source
+  patternlab: sites/all/themes/custom/my_custom_theme/source
+  # Location where sample image data (as yaml files) for responsive image will be
+  # generated based on picture mapping.
+  patternlab_image_data: sites/all/themes/custom/my_custom_theme/source/_patterns/01-atoms/image-picture
+```
+
+#### patternlab
+The following configuration along with `directories.patternlab_image_data` is used to generate the image data. `patternlab.components.image` should be the name of the image component.
+
+```yaml
+patternlab:
+  components:
+    image: 'image-picture'
 ```

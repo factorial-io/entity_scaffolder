@@ -394,6 +394,23 @@ function es_helper_preprocess_brightcove_field_embed(array &$vars) {
 }
 
 /**
+ * Debug helper to show modules which can't be enabled.
+ */
+function es_helper_debug_modules_enabled($path = 'modules_enabled.txt') {
+  $content = file_get_contents($path);
+  if ($content) {
+    $modules = explode("\n", $content);
+    $modules = array_map('trim', $modules);
+    $modules = array_filter($modules);
+    foreach ($modules as $module) {
+      if (!module_enable([$module])) {
+        drupal_set_message(t("can't enable module %module", ['%module' => $module]));
+      }
+    }
+  }
+}
+
+/**
  * Helper function to list all file permissions for debugging purposes.
  */
 function es_helper_show_file_permissions($dir) {
