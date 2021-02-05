@@ -20,10 +20,14 @@
      $out = [];
      $items = [];
      // Extract each values into $items variable.
-     foreach (element_children($render_array[$field_name]) as $key) {
-       $items[] = $render_array[$field_name][$key];
-       unset($render_array[$field_name][$key]);
+     if (isset($render_array[$field_name]) && is_array($render_array[$field_name])) {
+       // Extract each values into $items variable.
+       foreach (element_children($render_array[$field_name]) as $key) {
+         $items[] = $render_array[$field_name][$key];
+         unset($render_array[$field_name][$key]);
+       }
      }
+     $weight = 0;
      // At this point `$render_array[$field_name]`
      // is an empty field template.
      foreach ($items as $item) {
@@ -32,7 +36,9 @@
        $v = $render_array[$field_name];
        $v['#label_display'] = 'hidden';
        $v['0'] = $item;
+       $v['#weight'] = $weight;
        $out[] = $v;
+       $weight++;
      }
    }
    return $out;
