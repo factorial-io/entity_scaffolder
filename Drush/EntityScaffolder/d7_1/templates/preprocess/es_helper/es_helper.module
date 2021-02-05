@@ -385,12 +385,18 @@ function es_helper_preprocess_brightcove_field_embed(array &$vars) {
   // Getting brightcove video id.
   $video_id = $video->getId();
   $video_name = $video->getName();
+  $video_description = !empty($video->getDescription()) ? $video->getDescription() : $video->getName();
+  $video_upload_data = $video->getCreatedAt();
+  $video_thumbnail_url = !empty($video->getImages()['thumbnail']) ? $video->getImages()['thumbnail']->getSrc() : '';
 
   // Creating the variables which we need in brightcove player template
   // for tracking purpose.
   $vars['brightcove_video_id'] = $video_id;
   $vars['video_name'] = $video_id . ':' . $video_name;
   $vars['id'] = es_helper_get_unique_video_id($video_id);
+  $vars['video_description'] = $video_description;
+  $vars['video_upload_data'] = $video_upload_data;
+  $vars['video_thumbnail_url'] = $video_thumbnail_url;
 }
 
 /**
