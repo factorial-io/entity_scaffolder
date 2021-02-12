@@ -15,18 +15,26 @@
     'locked' => 0,
     'module' => 'entityreference',
     'settings' => array(
-      'handler' => 'base',
+      'handler' => {% if handler is empty %}'base'{% else %}'{{ handler }}'{% endif %},
       'handler_settings' => array(
         'behaviors' => array(
           'views-select-list' => array(
             'status' => 0,
           ),
         ),
+{% if ( handler is empty ) or ( handler == 'base' ) %}    
         'sort' => array(
           'direction' => 'ASC',
           'property' => {% if target_sort_by_property is empty %}'title'{% else %}'{{ target_sort_by_property }}'{% endif %},
           'type' => 'property',
         ),
+{% endif %}
+{% if handler == 'views' %}
+        'view' => array(
+          'display_name' => '{{ display_name }}',
+          'view_name' => '{{ view_name }}',
+        ),
+{% endif %}        
         'target_bundles' => array(
 {% for target_bundle in target_bundles %}
           '{{ target_bundle }}' => '{{ target_bundle }}',
