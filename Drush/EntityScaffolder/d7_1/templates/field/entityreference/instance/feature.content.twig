@@ -53,9 +53,9 @@
           'allow_existing' => {{ widget_settings.type_settings.allow_existing | default("0") }},
           'allow_new' => {{ widget_settings.type_settings.allow_new | default("0") }},
           'delete_references' => {{ widget_settings.type_settings.delete_references | default("0") }},
-          'label_plural' => {{ widget_settings.type_settings.label_plural | default("nodes") }},
-          'label_singular' => {{ widget_settings.type_settings.label_singular | default("node") }},
-          'match_operator' => {{ widget_settings.type_settings.match_operator | default("CONTAINS") }},
+          'label_plural' => '{{ widget_settings.type_settings.label_plural | default("nodes") }}',
+          'label_singular' => '{{ widget_settings.type_settings.label_singular | default("node") }}',
+          'match_operator' => '{{ widget_settings.type_settings.match_operator | default("CONTAINS") }}',
           'override_labels' => {{ widget_settings.type_settings.override_labels | default("0") }},
           ),
         {% endif %}
