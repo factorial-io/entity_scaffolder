@@ -3,6 +3,9 @@ Entity Scaffolder is a drush plugin.
 
 It reads the configuration from yaml files and creates appropriate feature files and preprocess functions.
 
+## For Drupal 8 and above
+Check out https://github.com/factorial-io/phab-entity-scaffolder/ project for drupal 8 and above.
+
 ## Documentation
 
 A detailed documentation is hosted here https://factorial-io.github.io/entity_scaffolder/.
