@@ -22,17 +22,16 @@
             'status' => 0,
           ),
         ),
-{% if ( handler is empty ) or ( handler == 'base' ) %}    
-        'sort' => array(
-          'direction' => 'ASC',
-          'property' => {% if target_sort_by_property is empty %}'title'{% else %}'{{ target_sort_by_property }}'{% endif %},
-          'type' => 'property',
-        ),
-{% endif %}
 {% if handler == 'views' %}
         'view' => array(
           'display_name' => '{{ display_name }}',
           'view_name' => '{{ view_name }}',
+        ),
+{% else %}   
+        'sort' => array(
+          'direction' => 'ASC',
+          'property' => {% if target_sort_by_property is empty %}'title'{% else %}'{{ target_sort_by_property }}'{% endif %},
+          'type' => 'property',
         ),
 {% endif %}        
         'target_bundles' => array(
